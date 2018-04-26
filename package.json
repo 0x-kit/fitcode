@@ -1,0 +1,36 @@
+{
+  "name": "fitcode",
+  "version": "1.0.0",
+  "description": "Undergraduate Thesis Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon --exec 'mocha --recursive'",
+    "test2": "mocha --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xKush/fitcode.git"
+  },
+  "keywords": [
+    "node",
+    "mongodb",
+    "restful",
+    "api",
+    "express",
+    "mocha",
+    "react",
+    "redux"
+  ],
+  "author": "Cristopher Álvarez Martínez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/0xKush/fitcode/issues"
+  },
+  "homepage": "https://github.com/0xKush/fitcode#readme",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.1.1",
+    "mongoose": "^5.0.16",
+    "nodemon": "^1.17.3"
+  }
+}
