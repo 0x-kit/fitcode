@@ -54,9 +54,17 @@ module.exports = {
             password: 'pass'
         });
     },
-    validUser(name) {
+    existentUser(name) {
         return new User({
             name: 'user',
+            email: Math.random().toString(36).substring(7) + '@test.com',
+            password: 'password'
+        });
+    },
+    nonExistentUser() {
+        return new User({
+            _id: '5ae328a947c1c91862ad1c90',
+            name: 'userx',
             email: Math.random().toString(36).substring(7) + '@test.com',
             password: 'password'
         });

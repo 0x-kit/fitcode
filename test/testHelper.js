@@ -7,7 +7,7 @@ mongoose.Promise = global.Promise;
 
 before('Tells mongoose to conect to mongo', (done) => {
 
-    mongoose.connect('mongodb://localhost/fitcode');
+    mongoose.connect('mongodb://localhost/fitcode_test');
     mongoose.connection
         .once('open', () => { done() })
         .on('error', (error) => {

@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 const assert = require('assert');
-const factories = require('../dataset/userFactory');
+const factories = require('../dataset/user_factory');
 const User = require('../../models/user');
 
 describe('Entity test - User', () => {
@@ -68,7 +68,7 @@ describe('Entity test - User', () => {
 
     it('should be valid if (name,password,email) match the correct format', (done) => {
 
-        user = factories.validUser();
+        user = factories.existentUser();
 
         user.validate((err) => {
             assert(err === null);

@@ -4,8 +4,9 @@
   "description": "Undergraduate Thesis Project",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon --exec 'mocha --recursive'",
-    "test2": "mocha --recursive"
+    "test": "NODE_ENV=test nodemon --exec 'mocha --recursive'",
+    "test2": "mocha --recursive",
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -29,8 +30,11 @@
   "homepage": "https://github.com/0xKush/fitcode#readme",
   "dependencies": {
     "chai": "^4.1.2",
+    "express": "^4.16.3",
     "mocha": "^5.1.1",
     "mongoose": "^5.0.16",
-    "nodemon": "^1.17.3"
+    "morgan": "^1.9.0",
+    "nodemon": "^1.17.3",
+    "supertest": "^3.0.0"
   }
 }
