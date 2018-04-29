@@ -1,9 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const routes = require('./routes/routes');
+const morgan = require('morgan');
 const app = express();
 
-const morgan = require('morgan');
+const userRoutes = require('./routes/users');
 
 
 if (process.env.NODE_ENV !== 'test') {
@@ -18,7 +18,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 
-routes(app);
+/** Routes which should handle requests */
+app.use('/user', userRoutes);
 
 /** If none of the routes above handle the request */
 app.use((req, res, next) => {
