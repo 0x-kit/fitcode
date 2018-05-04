@@ -75,16 +75,22 @@ exports.updateUser = (req, res, next) => {
         updatedOps[ops.propName] = ops.value;
     }
     //{name: req.body.newName, price: req.body.newPrice}
-
+    //{ n: 0, nModified: 0, ok: 1 } id no existe
+    //{ ok: 0, n: 0, nModified: 0 } prop no existe
+    //{ n: 1, nModified: 1, ok: 1 } updated
     User.update({ _id: userId }, { $set: updatedOps })
         .then(result => {
-            res.status(200).json({
-                message: 'User updated',
-                request: {
-                    type: 'GET',
-                    url: `http://localhost:3000/user`
-                }
-            });
+            if (result.n === 0)
+                res.status(404).json({ message: 'User could not be updated: invalid entry or properties' });
+            else {
+                res.status(200).json({
+                    message: 'User updated',
+                    request: {
+                        type: 'GET',
+                        url: `http://localhost:3000/user`
+                    }
+                });
+            }
         })
         .catch(err => { res.status(500).json({ error: err }); });
 }
@@ -93,11 +99,14 @@ exports.deleteUser = (req, res, next) => {
     const userId = req.params.userId;
 
     User.findByIdAndRemove(userId)
-        .then(() => {
-            
-            res.status(200).json({
-                message: 'User deleted'
-            })
+        .then((result) => {
+            if (!result) {
+                res.status(404).json({ message: 'Not valid entry found for provided ID' });
+            } else {
+                res.status(200).json({
+                    message: 'User deleted'
+                })
+            }
         })
         .catch(err => { res.status(500).json({ error: err }) });
 };

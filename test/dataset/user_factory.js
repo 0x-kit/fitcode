@@ -48,7 +48,7 @@ module.exports = {
     },
     invalidUserId() {
         return new User({
-            _id: 12345,
+            _id: '5ae5a212700aa219f82e54e1',
             name: 'tt',
             email: 'testtest.com',
             password: 'pass'
@@ -68,5 +68,17 @@ module.exports = {
             email: Math.random().toString(36).substring(7) + '@test.com',
             password: 'password'
         });
+    },
+    updatedUserProps() {
+        return (
+            [
+                {
+                    "propName": "name",
+                    "value": "userupdated"
+                }
+            ]
+        );
     }
 }
+
+  
