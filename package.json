@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/0xKush/fitcode#readme",
   "dependencies": {
+    "bcrypt": "^2.0.1",
     "chai": "^4.1.2",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.2.1",
@@ -39,7 +40,6 @@
     "nodemon": "^1.17.3",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^1.0.0",
-    "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
     "supertest": "^3.0.0"
   }

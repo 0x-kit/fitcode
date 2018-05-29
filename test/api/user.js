@@ -31,6 +31,7 @@ describe('API test - User', () => {
             .get(`/user/${user._id}`)
             .end((err, response) => {
                 const res = response.body;
+                console.log(res)
                 assert(res.user !== null);
                 assert(res.user._id == user._id);
                 assert(response.statusCode == '200');
