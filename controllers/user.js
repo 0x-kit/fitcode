@@ -1,16 +1,17 @@
-const User = require("../models/user");
-const bcrypt = require("bcrypt");
+const User = require('../models/user');
+const bcrypt = require('bcrypt');
 
 exports.getUsers = async (req, res, next) => {
   try {
-    const docs = await User.find({}).select("name email _id");
+    const docs = await User.find({}).select('name email _id hash_password');
     const response = {
       count: docs.length,
       users: docs.map(doc => {
         return {
           id: doc._id,
           name: doc.name,
-          email: doc.email
+          email: doc.email,
+          password: doc.hash_password
         };
       })
     };
@@ -23,12 +24,12 @@ exports.getUsers = async (req, res, next) => {
 exports.readUser = async (req, res, next) => {
   try {
     const userId = req.params.userId;
-    const doc = await User.findById(userId).select("name email _id");
+    const doc = await User.findById(userId).select('name email _id');
 
     if (!doc) {
       res
         .status(404)
-        .json({ message: "Not valid entry found for provided ID" });
+        .json({ message: 'Not valid entry found for provided ID' });
     } else {
       res.status(200).json({
         user: doc
@@ -43,13 +44,13 @@ exports.createUser = async (req, res, next) => {
   try {
     let user = new User(req.body);
 
-    if (user.hash_password)
-      user.hash_password = bcrypt.hashSync(user.hash_password, 10);
+    // if (user.hash_password)
+    //   user.hash_password = bcrypt.hashSync(user.hash_password, 10);
 
     const newUser = await user.save();
 
     res.status(201).json({
-      message: "Created user sucessfully",
+      message: 'Created user sucessfully',
       user: {
         id: newUser._id,
         name: newUser.name,
@@ -58,7 +59,7 @@ exports.createUser = async (req, res, next) => {
       }
     });
   } catch (err) {
-    err.name === "ValidationError"
+    err.name === 'ValidationError'
       ? res.status(422).json({ error: err.message })
       : res.status(500).json({ error: err });
   }
@@ -72,10 +73,10 @@ exports.deleteUser = async (req, res, next) => {
     if (!user) {
       res
         .status(404)
-        .json({ message: "Not valid entry found for provided ID" });
+        .json({ message: 'Not valid entry found for provided ID' });
     } else {
       res.status(200).json({
-        message: "User deleted"
+        message: 'User deleted'
       });
     }
   } catch (err) {
@@ -83,52 +84,22 @@ exports.deleteUser = async (req, res, next) => {
   }
 };
 
-// exports.updateUser = (req, res, next) => {
-//   const userId = req.params.userId;
-//   const updatedOps = {};
-
-//   for (const ops of req.body) {
-//     updatedOps[ops.propName] = ops.value;
-//   }
-//   // res.status(404).json({ message: "Not valid entry found for provided ID" });
-
-//   User.update({ _id: userId }, { $set: updatedOps }, { runValidators: true })
-//     .then(result => {
-//       User.findById(userId).then(userUpdated => {
-//         res.status(200).json({
-//           message: "User updated",
-//           user: userUpdated
-//         });
-//       });
-//     })
-//     .catch(err => {
-//       err.name === "ValidationError"
-//         ? res.status(422).json({ error: err })
-//         : res.status(500).json({ error: err });
-//     });
-// };
-
 exports.updateUser = async (req, res, next) => {
-  const userId = req.params.userId;
-  const updatedUser = req.body;
-  // res.status(404).json({ message: "Not valid entry found for provided ID" });
-
   try {
+    const userId = req.params.userId;
+    const newProps = req.body;
     const user = await User.findById(userId);
-    if (!user)
+
+    if (!user) {
       res
         .status(404)
-        .json({ message: "Not valid entry found for provided ID" });
-
-    for (let p in req.body) {
-      user[p] = req.body[p];
+        .json({ message: 'Not valid entry found for provided ID' });
     }
 
-    await user.save();
-    res.status(200).json({ message: "user updated" });
+    const userUpdated = await user.update(newProps, { runValidators: true });
+    res.status(200).json({ message: 'user updated' });
   } catch (err) {
-    console.log(err);
-    err.name === "ValidationError"
+    err.name === 'ValidationError'
       ? res.status(422).json({ error: err })
       : res.status(500).json({ error: err });
   }
