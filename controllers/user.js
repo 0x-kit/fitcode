@@ -41,8 +41,10 @@ exports.readUser = async (req, res, next) => {
 
 exports.createUser = async (req, res, next) => {
   try {
-    const user = new User(req.body);
-    user.hash_password = bcrypt.hashSync(req.body.password, 10);
+    let user = new User(req.body);
+
+    if (user.hash_password)
+      user.hash_password = bcrypt.hashSync(user.hash_password, 10);
 
     const newUser = await user.save();
 
@@ -52,7 +54,7 @@ exports.createUser = async (req, res, next) => {
         id: newUser._id,
         name: newUser.name,
         email: newUser.email,
-        password: newUser.password
+        password: newUser.hash_password
       }
     });
   } catch (err) {
@@ -81,32 +83,53 @@ exports.deleteUser = async (req, res, next) => {
   }
 };
 
-exports.updateUser = (req, res, next) => {
+// exports.updateUser = (req, res, next) => {
+//   const userId = req.params.userId;
+//   const updatedOps = {};
+
+//   for (const ops of req.body) {
+//     updatedOps[ops.propName] = ops.value;
+//   }
+//   // res.status(404).json({ message: "Not valid entry found for provided ID" });
+
+//   User.update({ _id: userId }, { $set: updatedOps }, { runValidators: true })
+//     .then(result => {
+//       User.findById(userId).then(userUpdated => {
+//         res.status(200).json({
+//           message: "User updated",
+//           user: userUpdated
+//         });
+//       });
+//     })
+//     .catch(err => {
+//       err.name === "ValidationError"
+//         ? res.status(422).json({ error: err })
+//         : res.status(500).json({ error: err });
+//     });
+// };
+
+exports.updateUser = async (req, res, next) => {
   const userId = req.params.userId;
-  const updatedOps = {};
+  const updatedUser = req.body;
+  // res.status(404).json({ message: "Not valid entry found for provided ID" });
 
-  for (const ops of req.body) {
-    updatedOps[ops.propName] = ops.value;
+  try {
+    const user = await User.findById(userId);
+    if (!user)
+      res
+        .status(404)
+        .json({ message: "Not valid entry found for provided ID" });
+
+    for (let p in req.body) {
+      user[p] = req.body[p];
+    }
+
+    await user.save();
+    res.status(200).json({ message: "user updated" });
+  } catch (err) {
+    console.log(err);
+    err.name === "ValidationError"
+      ? res.status(422).json({ error: err })
+      : res.status(500).json({ error: err });
   }
-
-  User.update({ _id: userId }, { $set: updatedOps }, { runValidators: true })
-    .then(result => {
-      if (result.n === 0)
-        res
-          .status(404)
-          .json({ message: "Not valid entry found for provided ID" });
-      else {
-        User.findById(userId).then(userUpdated => {
-          res.status(200).json({
-            message: "User updated",
-            user: userUpdated
-          });
-        });
-      }
-    })
-    .catch(err => {
-      err.name === "ValidationError"
-        ? res.status(422).json({ error: err })
-        : res.status(500).json({ error: err });
-    });
 };

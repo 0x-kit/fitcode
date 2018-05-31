@@ -60,16 +60,16 @@ module.exports = {
       hash_password: "password"
     });
   },
-  updatedUserProps() {
+  updatedProps() {
     return [{ propName: "name", value: "userupdated" }];
   },
-  updatedInvalidUserName() {
+  updatedInvalidName() {
     return [{ propName: "name", value: "tt" }];
   },
-  updatedInvalidUserPassword() {
+  updatedInvalidPassword() {
     return [{ propName: "password", value: "pass" }];
   },
-  updatedInvalidUserEmail() {
+  updatedInvalidEmail() {
     return [{ propName: "email", value: "testtest.com" }];
   }
 };
