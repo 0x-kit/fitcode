@@ -5,7 +5,6 @@ const LocalStrategy = require("passport-local").Strategy;
 
 const mongoose = require("mongoose");
 const User = mongoose.model("user");
-const bcrypt = require("bcrypt");
 passport.use(
   new GoogleStrategy(
     {
@@ -42,8 +41,7 @@ passport.use(
     {
       usernameField: "email",
       passwordField: "password",
-      session: false,
-      callbackURL: "/auth/local/callback"
+      session: false
     },
 
     async (email, password, done) => {

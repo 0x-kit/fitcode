@@ -6,10 +6,10 @@ const app = express();
 const keys = require("./config/keys");
 
 const userRoutes = require("./routes/users");
-const authRoutes = require("./routes/auth");
+const authRoutes = require("./routes/auth2");
 
 const passport = require("passport");
-const passportConfig = require("./services/passport");
+const passportConfig = require("./services/passport2");
 
 mongoose.connect(keys.mongoURI);
 
