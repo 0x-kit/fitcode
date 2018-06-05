@@ -38,17 +38,8 @@ app.use((req, res, next) => {
 });
 
 /** Routes which should handle requests */
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "Welcome to fitcode" });
-});
 app.use("/user", userRoutes);
-app.use("/", authRoutes);
-
-// /**Prueba auth */
-// const checkAuth = require('./services/jwt').checkAuth;
-// app.get('/', checkAuth, (req, res) => {
-//   res.json({ user: req.authData, message: 'Private route' });
-// });
+app.use("/auth", authRoutes);
 
 /** If none of the routes above handle the request */
 app.use((req, res, next) => {

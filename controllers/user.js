@@ -42,8 +42,9 @@ exports.readUser = async (req, res, next) => {
 
 exports.createUser = async (req, res, next) => {
   try {
-    let user = new User(req.body);
-    const newUser = await user.save();
+    const newUser = new User(req.body);
+
+    await newUser.save();
 
     res.status(201).json({
       message: "Created user sucessfully",
@@ -51,7 +52,7 @@ exports.createUser = async (req, res, next) => {
         id: newUser._id,
         name: newUser.name,
         email: newUser.email,
-        password: newUser.hash_password
+        hash_password: newUser.password
       }
     });
   } catch (err) {

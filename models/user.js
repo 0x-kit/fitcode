@@ -45,7 +45,7 @@ UserSchema.methods.generateJwt = function() {
 /** Hooks */
 UserSchema.pre("save", function(next) {
   let user = this;
-  if (!user.isModified("password")) {
+  if (!user.isModified("hash_password")) {
     return next();
   }
   user.hash_password = bcrypt.hashSync(user.hash_password, 10);
