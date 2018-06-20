@@ -6,12 +6,13 @@ exports.signin = function(req, res, next) {
   // User has already had their email and password auth'd
   // We just need to give them a token
   const user = req.user;
+  console.log("user", user);
   res.send({ token: user.generateJwt() });
 };
 
 exports.signup = async (req, res, next) => {
   try {
-    const { email, password, name } = req.body;
+    const { email, hash_password, name } = req.body;
 
     // See if a user with the given email exist
     const user = await User.findOne({ email: email });
@@ -21,7 +22,7 @@ exports.signup = async (req, res, next) => {
     const newUser = new User({
       name: name,
       email: email,
-      hash_password: password
+      hash_password: hash_password
     });
 
     await newUser.save();

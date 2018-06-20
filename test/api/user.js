@@ -5,7 +5,7 @@ const constants = require("../constants/user");
 
 User = require("../../models/user");
 
-describe.only("API test - User", () => {
+describe("API test - User", () => {
   let user, user1, error;
 
   beforeEach(async () => {
