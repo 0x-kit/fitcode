@@ -11,7 +11,7 @@ exports.signin = function(req, res, next) {
 
 exports.signup = async (req, res, next) => {
   try {
-    const { email, hash_password, name } = req.body;
+    const { email, password, name } = req.body;
 
     // See if a user with the given email exist
     const user = await User.findOne({ email: email });
@@ -21,7 +21,7 @@ exports.signup = async (req, res, next) => {
     const newUser = new User({
       name: name,
       email: email,
-      hash_password: hash_password
+      hash_password: password
     });
 
     await newUser.save();
@@ -29,7 +29,7 @@ exports.signup = async (req, res, next) => {
     res.status(200).json({ token: newUser.generateJwt() });
   } catch (err) {
     err.name === "ValidationError"
-      ? res.status(422).json({ error: err.message })
-      : res.status(500).json({ error: err });
+      ? res.status(422).json({ message: err.message })
+      : res.status(500).json({ message: err });
   }
 };

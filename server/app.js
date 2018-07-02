@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const cors = require("cors");
 const app = express();
 
 const keys = require("./config/keys");
@@ -15,31 +16,14 @@ mongoose.connect(keys.mongoURI);
 
 /** Middlewares */
 app.use(express.urlencoded({ extended: false }));
+//app.use(morgan("combined"));
+app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
 
-/** CORS error-handling */
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin",
-    "X-Requested-With",
-    "Content-Type",
-    "Accept",
-    "Authorization"
-  );
-
-  if (req.method === "OPTIONS") {
-    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-    return res.status(200).json({});
-  }
-  next();
-});
-
 /** Routes which should handle requests */
-app.use("/user", userRoutes);
-app.use("/auth", authRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
 
 /** If none of the routes above handle the request */
 app.use((req, res, next) => {
