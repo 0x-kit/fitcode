@@ -16,6 +16,9 @@ router
   .get("/google", requireAuthGoogle)
   .get("/google/callback", requireSigninGoogle, Authentication.signin)
 
+  .get("/feature", function(req, res) {
+    res.send({ message: "Protected route" });
+  })
   .get("/", requireAuth, function(req, res) {
     res.send({ message: "Protected route" });
   });
