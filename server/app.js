@@ -16,7 +16,7 @@ mongoose.connect(keys.mongoURI);
 
 /** Middlewares */
 app.use(express.urlencoded({ extended: false }));
-//app.use(morgan("combined"));
+app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());

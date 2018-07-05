@@ -1,31 +1,28 @@
-const passport = require("passport");
-const User = require("../models/user");
-const keys = require("../config/keys");
+const passport = require('passport');
+const User = require('../models/user');
+const keys = require('../config/keys');
 
-const JwtStrategy = require("passport-jwt").Strategy;
-const ExtractJwt = require("passport-jwt").ExtractJwt;
-const LocalStrategy = require("passport-local");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const LocalStrategy = require('passport-local');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 // Setup options for JWT Strategy
-const localOptions = { usernameField: "email" };
+const localOptions = { usernameField: 'email', passReqToCallback: true };
 
 // Create local strategy
 const localLogin = new LocalStrategy(
   localOptions,
-  async (email, password, done) => {
+  async (req, email, password, done) => {
     // Verify this username and password
     try {
       const existingUser = await User.findOne({
         email: email
       });
 
-      if (!existingUser) {
-        return done(null, false, { message: "Invalid email" });
-      }
-
-      if (!existingUser.comparePassword(password)) {
-        return done(null, false, { message: "Invalid password" });
+      if (!existingUser || !existingUser.comparePassword(password)) {
+        req.authError = 'Invalid email or password.';
+        return done(null, false);
       }
 
       return done(null, existingUser);
@@ -37,7 +34,7 @@ const localLogin = new LocalStrategy(
 
 // Setup options for JWT Strategy
 const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromHeader("authorization"),
+  jwtFromRequest: ExtractJwt.fromHeader('authorization'),
   secretOrKey: keys.secretToken
 };
 
@@ -49,7 +46,7 @@ const jwtLogin = new JwtStrategy(jwtOptions, async (payload, done) => {
   const existingUser = await User.findById(payload.sub);
   if (!existingUser) {
     return done(null, false, {
-      message: "Not valid entry found for provided ID"
+      message: 'Not valid entry found for provided ID'
     });
   }
   return done(null, existingUser);
@@ -59,7 +56,7 @@ const jwtLogin = new JwtStrategy(jwtOptions, async (payload, done) => {
 const googleOptions = {
   clientID: keys.googleClientID,
   clientSecret: keys.googleClientSecret,
-  callbackURL: "/auth/google/callback"
+  callbackURL: '/auth/google/callback'
 };
 
 // Create Google strategy

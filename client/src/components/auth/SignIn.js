@@ -1,44 +1,49 @@
-import React, { Component } from "react";
-import { reduxForm, Field } from "redux-form";
-import { compose } from "redux";
-import { connect } from "react-redux";
-import * as actions from "../../actions";
+import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import { reduxForm } from 'redux-form';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
+
+import { Button, Form, Segment, Icon, Divider } from 'semantic-ui-react';
+
+import FormGrid from '../form/FormGrid';
+import FormField from '../form/FormField';
+import fieldProps from '../form/FieldProps';
 
 class Signin extends Component {
-  // A.F so we forget about binding
   onSubmit = formProps => {
-    //console.log(formProps);
     this.props.signin(formProps, () => {
-      this.props.history.push("/feature");
+      this.props.history.push('/feature');
     });
   };
+
   render() {
     // handleSubmit provided by reduxForm
     const { handleSubmit } = this.props;
-
     return (
-      <form onSubmit={handleSubmit(this.onSubmit)}>
-        <fieldset>
-          <label>Email</label>
-          <Field
-            name="email"
-            type="text"
-            component="input"
-            autoComplete="none"
-          />
-        </fieldset>
-        <fieldset>
-          <label>Password</label>
-          <Field
-            name="password"
-            type="password"
-            component="input"
-            autoComplete="none"
-          />
-        </fieldset>
-        <div>{this.props.errorMessage}</div>
-        <button>Sign in!</button>
-      </form>
+      <div className="login-form">
+        <FormGrid>
+          <Form size="large" onSubmit={handleSubmit(this.onSubmit)}>
+            <Segment>
+              <FormField fieldProps={fieldProps.email} />
+              <FormField fieldProps={fieldProps.password} />
+
+              <Button color="teal" fluid size="large">
+                Sign in
+              </Button>
+
+              <Divider horizontal>Or</Divider>
+
+              <Button color="google plus" fluid size="large">
+                <Icon name="google plus" /> Sign in using Google
+              </Button>
+            </Segment>
+
+            <div>{this.props.errorMessage}</div>
+          </Form>
+        </FormGrid>
+      </div>
     );
   }
 }
@@ -53,5 +58,6 @@ export default compose(
     mapStateToProps,
     actions
   ),
-  reduxForm({ form: "signin" })
+  reduxForm({ form: 'signin' }),
+  withRouter
 )(Signin);

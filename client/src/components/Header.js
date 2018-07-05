@@ -1,30 +1,50 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { Menu, Image, Container } from 'semantic-ui-react';
+import logo from '../assets/logo.png';
 
 class Header extends Component {
-  renderLinks() {
-    if (this.props.authenticated) {
-      return (
-        <div>
-          <Link to="/auth/signout"> Sign Out</Link>
-          <Link to="/feature">Feature</Link>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <Link to="/auth/signup"> Signup </Link>
-          <Link to="/auth/signin"> Sign In</Link>
-        </div>
-      );
-    }
-  }
+  state = { activeItem: 'signin' };
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
   render() {
+    const { activeItem } = this.state;
+
     return (
       <div>
-        <Link to="/"> Redux Auth </Link>
-        {this.renderLinks()}
+        <Menu fixed="top" inverted>
+          <Container>
+            <Menu.Item as={Link} to="/" header>
+              <Image size="mini" src={logo} style={{ marginRight: '1.5em' }} />
+              Fitcode
+            </Menu.Item>
+
+            {this.props.authenticated && (
+              <Menu.Item
+                as={Link}
+                to="/auth/signout"
+                name="signout"
+                active={activeItem === 'signout'}
+                onClick={this.handleItemClick}
+              >
+                Sign Out
+              </Menu.Item>
+            )}
+            {this.props.authenticated && (
+              <Menu.Item
+                as={Link}
+                to="/feature"
+                name="feature"
+                active={activeItem === 'feature'}
+                onClick={this.handleItemClick}
+              >
+                Feature
+              </Menu.Item>
+            )}
+          </Container>
+        </Menu>
       </div>
     );
   }
