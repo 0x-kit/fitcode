@@ -8,7 +8,7 @@ import * as actions from '../../actions';
 import { Button, Form, Segment } from 'semantic-ui-react';
 
 import FormGrid from '../form/FormGrid';
-import FormField from '../form/FormField';
+
 import fieldProps from '../form/FieldProps';
 
 class Signup extends Component {
@@ -22,6 +22,7 @@ class Signup extends Component {
   render() {
     // handleSubmit provided by reduxForm
     const { handleSubmit } = this.props;
+    const FormField = {}
     return (
       <div className="login-form">
         <FormGrid>
