@@ -11,7 +11,7 @@ import {
   Segment,
   Icon,
   Divider,
-  Label,
+  Header,
   Input
 } from 'semantic-ui-react';
 
@@ -33,6 +33,7 @@ class Signin extends Component {
       type,
       meta: { touched, error }
     } = field;
+
     let validateError = false;
 
     if (touched && error) {
@@ -49,7 +50,13 @@ class Signin extends Component {
           type={type}
           {...field.input}
         />
-        {validateError ? <Label pointing>{error}</Label> : ''}
+        {validateError ? (
+          <Header as="label" color="red">
+            {error}
+          </Header>
+        ) : (
+          ''
+        )}
       </Form.Field>
     );
   }
@@ -61,7 +68,7 @@ class Signin extends Component {
       <div className="login-form">
         <FormGrid>
           <Form onSubmit={handleSubmit(this.onSubmit)}>
-            <Segment stacked>
+            <Segment>
               <Field
                 name="email"
                 type="text"
@@ -78,7 +85,7 @@ class Signin extends Component {
                 placeholder="Password"
                 component={this.renderField}
               />
-              <Divider />
+
               <Button type="submit" color="teal" fluid size="large">
                 Sign in
               </Button>
@@ -86,8 +93,10 @@ class Signin extends Component {
               <Button color="google plus" fluid size="large">
                 <Icon name="google plus" /> Sign in using Google
               </Button>
-              <div>{this.props.errorMessage}</div>
             </Segment>
+            <Header as="h5" color="red">
+              {this.props.errorMessage}
+            </Header>
           </Form>
         </FormGrid>
       </div>
@@ -116,7 +125,7 @@ function mapStateToProps(state) {
   return { errorMessage: state.auth.errorMessage };
 }
 
-// Apply multiple higher components to Signup in a attractive syntax
+// Apply multiple HOCs to Signup in a attractive syntax
 export default compose(
   connect(
     mapStateToProps,

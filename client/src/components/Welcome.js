@@ -15,7 +15,7 @@ const panes = [
     )
   },
   {
-    menuItem: 'Sign up',
+    menuItem: 'Register',
     render: () => (
       <Tab.Pane attached={false}>
         <SignUp />
