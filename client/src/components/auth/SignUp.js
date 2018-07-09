@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import * as actions from 'actions';
 
 import { Button, Form, Segment, Header, Input } from 'semantic-ui-react';
 

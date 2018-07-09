@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { Menu, Image, Container } from 'semantic-ui-react';
-import logo from '../assets/logo.png';
+import logo from 'assets/logo.png';
 
 class Header extends Component {
   state = { activeItem: 'signin' };

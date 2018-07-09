@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { Tab } from 'semantic-ui-react';
-import SignIn from './auth/SignIn';
-import SignUp from './auth/SignUp';
-import Grid from './form/FormGrid';
+import SignIn from 'components/auth/SignIn';
+import SignUp from 'components/auth/SignUp';
+import Grid from 'components/form/FormGrid';
 
 const panes = [
   {
