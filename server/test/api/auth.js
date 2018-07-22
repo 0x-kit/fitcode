@@ -1,46 +1,58 @@
-const assert = require("assert");
-const request = require("supertest");
-const expect = require("chai").expect;
-const app = require("../../app");
-const constants = require("../constants/user");
+const request = require('supertest');
+const expect = require('chai').expect;
+const app = require('../../app');
 
-User = require("../../models/user");
+User = require('../../models/user');
 
-describe.only("API test - Authentication", () => {
-  let user, user1, error;
+describe('API test - Authentication', () => {
+  let user, user1;
 
   beforeEach(async () => {
-    user = constants.existent();
-    user1 = constants.existent2();
+    user = new User({
+      name: 'user',
+      email: 'idoexist@test.com',
+      password: 'password'
+    });
+    user1 = new User({
+      name: 'user',
+      email: 'idoexist2@test.com',
+      password: 'password'
+    });
 
     await User.deleteMany({ _id: { $in: [user._id, user1._id] } });
     await user.save();
     await user1.save();
   });
 
-  it("GET request to /auth/google forwards user's request to Google", async () => {
+  it("GET request to /api/auth/google forwards user's request to Google", async () => {
     //redirect
     const response = await request(app)
-      .get("/auth/google")
+      .get('/api/auth/google')
       .expect(302);
   });
-  it("GET request to /auth/google/callback?code Google replies with user info");
 
-  it("POST request to /auth/signup register a new user", async () => {
-    const newUser = constants.new();
+  it('GET request to /api/auth/google/callback generates token and redirect', async () => {});
+
+  it('POST request to /api/auth/signup register a new user', async () => {
+    const newUser = new User({
+      name: 'user',
+      email: 'imnew2@test.com',
+      password: 'password'
+    });
     const response = await request(app)
-      .post("/auth/signup")
+      .post('/api/auth/signup')
       .send(newUser)
       .expect(200);
   });
-  it("POST request to /auth/signin logs an user in", async () => {
+
+  it('POST request to  /api/auth/signin logs an user in', async () => {
     const response = await request(app)
-      .post("/auth/signin")
+      .post('/api/auth/signin')
       .send({
-        email: "idoexist@test.com",
-        password: "password"
+        email: 'idoexist@test.com',
+        password: 'password'
       })
-      .expect(res => expect(res.body).to.have.property("token"))
+      .expect(res => expect(res.body).to.have.property('token'))
       .expect(200);
   });
 });

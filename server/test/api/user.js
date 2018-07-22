@@ -1,125 +1,159 @@
-const assert = require("assert");
-const request = require("supertest");
-const app = require("../../app");
-const constants = require("../constants/user");
+const request = require('supertest');
+const app = require('../../app');
 
-User = require("../../models/user");
+User = require('../../models/user');
 
-describe("API test - User", () => {
+describe.only('API test - User', () => {
   let user, user1, error;
 
   beforeEach(async () => {
-    user = constants.existent();
-    user1 = constants.existent2();
+    user = new User({
+      name: 'user',
+      email: 'idoexist@test.com',
+      password: 'password'
+    });
+    user1 = new User({
+      name: 'user',
+      email: 'idoexist2@test.com',
+      password: 'password'
+    });
 
     await User.deleteMany({ _id: { $in: [user._id, user1._id] } });
     await user.save();
     await user1.save();
   });
 
-  it("GET request to /user retrieves all users", async () => {
+  it('GET request to /user retrieves all users', async () => {
     const response = await request(app)
-      .get("/user")
+      .get('/api/user')
       .expect(200);
   });
 
-  it("GET request to /user/id finds an user", async () => {
+  it('GET request to /user/id finds an user', async () => {
     const response = await request(app)
-      .get(`/user/${user._id}`)
+      .get(`/api/user/${user._id}`)
       .expect(200);
   });
 
   it("GET request to /user/invalidId doesn't find an user", async () => {
-    const invalidUser = constants.invalidID();
+    const invalidID = new User({
+      _id: '5ae5a212700aa219f82e54e1',
+      name: 'tt',
+      email: 'testtest.com',
+      password: 'pass'
+    });
     const response = await request(app)
-      .get(`/user/${invalidUser._id}`)
+      .get(`/api/user/${invalidID._id}`)
       .expect(404);
   });
 
-  it("POST to /user creates an user", async () => {
-    const newUser = constants.new();
+  it('POST to /user creates an user', async () => {
+    const newUser = new User({
+      name: 'user',
+      email: 'imnew@test.com',
+      password: 'password'
+    });
     const response = await request(app)
-      .post("/user")
+      .post('/api/user')
       .send(newUser)
       .expect(201);
   });
 
   it("POST to /user with missing name doesn't create an user", async () => {
+    const missingName = new User({
+      email: 'test@test.com',
+      password: 'password'
+    });
     const response = await request(app)
-      .post("/user")
-      .send(constants.emptyName())
+      .post('/api/user')
+      .send(missingName)
       .expect(422);
   });
 
   it("POST to /user with missing email doesn't create an user", async () => {
+    const missingEmail = new User({ name: 'tester', password: 'password' });
     const response = await request(app)
-      .post("/user")
-      .send(constants.emptyEmail())
+      .post('/api/user')
+      .send(missingEmail)
       .expect(422);
   });
 
   it("POST to /user with missing password doesn't create an user", async () => {
+    const missingPassword = new User({
+      name: 'tester',
+      email: 'test@test.com'
+    });
     const response = await request(app)
-      .post("/user")
-      .send(constants.emptyPassword())
+      .post('/api/user')
+      .send(missingPassword)
       .expect(422);
   });
 
-  it("PUT to /user/id updates an existing user", async () => {
-    const updatedProps = constants.updatedProps();
+  it('PUT to /user/id updates an existing user', async () => {
+    const updatedProps = { name: 'userupdated' };
     const response = await request(app)
-      .put(`/user/${user._id}`)
+      .put(`/api/user/${user._id}`)
       .send(updatedProps)
       .expect(200);
   });
 
   it("PUT to /user/invalidId doesn't update an existing user", async () => {
-    const updatedProps = constants.updatedProps();
-    const invalidUser = constants.invalidID();
+    const updatedProps = { name: 'userupdated' };
+    const invalidID = new User({
+      _id: '5ae5a212700aa219f82e54e1',
+      name: 'tt',
+      email: 'testtest.com',
+      password: 'pass'
+    });
 
     const response = await request(app)
-      .put(`/user/${invalidUser._id}`)
+      .put(`/api/user/${invalidID._id}`)
       .send(updatedProps)
       .expect(404);
   });
 
   it("PUT to /user/id with invalid name doesn't update an existing user", async () => {
-    const updatedProps = constants.updatedInvalidName();
+    const updatedProps = { name: 'tt' };
 
     const response = await request(app)
-      .put(`/user/${user._id}`)
+      .put(`/api/user/${user._id}`)
       .send(updatedProps)
       .expect(422);
   });
 
   it("PUT to /user/id with invalid email doesn't update an existing user", async () => {
-    const updatedProps = constants.updatedInvalidEmail();
+    const updatedProps = { email: 'testtest.com' };
 
     const response = await request(app)
-      .put(`/user/${user._id}`)
+      .put(`/api/user/${user._id}`)
       .send(updatedProps)
       .expect(422);
   });
 
   it("PUT to /user/id with invalid password doesn't update an existing user", async () => {
-    const updatedProps = constants.updatedInvalidPassword();
+    const updatedProps = { password: 'pass' };
 
     const response = await request(app)
-      .put(`/user/${user._id}`)
+      .put(`/api/user/${user._id}`)
       .send(updatedProps)
       .expect(422);
   });
 
-  it("DELETE to /user/id deletes an existing user", async () => {
+  it('DELETE to /user/id deletes an existing user', async () => {
     const response = await request(app)
-      .delete(`/user/${user._id}`)
+      .delete(`/api/user/${user._id}`)
       .expect(200);
   });
 
   it("DELETE to /user/invalidId doesn't delete an existing user", async () => {
-    const invalidUser = constants.invalidID();
+    const invalidID = new User({
+      _id: '5ae5a212700aa219f82e54e1',
+      name: 'tt',
+      email: 'testtest.com',
+      password: 'pass'
+    });
     const response = await request(app)
-      .delete(`/user/${invalidUser._id}`)
+      .delete(`/api/user/${invalidID._id}`)
       .expect(404);
   });
 });

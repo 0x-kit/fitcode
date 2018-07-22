@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { Menu, Image, Container } from 'semantic-ui-react';
-import logo from 'assets/logo.png';
+import { Menu, Container, Icon } from 'semantic-ui-react';
 
 class Header extends Component {
   state = { activeItem: 'signin' };
@@ -11,17 +10,25 @@ class Header extends Component {
 
   render() {
     const { activeItem } = this.state;
-
+    const { authenticated } = this.props;
     return (
       <div>
         <Menu fixed="top" inverted>
           <Container>
-            <Menu.Item as={Link} to="/" header>
-              <Image size="mini" src={logo} style={{ marginRight: '1.5em' }} />
-              Fitcode
+            <Menu.Item as={Link} to={!authenticated ? '/' : '/feature'} header>
+              {/* <Image size="mini" src={logo} style={{ marginRight: '1.5em' }} />
+              Fitcode */}
+
+              <h3>
+                <Icon
+                  color="green"
+                  name="code"
+                  style={{ marginRight: '1.3em' }}
+                />Fitcode
+              </h3>
             </Menu.Item>
 
-            {this.props.authenticated && (
+            {authenticated && (
               <Menu.Item
                 as={Link}
                 to="/auth/signout"
@@ -32,7 +39,7 @@ class Header extends Component {
                 Sign Out
               </Menu.Item>
             )}
-            {this.props.authenticated && (
+            {authenticated && (
               <Menu.Item
                 as={Link}
                 to="/feature"

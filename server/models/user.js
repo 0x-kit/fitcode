@@ -19,10 +19,10 @@ const UserSchema = new Schema({
     match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
     required: [true, "Email is required."]
   },
-  hash_password: {
+  password: {
     type: String,
     validate: {
-      validator: hash_password => hash_password.length > 5,
+      validator: password => password.length > 5,
       message: "Password must be longer than 5 characters."
     },
     required: [true, "Password is required."]
@@ -32,7 +32,7 @@ const UserSchema = new Schema({
 
 /** Methods */
 UserSchema.methods.comparePassword = function(password) {
-  return bcrypt.compareSync(password, this.hash_password);
+  return bcrypt.compareSync(password, this.password);
 };
 
 UserSchema.methods.generateJwt = function() {
@@ -45,10 +45,10 @@ UserSchema.methods.generateJwt = function() {
 /** Hooks */
 UserSchema.pre("save", function(next) {
   let user = this;
-  if (!user.isModified("hash_password")) {
+  if (!user.isModified("password")) {
     return next();
   }
-  user.hash_password = bcrypt.hashSync(user.hash_password, 10);
+  user.password = bcrypt.hashSync(user.password, 10);
   next();
 });
 

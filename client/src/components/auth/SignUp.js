@@ -5,13 +5,18 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from 'actions';
 
-import { Button, Form, Segment, Header, Input } from 'semantic-ui-react';
+import {
+  Button,
+  Form,
+  Segment,
+  Header,
+  Input
+} from 'semantic-ui-react';
 
 import FormGrid from '../form/FormGrid';
 
 class Signup extends Component {
   onSubmit = values => {
-    console.log(values);
     this.props.signup(values, () => {
       this.props.history.push('/feature');
     });
@@ -58,45 +63,43 @@ class Signup extends Component {
     // handleSubmit provided by reduxForm
     const { handleSubmit } = this.props;
     return (
-      <div className="login-form">
-        <FormGrid>
-          <Form onSubmit={handleSubmit(this.onSubmit)}>
-            <Segment>
-              <Field
-                name="name"
-                type="text"
-                icon="id badge"
-                iconPosition="left"
-                placeholder="Name"
-                component={this.renderField}
-              />
-              <Field
-                name="email"
-                type="text"
-                icon="user"
-                iconPosition="left"
-                placeholder="E-mail address"
-                component={this.renderField}
-              />
-              <Field
-                name="password"
-                type="password"
-                icon="lock"
-                iconPosition="left"
-                placeholder="Password"
-                component={this.renderField}
-              />
+      <FormGrid>
+        <Form onSubmit={handleSubmit(this.onSubmit)}>
+          <Segment>
+            <Field
+              name="name"
+              type="text"
+              icon="id badge"
+              iconPosition="left"
+              placeholder="Name"
+              component={this.renderField}
+            />
+            <Field
+              name="email"
+              type="text"
+              icon="user"
+              iconPosition="left"
+              placeholder="E-mail address"
+              component={this.renderField}
+            />
+            <Field
+              name="password"
+              type="password"
+              icon="lock"
+              iconPosition="left"
+              placeholder="Password"
+              component={this.renderField}
+            />
 
-              <Button color="teal" fluid size="large">
-                Register
-              </Button>
-            </Segment>
-            <Header as="h5" color="red">
-              {this.props.errorMessage}
-            </Header>
-          </Form>
-        </FormGrid>
-      </div>
+            <Button color="teal" fluid size="large">
+              Register
+            </Button>
+          </Segment>
+          <Header as="h5" color="red">
+            {this.props.errorMessage}
+          </Header>
+        </Form>
+      </FormGrid>
     );
   }
 }

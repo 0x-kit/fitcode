@@ -2,12 +2,18 @@ import React from 'react';
 import { Grid } from 'semantic-ui-react';
 
 const FormGrid = ({ children }) => {
+  const style = { height: '100%' };
   return (
-    <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
-      <Grid.Column  style={{ maxWidth: 500 }}>
-        {children}
-      </Grid.Column>
-    </Grid>
+      <Grid
+        className="welcome"
+        textAlign="center"
+        style={style}
+        verticalAlign="middle"
+      >
+        <Grid.Column style={{ maxWidth: 500 }}>
+          {children}
+        </Grid.Column>
+      </Grid>
   );
 };
 

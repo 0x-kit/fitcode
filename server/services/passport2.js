@@ -9,6 +9,17 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 // Setup options for JWT Strategy
 const localOptions = { usernameField: 'email', passReqToCallback: true };
+// Setup options for JWT Strategy
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+  secretOrKey: keys.secretToken
+};
+// Setup options for Google Strategy
+const googleOptions = {
+  clientID: keys.googleClientID,
+  clientSecret: keys.googleClientSecret,
+  callbackURL: '/api/auth/google/callback'
+};
 
 // Create local strategy
 const localLogin = new LocalStrategy(
@@ -32,12 +43,6 @@ const localLogin = new LocalStrategy(
   }
 );
 
-// Setup options for JWT Strategy
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-  secretOrKey: keys.secretToken
-};
-
 // Create JWT strategy
 const jwtLogin = new JwtStrategy(jwtOptions, async (payload, done) => {
   // See if the user ID in the payload exists in our database
@@ -52,38 +57,31 @@ const jwtLogin = new JwtStrategy(jwtOptions, async (payload, done) => {
   return done(null, existingUser);
 });
 
-// Setup options for Google Strategy
-const googleOptions = {
-  clientID: keys.googleClientID,
-  clientSecret: keys.googleClientSecret,
-  callbackURL: '/auth/google/callback'
-};
-
 // Create Google strategy
 const googleLogin = new GoogleStrategy(
   googleOptions,
-  async (accessToken, refreshToken, profile, done) => {
-    try {
-      const existingUser = await User.findOne({ googleID: profile.id });
-
-      if (existingUser) {
-        // We already have a record with the given profile ID
-        return done(null, existingUser);
-      }
-      // We don't have a record with this ID, make a new record
-      const newUser = await new User({
-        name: profile.displayName,
-        email: profile.emails[0].value,
-        hash_password: profile.id,
-        googleID: profile.id
-      }).save();
-
-      return done(null, newUser);
-    } catch (err) {
-      done(err);
-    }
-  }
+  (accessToken, refreshToken, profile, done) => findUserOrCreate(profile, done)
 );
+
+// Helper method for GS
+const findUserOrCreate = async (profile, done) => {
+  try {
+    const user = await User.findOne({ email: profile.emails[0].value });
+
+    if (!user) {
+      const newUser = new User();
+
+      newUser.name = `${profile.name.givenName} ${profile.name.familyName}`;
+      newUser.email = profile.emails[0].value;
+      newUser.save();
+      return done(null, newUser);
+    } else {
+      return done(null, user);
+    }
+  } catch (err) {
+    done(err);
+  }
+};
 
 // Tell passport to use this strategy
 passport.use(jwtLogin);

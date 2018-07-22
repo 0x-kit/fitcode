@@ -1,9 +1,9 @@
 import React from 'react';
-
-import { Tab } from 'semantic-ui-react';
 import SignIn from 'components/auth/SignIn';
 import SignUp from 'components/auth/SignUp';
 import Grid from 'components/form/FormGrid';
+
+import { Tab } from 'semantic-ui-react';
 
 const panes = [
   {
@@ -25,12 +25,14 @@ const panes = [
 ];
 
 const TabExampleSecondaryPointing = () => (
-  <Grid>
-    <Tab
-      menu={{ secondary: true, pointing: true, size: 'massive' }}
-      panes={panes}
-    />
-  </Grid>
+  <div className="login-form" style={{ marginTop: 120 }}>
+    <Grid>
+      <Tab
+        menu={{ secondary: true, pointing: true, size: 'massive' }}
+        panes={panes}
+      />
+    </Grid>
+  </div>
 );
 
 export default TabExampleSecondaryPointing;

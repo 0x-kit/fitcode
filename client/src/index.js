@@ -11,6 +11,7 @@ import App from 'components/App';
 import Welcome from 'components/Welcome';
 import Feature from 'components/Feature';
 import Signout from 'components/auth/SignOut';
+import SocialRedirect from 'components/auth/SocialRedirect';
 
 const store = createStore(
   reducers,
@@ -26,6 +27,7 @@ ReactDOM.render(
       <App>
         <Route path="/" exact component={Welcome} />
         <Route path="/auth/signout" component={Signout} />
+        <Route path="/social" component={SocialRedirect} />
         <Route path="/feature" component={Feature} />
       </App>
     </BrowserRouter>
