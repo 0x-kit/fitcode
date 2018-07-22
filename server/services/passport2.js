@@ -70,9 +70,9 @@ const findUserOrCreate = async (profile, done) => {
 
     if (!user) {
       const newUser = new User();
-
       newUser.name = `${profile.name.givenName} ${profile.name.familyName}`;
       newUser.email = profile.emails[0].value;
+      newUser.password = profile.id;
       newUser.save();
       return done(null, newUser);
     } else {
