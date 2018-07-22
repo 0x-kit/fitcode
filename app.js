@@ -29,7 +29,7 @@ app.use('/api/auth', authRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets like  -main.js file- or -main.css file-
-  app.use(express.static('../client/build'));
+  app.use(express.static('client/build'));
 
   // Expres will serve up the -index.html file- if it doesn't recognize the route
   const path = require('path');
