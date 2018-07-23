@@ -1,59 +1,69 @@
-const Diary = require("../models/diary");
+const Diary = require('../models/diary');
 
-exports.getDiaries = async (req, res, next) => {
+exports.getDiaries = async (req, res) => {
   try {
     const docs = await Diary.find({})
-      .select("_id date name part products")
-      .populate("products");
+      .select(' products _id user date name part')
+      .populate({ path: 'user', select: 'name' });
+
     const response = {
       count: docs.length,
       Diaries: docs.map(doc => {
         return {
-          id: doc._id,
-          date: doc.date,
-          name: doc.name,
-          part: doc.part,
-          products: doc.products
+          id: newDiary._id,
+          user: newDiary.user,
+          date: newDiary.date,
+          part: newDiary.part,
+          products: newDiary.products
         };
       })
     };
-    res.status(200).json({ response });
+
+    res.status(200).json({ diaries: response });
   } catch (err) {
     res.status(500).json({ error: err });
   }
 };
 
-// exports.readDiary = async (req, res, next) => {
-//   try {
-//     const diaryId = req.params.diaryId;
-//     const diary = await Diary.findById(diaryId).select(
-//       "_id name brand calories carbs proteins fats"
-//     );
+exports.readDiary = async (req, res) => {
+  try {
+    const diaryId = req.params.diaryId;
+    const diary = await Diary.findById(diaryId)
+      .select(' products _id user date name part')
+      .populate({ path: 'user', select: 'name' });
 
-//     if (!diary) {
-//       return res
-//         .status(404)
-//         .json({ message: "Not valid entry found for provided ID" });
-//     } else {
-//       return res.status(200).json({
-//         diary: diary
-//       });
-//     }
-//   } catch (err) {
-//     res.status(500).json({ error: err });
-//   }
-// };
+    if (!diary) {
+      return res
+        .status(404)
+        .json({ message: 'Not valid entry found for provided ID' });
+    } else {
+      const response = {
+        id: diary._id,
+        user: diary.user,
+        date: diary.date,
+        part: diary.part,
+        products: diary.products
+      };
 
-exports.createDiary = async (req, res, next) => {
+      return res.status(200).json({
+        diary: response
+      });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
+exports.createDiary = async (req, res) => {
   try {
     const newDiary = new Diary(req.body);
-
     await newDiary.save();
 
     res.status(201).json({
-      message: "Created diary sucessfully",
+      message: 'Created diary sucessfully',
       diary: {
         id: newDiary._id,
+        user: newDiary.user,
         date: newDiary.date,
         part: newDiary.part,
         products: newDiary.products
@@ -64,45 +74,45 @@ exports.createDiary = async (req, res, next) => {
   }
 };
 
-// exports.deleteDiary = async (req, res, next) => {
-//   try {
-//     const diaryId = req.params.diaryId;
-//     const diary = await Diary.findByIdAndRemove(diaryId);
+exports.deleteDiary = async (req, res) => {
+  try {
+    const diaryId = req.params.diaryId;
+    const diary = await Diary.findByIdAndRemove(diaryId);
 
-//     if (!diary) {
-//       return res
-//         .status(404)
-//         .json({ message: "Not valid entry found for provided ID" });
-//     } else {
-//       return res.status(200).json({
-//         message: "Diary deleted"
-//       });
-//     }
-//   } catch (err) {
-//     res.status(500).json({ error: err });
-//   }
-// };
+    if (!diary) {
+      return res
+        .status(404)
+        .json({ message: 'Not valid entry found for provided ID' });
+    } else {
+      return res.status(200).json({
+        message: 'Diary deleted'
+      });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
 
-// exports.updateDiary = async (req, res, next) => {
-//   try {
-//     let diaryId = req.params.diaryId;
-//     let newProps = req.body;
+exports.updateDiary = async (req, res) => {
+  try {
+    let diaryId = req.params.diaryId;
+    let newProps = req.body;
 
-//     const diaryUpdated = await Diary.findByIdAndUpdate(diaryId, newProps, {
-//       new: true,
-//       runValidators: true
-//     });
+    const diaryUpdated = await Diary.findByIdAndUpdate(diaryId, newProps, {
+      new: true,
+      runValidators: true
+    });
 
-//     if (!diaryUpdated) {
-//       return res
-//         .status(404)
-//         .json({ message: "Not valid entry found for provided ID" });
-//     } else {
-//       return res
-//         .status(200)
-//         .json({ message: "Diary updated!", diary: diaryUpdated });
-//     }
-//   } catch (err) {
-//     res.status(422).json({ error: err });
-//   }
-// };
+    if (!diaryUpdated) {
+      return res
+        .status(404)
+        .json({ message: 'Not valid entry found for provided ID' });
+    } else {
+      return res
+        .status(200)
+        .json({ message: 'Diary updated!', diary: diaryUpdated });
+    }
+  } catch (err) {
+    res.status(422).json({ error: err });
+  }
+};

@@ -23,19 +23,19 @@ describe.only('API test - User', () => {
     await user1.save();
   });
 
-  it('GET request to /user retrieves all users', async () => {
+  it('should retrieve all users on GET request to /user ', async () => {
     const response = await request(app)
       .get('/api/user')
       .expect(200);
   });
 
-  it('GET request to /user/id finds an user', async () => {
+  it('should find an user on GET request to /user/id', async () => {
     const response = await request(app)
       .get(`/api/user/${user._id}`)
       .expect(200);
   });
 
-  it("GET request to /user/invalidId doesn't find an user", async () => {
+  it("shouldn't find an user on GET request to /user/invalidId ", async () => {
     const invalidID = new User({
       _id: '5ae5a212700aa219f82e54e1',
       name: 'tt',
@@ -47,7 +47,7 @@ describe.only('API test - User', () => {
       .expect(404);
   });
 
-  it('POST to /user creates an user', async () => {
+  it('should create an user on POST request to /user', async () => {
     const newUser = new User({
       name: 'user',
       email: 'imnew@test.com',
@@ -59,7 +59,7 @@ describe.only('API test - User', () => {
       .expect(201);
   });
 
-  it("POST to /user with missing name doesn't create an user", async () => {
+  it("shouldn't create an user on POST request to /user (missing name)", async () => {
     const missingName = new User({
       email: 'test@test.com',
       password: 'password'
@@ -70,7 +70,7 @@ describe.only('API test - User', () => {
       .expect(422);
   });
 
-  it("POST to /user with missing email doesn't create an user", async () => {
+  it("shouldn't create an user on POST request to /user (missing email)", async () => {
     const missingEmail = new User({ name: 'tester', password: 'password' });
     const response = await request(app)
       .post('/api/user')
@@ -78,7 +78,7 @@ describe.only('API test - User', () => {
       .expect(422);
   });
 
-  it("POST to /user with missing password doesn't create an user", async () => {
+  it("shouldn't create an user on POST request to /user (missing password)", async () => {
     const missingPassword = new User({
       name: 'tester',
       email: 'test@test.com'
@@ -89,7 +89,7 @@ describe.only('API test - User', () => {
       .expect(422);
   });
 
-  it('PUT to /user/id updates an existing user', async () => {
+  it('should update an existing user on PUT request to /user/id', async () => {
     const updatedProps = { name: 'userupdated' };
     const response = await request(app)
       .put(`/api/user/${user._id}`)
@@ -97,7 +97,7 @@ describe.only('API test - User', () => {
       .expect(200);
   });
 
-  it("PUT to /user/invalidId doesn't update an existing user", async () => {
+  it("shouldn't update an existing user on PUT request to /user/invalidId", async () => {
     const updatedProps = { name: 'userupdated' };
     const invalidID = new User({
       _id: '5ae5a212700aa219f82e54e1',
@@ -112,7 +112,7 @@ describe.only('API test - User', () => {
       .expect(404);
   });
 
-  it("PUT to /user/id with invalid name doesn't update an existing user", async () => {
+  it("shouldn't update an existing user on PUT request to /user/id (invalid name)", async () => {
     const updatedProps = { name: 'tt' };
 
     const response = await request(app)
@@ -121,7 +121,7 @@ describe.only('API test - User', () => {
       .expect(422);
   });
 
-  it("PUT to /user/id with invalid email doesn't update an existing user", async () => {
+  it("shouldn't update an existing user on PUT request to /user/id (invalid email)", async () => {
     const updatedProps = { email: 'testtest.com' };
 
     const response = await request(app)
@@ -130,7 +130,7 @@ describe.only('API test - User', () => {
       .expect(422);
   });
 
-  it("PUT to /user/id with invalid password doesn't update an existing user", async () => {
+  it("shouldn't update an existing user on PUT request to /user/id (invalid password)", async () => {
     const updatedProps = { password: 'pass' };
 
     const response = await request(app)
@@ -139,13 +139,13 @@ describe.only('API test - User', () => {
       .expect(422);
   });
 
-  it('DELETE to /user/id deletes an existing user', async () => {
+  it('should delete an existing user on DELETE request to /user/id', async () => {
     const response = await request(app)
       .delete(`/api/user/${user._id}`)
       .expect(200);
   });
 
-  it("DELETE to /user/invalidId doesn't delete an existing user", async () => {
+  it("shouldn't delete an existing user on DELETE request to /user/invalidId", async () => {
     const invalidID = new User({
       _id: '5ae5a212700aa219f82e54e1',
       name: 'tt',
