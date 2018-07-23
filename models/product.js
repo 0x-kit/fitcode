@@ -2,31 +2,42 @@
  * Product Model - Represents a single record of the product collection.
  */
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const ProductSchema = new Schema({
-    name: {
-        type: String,
-        validate: {
-            validator: (name) => name.length > 2,
-            message: 'Name must be longer than 2 characters.'
-        },
-        required: [true, 'Name is required.']
+  name: {
+    type: String,
+    validate: {
+      validator: name => name.length > 2,
+      message: "Product name must be longer than 2 characters."
     },
-    brand: {
-        type: String,
-        validate: {
-            validator: (brand) => brand.length > 2,
-            message: 'Brand must be longer than 2 characters.'
-        },
-    },
-    nutritional_info: {
-        type: Schema.Types.ObjectId,
-        ref: 'nutritional_info',
-        required: true
+    required: [true, "Product name is required."]
+  },
+  brand: {
+    type: String,
+    validate: {
+      validator: brand => brand.length > 2,
+      message: "Brand name must be longer than 2 characters."
     }
+  },
+  calories: {
+    type: Number,
+    required: [true, "Calories are required."]
+  },
+  carbs: {
+    type: Number,
+    required: [true, "Carbs are required."]
+  },
+  proteins: {
+    type: Number,
+    required: [true, "Proteins are required."]
+  },
+  fats: {
+    type: Number,
+    required: [true, "Fats are required."]
+  }
 });
 
-const Product = mongoose.model('product', ProductSchema);
+const Product = mongoose.model("product", ProductSchema);
 module.exports = Product;
