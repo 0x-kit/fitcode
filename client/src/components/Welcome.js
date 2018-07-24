@@ -1,38 +1,49 @@
-import React from 'react';
-import SignIn from 'components/auth/SignIn';
-import SignUp from 'components/auth/SignUp';
-import Grid from 'components/form/FormGrid';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import { Tab } from 'semantic-ui-react';
+import SignIn from "components/auth/SignIn";
+import SignUp from "components/auth/SignUp";
+import Grid from "components/form/FormGrid";
 
-const panes = [
-  {
-    menuItem: 'Sign in',
-    render: () => (
-      <Tab.Pane attached={false}>
-        <SignIn />
-      </Tab.Pane>
-    )
-  },
-  {
-    menuItem: 'Register',
-    render: () => (
-      <Tab.Pane attached={false}>
-        <SignUp />
-      </Tab.Pane>
-    )
+import { Tab } from "semantic-ui-react";
+
+class Welcome extends Component {
+  render() {
+    const panes = [
+      {
+        menuItem: "Sign in",
+        render: () => (
+          <Tab.Pane attached={false}>
+            <SignIn />
+          </Tab.Pane>
+        )
+      },
+      {
+        menuItem: "Register",
+        render: () => (
+          <Tab.Pane attached={false}>
+            <SignUp />
+          </Tab.Pane>
+        )
+      }
+    ];
+    const { authenticated } = this.props;
+    return (
+      <div className="login-form" style={{ marginTop: 120 }}>
+        {!authenticated && this.props.history.push("/home")}
+        <Grid>
+          <Tab
+            menu={{ secondary: true, pointing: true, size: "massive" }}
+            panes={panes}
+          />
+        </Grid>
+      </div>
+    );
   }
-];
+}
 
-const TabExampleSecondaryPointing = () => (
-  <div className="login-form" style={{ marginTop: 120 }}>
-    <Grid>
-      <Tab
-        menu={{ secondary: true, pointing: true, size: 'massive' }}
-        panes={panes}
-      />
-    </Grid>
-  </div>
-);
+function mapStateToProps(state) {
+  return { auth: state.auth.authenticated };
+}
 
-export default TabExampleSecondaryPointing;
+export default connect(mapStateToProps)(Welcome);

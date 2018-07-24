@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-import { Menu, Container, Icon } from 'semantic-ui-react';
+import { Menu, Container, Icon } from "semantic-ui-react";
 
 class Header extends Component {
-  state = { activeItem: 'signin' };
+  state = { activeItem: "signin" };
+
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   render() {
@@ -15,15 +16,12 @@ class Header extends Component {
       <div>
         <Menu fixed="top" inverted>
           <Container>
-            <Menu.Item as={Link} to={!authenticated ? '/' : '/feature'} header>
-              {/* <Image size="mini" src={logo} style={{ marginRight: '1.5em' }} />
-              Fitcode */}
-
+            <Menu.Item as={Link} to={!authenticated ? "/" : "/home"} header>
               <h3>
                 <Icon
                   color="green"
                   name="code"
-                  style={{ marginRight: '1.3em' }}
+                  style={{ marginRight: "1.3em" }}
                 />Fitcode
               </h3>
             </Menu.Item>
@@ -33,21 +31,10 @@ class Header extends Component {
                 as={Link}
                 to="/auth/signout"
                 name="signout"
-                active={activeItem === 'signout'}
+                active={activeItem === "signout"}
                 onClick={this.handleItemClick}
               >
                 Sign Out
-              </Menu.Item>
-            )}
-            {authenticated && (
-              <Menu.Item
-                as={Link}
-                to="/feature"
-                name="feature"
-                active={activeItem === 'feature'}
-                onClick={this.handleItemClick}
-              >
-                Feature
               </Menu.Item>
             )}
           </Container>
