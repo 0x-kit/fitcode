@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import queryString from 'query-string';
 import * as actions from 'actions';
 
 class SocialAuthRedirect extends Component {
   componentDidMount() {
-    const searchParams = new URLSearchParams(window.location.search);
-    const token = searchParams.get('token');
+    const params = queryString.parse(this.props.location.search);
 
-    this.props.socialSignin(token, () => {
-      this.props.history.push('/feature');
+    this.props.socialSignin(params.token, () => {
+      this.props.history.push('/home');
     });
   }
 
