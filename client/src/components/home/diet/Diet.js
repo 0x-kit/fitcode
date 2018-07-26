@@ -1,7 +1,7 @@
 import React from 'react';
 import { Segment, Header, Label } from 'semantic-ui-react';
 
-const HomeSegment = ({
+const DietSegment = ({
   textAlign = 'center',
   content,
   subheader,
@@ -23,4 +23,5 @@ const HomeSegment = ({
     />
   </Segment>
 );
-export default HomeSegment;
+
+export default DietSegment;

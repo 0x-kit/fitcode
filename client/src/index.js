@@ -9,7 +9,7 @@ import reducers from "reducers";
 
 import App from "components/App";
 import Welcome from "components/Welcome";
-import Home from "components/Home";
+import Main from "components/Main";
 import Signout from "components/auth/SignOut";
 import SocialRedirect from "components/auth/SocialRedirect";
 
@@ -28,7 +28,7 @@ ReactDOM.render(
         <Route path="/" exact component={Welcome} />
         <Route path="/auth/signout" component={Signout} />
         <Route path="/social" component={SocialRedirect} />
-        <Route path="/home" component={Home} />
+        <Route path="/home" component={Main} />
       </App>
     </BrowserRouter>
   </Provider>,

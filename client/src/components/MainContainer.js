@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TabBar from 'components/menu/TabBar';
-class TabBarContainer extends Component {
+class MainContainer extends Component {
   constructor(props) {
     super(props);
     const firstTab = props.tabs[0];
@@ -14,7 +14,7 @@ class TabBarContainer extends Component {
   };
 
   render() {
-    const { tabs, ...otherProps } = this.props;
+    const { tabs, menuPosition, ...otherProps } = this.props;
     const { currentTab } = this.state;
 
     return (
@@ -28,4 +28,4 @@ class TabBarContainer extends Component {
   }
 }
 
-export default TabBarContainer;
+export default MainContainer;

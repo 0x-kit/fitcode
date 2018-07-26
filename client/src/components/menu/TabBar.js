@@ -5,13 +5,14 @@ import ToggleDisplay from 'react-toggle-display';
 import Tab from 'components/menu/Tab';
 
 const TabBar = props => {
-  const { tabs, currentTab, onTabClick, ...otherProps } = props;
+  const { tabs, currentTab, onTabClick, menuPosition, ...otherProps } = props;
 
   const tabItems = tabs.map(tabInfo => {
     const { name, label } = tabInfo;
 
     return (
       <Tab
+        {...otherProps}
         key={name}
         name={name}
         label={label}
@@ -26,14 +27,14 @@ const TabBar = props => {
 
     return (
       <ToggleDisplay show={name === currentTab} key={name}>
-        <TabComponent />
+        <TabComponent/>
       </ToggleDisplay>
     );
   });
 
   return (
     <div>
-      <Menu tabular attached="top" {...otherProps}>
+      <Menu attached="top" {...otherProps}>
         {tabItems}
       </Menu>
       {tabPanels}
