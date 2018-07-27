@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Tab } from 'semantic-ui-react';
 
 import SignIn from 'components/auth/SignIn';
 import SignUp from 'components/auth/SignUp';
 import Grid from 'components/form/FormGrid';
 
-import { Tab } from 'semantic-ui-react';
+
 
 class Welcome extends Component {
   shouldNavigateAway() {
@@ -18,8 +19,8 @@ class Welcome extends Component {
     this.shouldNavigateAway();
   }
 
-  render() {
-    const panes = [
+  createPanes = () => {
+    return [
       {
         menuItem: 'Sign in',
         render: () => (
@@ -37,12 +38,15 @@ class Welcome extends Component {
         )
       }
     ];
+  };
+
+  render() {
     return (
       <div className="login-form" style={{ marginTop: 120 }}>
         <Grid>
           <Tab
             menu={{ secondary: true, pointing: true, size: 'massive' }}
-            panes={panes}
+            panes={this.createPanes}
           />
         </Grid>
       </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import MainNavbar from 'components/MainNavbar';
+import MenuContainer from 'components/menu/MenuContainer';
 
 import '../index.css';
 import 'semantic-ui-css/semantic.min.css';
@@ -7,7 +7,7 @@ import 'semantic-ui-css/semantic.min.css';
 export default ({ children }) => {
   return (
     <div>
-      <MainNavbar />
+      <MenuContainer />
       {children}
     </div>
   );
