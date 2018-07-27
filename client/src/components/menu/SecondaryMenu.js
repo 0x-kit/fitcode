@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Responsive, Container, Segment } from 'semantic-ui-react';
+import { Menu, Responsive, Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 const MenuSecondary = props => {

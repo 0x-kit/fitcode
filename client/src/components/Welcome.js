@@ -6,8 +6,6 @@ import SignIn from 'components/auth/SignIn';
 import SignUp from 'components/auth/SignUp';
 import Grid from 'components/form/FormGrid';
 
-
-
 class Welcome extends Component {
   shouldNavigateAway() {
     if (this.props.auth) {
@@ -46,7 +44,7 @@ class Welcome extends Component {
         <Grid>
           <Tab
             menu={{ secondary: true, pointing: true, size: 'massive' }}
-            panes={this.createPanes}
+            panes={this.createPanes()}
           />
         </Grid>
       </div>
