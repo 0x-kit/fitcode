@@ -17,7 +17,6 @@ const DiarySchema = new Schema({
     required: true
   },
   products: [
-    //Map?
     {
       product: {
         type: Schema.Types.ObjectId,

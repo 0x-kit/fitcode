@@ -16,7 +16,7 @@ const passportConfig = require('./services/passport2');
 
 mongoose.connect(keys.mongoURI);
 
-
+//require('./seed');
 /** Middlewares */
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));

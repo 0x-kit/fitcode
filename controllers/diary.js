@@ -2,25 +2,18 @@ const Diary = require('../models/diary');
 
 exports.getDiaries = async (req, res) => {
   try {
-    const docs = await Diary.find({})
-      .select(' products _id user date name part')
-      .populate({ path: 'user', select: 'name' });
+    const userId = req.params.userId;
+    const docs = await Diary.find({ user: userId })
+      .select(' products user date part')
+      .populate('products.product');
 
-    const response = {
-      count: docs.length,
-      Diaries: docs.map(doc => {
-        return {
-          id: newDiary._id,
-          user: newDiary.user,
-          date: newDiary.date,
-          part: newDiary.part,
-          products: newDiary.products
-        };
-      })
-    };
-
-    res.status(200).json({ diaries: response });
+    if (!docs) {
+      return res.status(404).json({ message: 'Not entries found' });
+    } else {
+      return res.status(200).json(docs);
+    }
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err });
   }
 };

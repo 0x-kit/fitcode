@@ -4,7 +4,6 @@ const passport = require('passport');
 exports.requireAuth = passport.authenticate('jwt', { session: false });
 
 exports.signin = function(req, res) {
-  console.log('sign in controller');
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.log(err);
@@ -15,7 +14,7 @@ exports.signin = function(req, res) {
       return res.status(422).json({ message: req.authError });
     } else {
       const token = user.generateJwt();
-      res.send({ token: token });
+      res.send({ token: token, user: user.id });
     }
   })(req, res);
 };
@@ -62,8 +61,9 @@ const generateTokenAndRedirect = (req, res, next, err, user, info) => {
     return next(err);
   }
   if (user) {
+    const userId = user.id;
     const token = user.generateJwt();
-    return res.redirect(`/social?token=${token}`);
+    return res.redirect(`/?token=${token}&user=${userId}`);
   } else {
     return res.redirect('${req.query.state}');
   }
