@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const DiaryController = require('../controllers/diary');
+const authController = require('../controllers/auth2');
 
 router
-  .get('/:userId', DiaryController.getDiaries)
+  .get('/:userId', authController.requireAuth, DiaryController.getDiaries)
 
   .get('/:diaryId', DiaryController.readDiary)
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import SecondaryMenu from 'app/menu/SecondaryMenu';
-import MainMenu from 'app/menu/MainMenu';
+import SecondaryMenu from 'app/utils/menu/SecondaryMenu';
+import MainMenu from 'app/utils/menu/MainMenu';
 
 class MainNavbar extends Component {
   state = { activeItem: 'signin', activeItemSecondary: 'home' };

@@ -7,26 +7,24 @@ import SignUp from 'app/auth/SignUp';
 import Grid from 'app/utils/FormGrid';
 import AuthContainer from './auth/AuthContainer';
 
-const createPanes = () => {
-  return [
-    {
-      menuItem: 'Sign in',
-      render: () => (
-        <Tab.Pane attached={false}>
-          <SignIn />
-        </Tab.Pane>
-      )
-    },
-    {
-      menuItem: 'Register',
-      render: () => (
-        <Tab.Pane attached={false}>
-          <SignUp />
-        </Tab.Pane>
-      )
-    }
-  ];
-};
+const tabs = [
+  {
+    menuItem: 'Sign in',
+    render: () => (
+      <Tab.Pane attached={false}>
+        <SignIn />
+      </Tab.Pane>
+    )
+  },
+  {
+    menuItem: 'Register',
+    render: () => (
+      <Tab.Pane attached={false}>
+        <SignUp />
+      </Tab.Pane>
+    )
+  }
+];
 
 class Welcome extends Component {
   componentDidMount() {
@@ -52,7 +50,7 @@ class Welcome extends Component {
         <Grid>
           <Tab
             menu={{ secondary: true, pointing: true, size: 'massive' }}
-            panes={createPanes()}
+            panes={tabs}
           />
         </Grid>
       </div>
