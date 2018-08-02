@@ -10,7 +10,7 @@ import Home from 'app/home/Home.jsx';
 const mapStateToProps = state => {
   // Return an object that will show up as props inside Home
   return {
-    dietGoal: state.home.goals,
+    goalsData: state.home.goals,
     mealsData: state.home.meals,
     loading: state.home.loading
   };

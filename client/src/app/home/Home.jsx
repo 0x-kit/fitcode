@@ -7,11 +7,12 @@ import {
   Loader
 } from 'semantic-ui-react';
 
-import DietGoal from 'app/home/diet/DietGoal.jsx';
-import MealCard from 'app/home/meals/MealCard.jsx';
+import DietGoal from 'app/home/DietGoal.jsx';
+import MealCard from 'app/home/MealCard.jsx';
 
 const HomeComponent = props => {
-  const { loading, dietGoal, mealsData } = props;
+  const { loading } = props;
+  const { mealsData, goalsData } = props;
 
   return (
     <Responsive as={Container}>
@@ -21,16 +22,8 @@ const HomeComponent = props => {
         </Dimmer>
       ) : (
         <Segment padded>
-          <DietGoal
-            dietGoal={dietGoal}
-            mealsData={mealsData}
-            loading={loading}
-          />
-          <MealCard
-            dietGoal={dietGoal}
-            mealsData={mealsData}
-            loading={loading}
-          />
+          <DietGoal goalsData={goalsData} meals={mealsData} loading={loading} />
+          <MealCard meals={mealsData} loading={loading} />
         </Segment>
       )}
     </Responsive>
