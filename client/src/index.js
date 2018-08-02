@@ -5,11 +5,12 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 
-import rootReducer from './reducers';
+import rootReducer from 'app/common/reducers/reducers';
 
 import App from 'app/App';
-import Welcome from 'app/Welcome';
+import Welcome from 'app/WelcomeContainer';
 import Home from 'app/home/HomeContainer';
+
 const Food = () => <div>Food</div>;
 const Exercise = () => <div>Exercise</div>;
 

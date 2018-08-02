@@ -1,9 +1,9 @@
-const User = require("../models/user");
-const bcrypt = require("bcrypt");
+const User = require('../models/user');
+const bcrypt = require('bcrypt');
 
-exports.getUsers = async (req, res, next) => {
+exports.getUsers = async (req, res) => {
   try {
-    const docs = await User.find({}).select("name email _id hash_password");
+    const docs = await User.find({}).select('name email _id hash_password');
     const response = {
       count: docs.length,
       users: docs.map(doc => {
@@ -21,15 +21,15 @@ exports.getUsers = async (req, res, next) => {
   }
 };
 
-exports.readUser = async (req, res, next) => {
+exports.readUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const user = await User.findById(userId).select("name email _id");
+    const user = await User.findById(userId).select('name email _id');
 
     if (!user) {
       return res
         .status(404)
-        .json({ message: "Not valid entry found for provided ID" });
+        .json({ message: 'Not valid entry found for provided ID' });
     } else {
       return res.status(200).json({
         user: user
@@ -40,14 +40,14 @@ exports.readUser = async (req, res, next) => {
   }
 };
 
-exports.createUser = async (req, res, next) => {
+exports.createUser = async (req, res) => {
   try {
     const newUser = new User(req.body);
 
     await newUser.save();
 
     res.status(201).json({
-      message: "Created user sucessfully",
+      message: 'Created user sucessfully',
       user: {
         id: newUser._id,
         name: newUser.name,
@@ -56,13 +56,13 @@ exports.createUser = async (req, res, next) => {
       }
     });
   } catch (err) {
-    err.name === "ValidationError"
+    err.name === 'ValidationError'
       ? res.status(422).json({ error: err.message })
       : res.status(500).json({ error: err });
   }
 };
 
-exports.deleteUser = async (req, res, next) => {
+exports.deleteUser = async (req, res) => {
   try {
     const userId = req.params.userId;
     const user = await User.findByIdAndRemove(userId);
@@ -70,10 +70,10 @@ exports.deleteUser = async (req, res, next) => {
     if (!user) {
       return res
         .status(404)
-        .json({ message: "Not valid entry found for provided ID" });
+        .json({ message: 'Not valid entry found for provided ID' });
     } else {
       return res.status(200).json({
-        message: "User deleted"
+        message: 'User deleted'
       });
     }
   } catch (err) {
@@ -81,7 +81,7 @@ exports.deleteUser = async (req, res, next) => {
   }
 };
 
-exports.updateUser = async (req, res, next) => {
+exports.updateUser = async (req, res) => {
   try {
     let userId = req.params.userId;
     let newProps = req.body;
@@ -94,15 +94,32 @@ exports.updateUser = async (req, res, next) => {
     if (!userUpdated) {
       return res
         .status(404)
-        .json({ message: "Not valid entry found for provided ID" });
+        .json({ message: 'Not valid entry found for provided ID' });
     } else {
       return res
         .status(200)
-        .json({ message: "User updated!", user: userUpdated });
+        .json({ message: 'User updated!', user: userUpdated });
     }
   } catch (err) {
-    err.name === "ValidationError"
+    err.name === 'ValidationError'
       ? res.status(422).json({ error: err })
       : res.status(500).json({ error: err });
+  }
+};
+
+exports.getGoals = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const goals = await User.findById(userId).select('goals');
+    if (!goals) {
+      return res
+        .status(404)
+        .json({ message: 'Not valid entry found for provided ID' });
+    } else {
+      return res.status(200).json(goals);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
   }
 };

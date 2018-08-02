@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
-import AuthContainer from './AuthContainer';
-import FormGrid from 'app/utils/FormGrid';
+import FormGrid from 'app/common/styles/FormGrid.jsx';
 
 import { Button, Form, Segment, Header, Input } from 'semantic-ui-react';
 
@@ -121,4 +120,4 @@ function validate(values) {
   return errors;
 }
 
-export default AuthContainer(reduxForm({ validate, form: 'signup' })(Signup));
+export default reduxForm({ validate, form: 'signup' })(Signup);

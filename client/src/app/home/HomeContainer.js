@@ -1,37 +1,35 @@
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-import requireAuth from 'app/utils/requireAuth';
-import { homeOperations } from './duck';
+import { bindActionCreators } from 'redux';
+import { compose, lifecycle } from 'recompose';
+import { homeOperations } from 'app/home/duck';
 
-import HomeComponent from './HomeComponent';
-
-class HomeContainer extends Component {
-  state = { toggleRemaining: false };
-
-  componentDidMount() {
-    this.props.complexFetchDiet();
-    this.props.complexFetchMeals();
-  }
-
-  render() {
-    return <HomeComponent {...this.props} />;
-  }
-}
+import withAuth from 'app/common/withAuth';
+import Home from 'app/home/Home.jsx';
 
 const mapStateToProps = state => {
-  // Return an object that will show up as props inside HomeContainer
+  // Return an object that will show up as props inside Home
   return {
-    dietsummary: state.home.diet,
+    dietGoal: state.home.goals,
     mealsData: state.home.meals,
     loading: state.home.loading
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ ...homeOperations }, dispatch);
+};
+
 export default compose(
   connect(
     mapStateToProps,
-    homeOperations
+    mapDispatchToProps
   ),
-  requireAuth
-)(HomeContainer);
+  withAuth,
+  lifecycle({
+    componentDidMount() {
+      this.props.complexFetchGoals();
+      this.props.complexFetchMeals();
+    }
+  })
+)(Home);

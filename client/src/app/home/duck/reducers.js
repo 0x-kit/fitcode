@@ -3,17 +3,17 @@ import _ from 'lodash';
 
 const INITIAL_STATE = {
   meals: [],
-  diet: [],
+  goals: {},
   loading: true,
   errorMessage: ''
 };
 
 const homeReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case types.FETCH_DIETSUMMARY:
+    case types.FETCH_GOALS:
       return {
         ...state,
-        diet: action.payload
+        goals: action.payload
       };
     case types.FETCH_MEALS:
       return {

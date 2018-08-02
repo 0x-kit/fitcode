@@ -1,18 +1,18 @@
 import ActionCreators from './actions';
 import axios from 'axios';
+const { fetchGoals, fetchMeals, fetchError } = ActionCreators;
 
-const { fetchDiet, fetchMeals, fetchError } = ActionCreators;
-
-const complexFetchDiet = user => async dispatch => {
+const complexFetchGoals = userId => async dispatch => {
   try {
-    let response = [
-      { content: 'Calories', subheader: 1580, remaining: 30 },
-      { content: 'Proteins', subheader: 160, remaining: 40 },
-      { content: 'Carbs', subheader: 20, remaining: 15 },
-      { content: 'Fats', subheader: 89, remaining: 33 }
-    ];
+    const token = localStorage.getItem('token');
 
-    dispatch(fetchDiet(response));
+    const userId = localStorage.getItem('userId');
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.get(`api/user/${userId}/goals`, reqConfig);
+   
+    dispatch(fetchGoals(response.data));
   } catch (error) {
     dispatch(fetchError(error));
   }
@@ -21,12 +21,13 @@ const complexFetchDiet = user => async dispatch => {
 const complexFetchMeals = userId => async dispatch => {
   try {
     const token = localStorage.getItem('token');
+
     const userId = localStorage.getItem('userId');
 
     const reqConfig = { headers: { authorization: token } };
 
     const response = await axios.get(`api/diary/${userId}`, reqConfig);
-    //console.log('fetchMeals',response.data);
+
     dispatch(fetchMeals(response.data));
   } catch (error) {
     dispatch(fetchError(error));
@@ -34,6 +35,6 @@ const complexFetchMeals = userId => async dispatch => {
 };
 
 export default {
-  complexFetchDiet,
+  complexFetchGoals,
   complexFetchMeals
 };
