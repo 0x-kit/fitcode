@@ -7,3 +7,12 @@ body > div > div > div.login-form {
 .tabpanel {
   margin-top: 50px;
 }
+
+.prueba.ui.statistic > .value,
+.prueba.ui.statistics .statistic > .value {
+  font-size: 0.8rem !important;
+}
+
+.prueba.ui.statistics > .statistic {
+  margin: 0;
+}

@@ -58,7 +58,7 @@ class Signin extends Component {
   render() {
     // handleSubmit provided by reduxForm
     const { handleSubmit } = this.props;
-
+    
     return (
       <FormGrid>
         <Form onSubmit={handleSubmit(this.onSubmit)}>

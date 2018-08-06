@@ -17,20 +17,22 @@ const DietGoal = props => {
   return (
     <div>
       {!loading && (
-        <Card.Group stackable itemsPerRow="2" centered>
-          <Card raised>
-            <Card.Content header="Goal" textAlign="center" />
-            <Card.Content textAlign="center" extra>
-              {MacrosList(goalMacros)}
-            </Card.Content>
-          </Card>
-          <Card raised>
-            <Card.Content header="Remaining" textAlign="center" />
-            <Card.Content textAlign="center" extra>
-              {MacrosList(remaining)}
-            </Card.Content>
-          </Card>
-        </Card.Group>
+        <div>
+          <Card.Group stackable itemsPerRow="2" centered>
+            <Card raised>
+              <Card.Content header="Goal" textAlign="center" />
+              <Card.Content textAlign="center" extra>
+                {MacrosList(goalMacros)}
+              </Card.Content>
+            </Card>
+            <Card raised>
+              <Card.Content header="Remaining" textAlign="center" />
+              <Card.Content textAlign="center" extra>
+                {MacrosList(remaining)}
+              </Card.Content>
+            </Card>
+          </Card.Group>
+        </div>
       )}
     </div>
   );
@@ -69,3 +71,5 @@ const MacrosList = macros => {
 };
 
 export default DietGoal;
+
+

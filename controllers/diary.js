@@ -7,13 +7,12 @@ exports.getDiaries = async (req, res) => {
       .select(' products user date part')
       .populate('products.product');
 
-    if (!docs) {
-      return res.status(404).json({ message: 'Not entries found' });
+    if (docs.length === 0) {
+      return res.status(404).json({ message: 'No entries found' });
     } else {
       return res.status(200).json(docs);
     }
   } catch (err) {
-    console.log(err);
     res.status(500).json({ error: err });
   }
 };

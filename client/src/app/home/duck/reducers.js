@@ -1,9 +1,13 @@
 import types from './types';
 import _ from 'lodash';
+import { reducer as searchFormReducer } from 'redux-form';
 
 const INITIAL_STATE = {
   meals: [],
   goals: {},
+  products: [],
+  selectedProduct: {},
+  selectedMeal: {},
   loading: true,
   errorMessage: ''
 };
@@ -27,9 +31,27 @@ const homeReducer = (state = INITIAL_STATE, action) => {
         loading: false,
         errorMessage: action.payload
       };
+    case types.SEARCH_PRODUCTS:
+      return {
+        ...state,
+        products: action.payload,
+        loading: false
+      };
+    case types.SELECT_PRODUCT:
+      return {
+        ...state,
+        selectedProduct: action.payload,
+        loading: false
+      };
+    case types.SELECT_MEAL:
+      return {
+        ...state,
+        selectedMeal: action.payload,
+        loading: false
+      };
     default:
       return state;
   }
 };
 
-export default homeReducer;
+export default { homeReducer, searchFormReducer };

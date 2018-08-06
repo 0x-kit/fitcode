@@ -1,5 +1,19 @@
 const Product = require('../models/product');
 
+exports.searchProducts = async (req, res) => {
+  try {
+    const term = new RegExp(req.query.like, 'i');
+
+    const docs = await Product.find()
+      .or([{ name: term }, { brand: term }])
+      .select('_id name brand calories carbs proteins fats');
+
+    return res.status(200).json(docs);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
 exports.getProducts = async (req, res) => {
   try {
     const docs = await Product.find({}).select(

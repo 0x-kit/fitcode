@@ -106,6 +106,10 @@ class HomeInfo {
 
     return remainingMacros;
   }
+
+  static per = (num, amount) => {
+    return Math.round((num * amount) / 100);
+  };
 }
 
 export default HomeInfo;

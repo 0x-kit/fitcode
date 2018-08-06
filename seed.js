@@ -7,7 +7,9 @@ mongoose.connect(keys.mongoURI);
 
 const DiaryModel = require('./models/diary');
 
-mongoose.connect(keys.mongoURI);
+mongoose.connect(
+  'mongodb://test:password1@ds139890.mlab.com:39890/fitcode_0xkush_test'
+);
 mongoose.connection
   .once('open', () => {
     const diaries = _.times(5, () => createDiary());
