@@ -32,10 +32,7 @@ class MealCards extends Component {
         {!loading && (
           <Card.Group centered>
             {labels.map((label, index) => {
-              let meal;
-
-              mealsArr.length === 0 ? (meal = {}) : (meal = mealsArr.find(meal => meal.part === label));
-
+              const meal = mealsArr.find(meal => meal.part === label);
               const { _id, products } = meal;
               const macrosPerMeal = HomeUtils.macrosPerMeal(meal);
 

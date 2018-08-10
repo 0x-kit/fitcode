@@ -10,6 +10,7 @@ const complexSignUp = (formProps, redirect) => async dispatch => {
     dispatch(signup(response.data.token));
 
     localStorage.setItem('token', response.data.token);
+    localStorage.setItem('userId', response.data.user);
 
     redirect();
   } catch (err) {
@@ -31,7 +32,7 @@ const complexSignin = (formProps, redirect) => async dispatch => {
   }
 };
 
-const compleSocialSignin = (token, userId, redirect) => async dispatch => {
+const complexSocialSignin = (token, userId, redirect) => async dispatch => {
   dispatch(socialSignin(token));
   //  persist auth state
   localStorage.setItem('token', token);
@@ -54,6 +55,6 @@ export default {
   authError,
   complexSignUp,
   complexSignin,
-  compleSocialSignin,
+  complexSocialSignin,
   complexSignout
 };

@@ -32,7 +32,7 @@ export default compose(
         // Social redirect from google
         const params = queryString.parse(this.props.location.search);
         if (params.token) {
-          this.props.compleSocialSignin(params.token, params.user, () => {
+          this.props.complexSocialSignin(params.token, params.user, () => {
             this.props.history.push('/home');
           });
         }

@@ -3,19 +3,9 @@ const bcrypt = require('bcrypt');
 
 exports.getUsers = async (req, res) => {
   try {
-    const docs = await User.find({}).select('name email _id hash_password');
-    const response = {
-      count: docs.length,
-      users: docs.map(doc => {
-        return {
-          id: doc._id,
-          name: doc.name,
-          email: doc.email,
-          password: doc.hash_password
-        };
-      })
-    };
-    res.status(200).json({ response });
+    const docs = await User.find({}).select('name email _id hash_password goals');
+
+    res.status(200).json({ docs });
   } catch (err) {
     res.status(500).json({ error: err });
   }
@@ -27,9 +17,7 @@ exports.readUser = async (req, res) => {
     const user = await User.findById(userId).select('name email _id');
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: 'Not valid entry found for provided ID' });
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
       return res.status(200).json({
         user: user
@@ -68,9 +56,7 @@ exports.deleteUser = async (req, res) => {
     const user = await User.findByIdAndRemove(userId);
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: 'Not valid entry found for provided ID' });
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
       return res.status(200).json({
         message: 'User deleted'
@@ -92,18 +78,12 @@ exports.updateUser = async (req, res) => {
     });
 
     if (!userUpdated) {
-      return res
-        .status(404)
-        .json({ message: 'Not valid entry found for provided ID' });
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res
-        .status(200)
-        .json({ message: 'User updated!', user: userUpdated });
+      return res.status(200).json({ message: 'User updated!', user: userUpdated });
     }
   } catch (err) {
-    err.name === 'ValidationError'
-      ? res.status(422).json({ error: err })
-      : res.status(500).json({ error: err });
+    err.name === 'ValidationError' ? res.status(422).json({ error: err }) : res.status(500).json({ error: err });
   }
 };
 
@@ -112,9 +92,7 @@ exports.getGoals = async (req, res) => {
     const userId = req.params.userId;
     const goals = await User.findById(userId).select('goals');
     if (!goals) {
-      return res
-        .status(404)
-        .json({ message: 'Not valid entry found for provided ID' });
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
       return res.status(200).json(goals);
     }

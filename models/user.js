@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jwt-simple');
 const keys = require('../config/keys');
 const GoalSchema = require('./goals');
+const Diary = require('./diary');
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
@@ -29,7 +30,19 @@ const UserSchema = new Schema({
     required: [true, 'Password is required.']
   },
   googleID: { type: String },
-  goals: GoalSchema
+  goals: {
+    type: GoalSchema,
+    default: {
+      macros: {
+        proteins: 150,
+        carbs: 235,
+        fats: 50,
+        calories: 2000
+      },
+      goalWeight: 0,
+      currentWeight: []
+    }
+  }
 });
 
 /** Methods */
@@ -45,8 +58,33 @@ UserSchema.methods.generateJwt = function() {
 };
 
 /** Hooks */
+UserSchema.pre('save', async function(next) {
+  let user = this;
+  const labels = ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Others'];
+  let diaries = [];
+
+  labels.forEach(label => {
+    diaries.push(
+      new Diary({
+        user: user._id,
+        part: label,
+        products: []
+      })
+    );
+  });
+
+  try {
+    await Diary.insertMany(diaries);
+  } catch (error) {
+    console.log(error);
+  }
+
+  next();
+});
+
 UserSchema.pre('save', function(next) {
   let user = this;
+  console.log('preHook', user._id);
   if (!user.isModified('password')) {
     return next();
   }

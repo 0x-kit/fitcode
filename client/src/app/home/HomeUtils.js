@@ -33,7 +33,7 @@ class HomeInfo {
       fatArr = [],
       macrosPerMeal = {};
 
-    if (meal.products !== undefined) {
+    if (meal.products !== undefined && !_.isEmpty(meal.products)) {
       meal.products.forEach((product, index) => {
         let serving = this.macrosPerProduct(product);
         const { calories, proteins, carbs, fats } = serving;
@@ -80,10 +80,12 @@ class HomeInfo {
       carbArr[index] = 0;
       fatArr[index] = 0;
 
-      calArr[index] += macrosPerMeal.calories;
-      proArr[index] += macrosPerMeal.proteins;
-      carbArr[index] += macrosPerMeal.carbs;
-      fatArr[index] += macrosPerMeal.fats;
+      if (!_.isEmpty(macrosPerMeal)) {
+        calArr[index] += macrosPerMeal.calories;
+        proArr[index] += macrosPerMeal.proteins;
+        carbArr[index] += macrosPerMeal.carbs;
+        fatArr[index] += macrosPerMeal.fats;
+      }
     });
 
     remainingMacros = {
