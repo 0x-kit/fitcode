@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
 import { homeOperations } from 'app/home/duck';
 
-
 import withAuth from 'app/common/withAuth';
 import SearchProduct from 'app/home/new/SearchProduct.jsx';
 
@@ -14,7 +13,8 @@ const mapStateToProps = state => {
     products: state.home.products,
     selectedProduct: state.home.selectedProduct,
     selectedMeal: state.home.selectedMeal,
-    loading: state.home.loading
+    loading: state.home.loading,
+    errorMessage: state.home.errorMessage
   };
 };
 

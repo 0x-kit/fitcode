@@ -3,12 +3,44 @@ import { Card, List } from 'semantic-ui-react';
 import HomeUtils from 'app/home/HomeUtils';
 
 const DietGoal = props => {
-  const { meals, goalsData, loading } = props;
+  const MacrosList = macros => {
+    const { calories, proteins, carbs, fats } = macros;
+    return (
+      <List size="large" divided horizontal>
+        <List.Item as="a">
+          <List.Content verticalAlign="middle">
+            <List.Header>Calories</List.Header>
+            <List.Description>{isNaN(calories) ? '' : calories}</List.Description>
+          </List.Content>
+        </List.Item>
+        <List.Item as="a">
+          <List.Content verticalAlign="middle">
+            <List.Header>Proteins</List.Header>
+            <List.Description>{isNaN(proteins) ? '' : proteins}</List.Description>
+          </List.Content>
+        </List.Item>
+        <List.Item as="a">
+          <List.Content verticalAlign="middle">
+            <List.Header>Carbs</List.Header>
+            <List.Description>{isNaN(carbs) ? '' : carbs}</List.Description>
+          </List.Content>
+        </List.Item>
+        <List.Item as="a">
+          <List.Content verticalAlign="middle">
+            <List.Header>Fats</List.Header>
+            <List.Description>{isNaN(fats) ? '' : fats}</List.Description>
+          </List.Content>
+        </List.Item>
+      </List>
+    );
+  };
+
+  const { mealsData, goalsData, loading } = props;
   let remaining, goalMacros;
 
   if (goalsData.goals !== undefined) {
     goalMacros = goalsData.goals.macros;
-    remaining = HomeUtils.macrosRemaining(meals, goalMacros);
+    remaining = HomeUtils.macrosRemaining(mealsData, goalMacros);
   } else {
     goalMacros = {};
     remaining = {};
@@ -18,7 +50,7 @@ const DietGoal = props => {
     <div>
       {!loading && (
         <div>
-          <Card.Group stackable itemsPerRow="2" centered>
+          <Card.Group stackable itemsPerRow="2" centered style={{ marginTop: 15}}>
             <Card raised>
               <Card.Content header="Goal" textAlign="center" />
               <Card.Content textAlign="center" extra>
@@ -38,38 +70,4 @@ const DietGoal = props => {
   );
 };
 
-const MacrosList = macros => {
-  const { calories, proteins, carbs, fats } = macros;
-  return (
-    <List size="large" divided horizontal>
-      <List.Item as="a">
-        <List.Content verticalAlign="middle">
-          <List.Header>Calories</List.Header>
-          <List.Description>{isNaN(calories) ? '' : calories}</List.Description>
-        </List.Content>
-      </List.Item>
-      <List.Item as="a">
-        <List.Content verticalAlign="middle">
-          <List.Header>Proteins</List.Header>
-          <List.Description>{isNaN(proteins) ? '' : proteins}</List.Description>
-        </List.Content>
-      </List.Item>
-      <List.Item as="a">
-        <List.Content verticalAlign="middle">
-          <List.Header>Carbs</List.Header>
-          <List.Description>{isNaN(carbs) ? '' : carbs}</List.Description>
-        </List.Content>
-      </List.Item>
-      <List.Item as="a">
-        <List.Content verticalAlign="middle">
-          <List.Header>Fats</List.Header>
-          <List.Description>{isNaN(fats) ? '' : fats}</List.Description>
-        </List.Content>
-      </List.Item>
-    </List>
-  );
-};
-
 export default DietGoal;
-
-

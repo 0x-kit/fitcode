@@ -10,7 +10,7 @@ import rootReducer from 'app/common/reducers/reducers';
 import App from 'app/App';
 import Welcome from 'app/WelcomeContainer';
 import Home from 'app/home/HomeContainer';
-import HomeNew from 'app/home/new/HomeNewContainer';
+import SearchProduct from 'app/home/new/SearchProductContainer';
 
 const Food = () => <div>Food</div>;
 const Exercise = () => <div>Exercise</div>;
@@ -28,7 +28,7 @@ ReactDOM.render(
     <BrowserRouter>
       <App>
         <Switch>
-          <Route path="/home/new" component={HomeNew} />
+          <Route path="/home/new" component={SearchProduct} />
           <Route path="/home" component={Home} />
           <Route path="/food" component={Food} />
           <Route path="/exercise" component={Exercise} />

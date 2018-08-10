@@ -12,7 +12,11 @@ const mapStateToProps = state => {
   return {
     goalsData: state.home.goals,
     mealsData: state.home.meals,
-    loading: state.home.loading
+    loading: state.home.loading,
+    selectedProduct: state.home.selectedProduct,
+    selectedMeal: state.home.selectedMeal,
+    selectedGrams: state.home.selectedGrams,
+    errorMessage: state.home.errorMessage
   };
 };
 
@@ -28,8 +32,7 @@ export default compose(
   withAuth,
   lifecycle({
     componentDidMount() {
-      this.props.complexFetchGoals();
-      this.props.complexFetchMeals();
+      this.props.complexFetchHome();
     }
   })
 )(Home);

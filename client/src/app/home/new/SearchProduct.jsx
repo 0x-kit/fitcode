@@ -3,16 +3,7 @@ import { reduxForm, Field } from 'redux-form';
 import queryString from 'query-string';
 import AddProduct from 'app/home/new/AddProduct.jsx';
 
-import {
-  Card,
-  Input,
-  List,
-  Header,
-  Responsive,
-  Container,
-  Segment,
-  Form
-} from 'semantic-ui-react';
+import { Card, Input, List, Header, Responsive, Container, Segment, Form } from 'semantic-ui-react';
 
 class SearchProduct extends Component {
   state = { modalOpen: false };
@@ -29,7 +20,7 @@ class SearchProduct extends Component {
   }
 
   selectProduct = product => {
-    this.props.selectProduct(product);
+    this.props.selectProduct(product, 100);
     this.handleModal(true);
   };
 
@@ -40,16 +31,7 @@ class SearchProduct extends Component {
   };
 
   renderField = field => {
-    return (
-      <Input
-        fluid
-        size="medium"
-        icon="search"
-        type="text"
-        placeholder="Search..."
-        {...field.input}
-      />
-    );
+    return <Input fluid size="medium" icon="search" type="text" placeholder="Search..." {...field.input} />;
   };
 
   renderProductList(products) {
@@ -64,8 +46,7 @@ class SearchProduct extends Component {
               </List.Content>
               <List.Content floated="right" verticalAlign="middle">
                 <List.Description floated="right">
-                  {calories} KCAL | {proteins} P | {carbs} C |
-                  {fats} F
+                  {calories} KCAL | {proteins} P | {carbs} C |{fats} F
                 </List.Description>
               </List.Content>
 
@@ -84,12 +65,7 @@ class SearchProduct extends Component {
 
   render() {
     // handleSubmit provided by reduxForm
-    const {
-      handleSubmit,
-      products,
-      selectedProduct,
-      selectedMeal
-    } = this.props;
+    const { handleSubmit, products, selectedProduct, selectedMeal } = this.props;
 
     const { modalOpen } = this.state;
     const found = products.length;
@@ -114,6 +90,7 @@ class SearchProduct extends Component {
           </Card>
 
           <AddProduct
+            complexAddProducts={this.props.complexAddProducts}
             openModal={modalOpen}
             handleModal={this.handleModal}
             selectedProduct={selectedProduct}

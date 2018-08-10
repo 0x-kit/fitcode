@@ -3,10 +3,16 @@ const router = require('express').Router();
 
 router
   .get('/', UsersController.getUsers)
+
   .get('/:userId', UsersController.readUser)
+
   .post('/', UsersController.createUser)
+
   .put('/:userId', UsersController.updateUser)
+
   .delete('/:userId', UsersController.deleteUser)
+
+  /** Basic crud */
 
   .get('/:userId/goals', UsersController.getGoals);
 

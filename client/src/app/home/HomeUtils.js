@@ -2,20 +2,7 @@ import _ from 'lodash';
 
 class HomeInfo {
   static mealsToArr = meals => {
-    const labels = ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Others'];
-    let part,
-      panesArr = [];
-
-    const mapParts = _.mapKeys(meals, 'part'); // { Breakfast:{...}, Lunch:{...}, ... }
-
-    labels.forEach(label => {
-      mapParts[label] === undefined ? (part = []) : (part = mapParts[label]);
-
-      const meal = { _id: part._id, label: label, products: part.products };
-
-      panesArr.push(meal);
-    });
-    return panesArr; // [{label, component}, {label, component}, ...]
+    return _.map(meals);
   };
 
   static macrosPerProduct(product) {
@@ -29,6 +16,7 @@ class HomeInfo {
     } = product;
 
     return {
+      grams: grams,
       calories: per(grams, calories),
       proteins: per(grams, proteins),
       carbs: per(grams, carbs),
@@ -36,15 +24,14 @@ class HomeInfo {
     };
   }
 
-  static macrosPerMeal(label, meals) {
+  static macrosPerMeal(meal) {
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
     let calArr = [],
       proArr = [],
       carbArr = [],
       fatArr = [],
-      macrosPerMeal = {},
-      meal = meals.find(element => element.label === label);
+      macrosPerMeal = {};
 
     if (meal.products !== undefined) {
       meal.products.forEach((product, index) => {
@@ -76,7 +63,9 @@ class HomeInfo {
 
   static macrosRemaining(meals, goals) {
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
     const mealsArr = this.mealsToArr(meals);
+
     let calArr = [],
       proArr = [],
       carbArr = [],
@@ -84,7 +73,7 @@ class HomeInfo {
       remainingMacros;
 
     mealsArr.forEach((meal, index) => {
-      let macrosPerMeal = this.macrosPerMeal(meal.label, mealsArr);
+      let macrosPerMeal = this.macrosPerMeal(meal);
 
       calArr[index] = 0;
       proArr[index] = 0;

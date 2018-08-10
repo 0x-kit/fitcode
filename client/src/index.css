@@ -8,6 +8,7 @@ body > div > div > div.login-form {
   margin-top: 50px;
 }
 
+/** Just for the modal*/
 .prueba.ui.statistic > .value,
 .prueba.ui.statistics .statistic > .value {
   font-size: 0.8rem !important;
@@ -16,3 +17,9 @@ body > div > div > div.login-form {
 .prueba.ui.statistics > .statistic {
   margin: 0;
 }
+
+.prueba.ui.statistics:first-child {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+/** JFM end*/

@@ -5,7 +5,6 @@ import home from 'app/home/duck';
 
 export default combineReducers({
   auth: auth.authReducer,
-  form: auth.authFormReducer,
-  home: home.homeReducer,
-  search: home.searchFormReducer
+  form: auth.FormReducer,
+  home: home.homeReducer
 });
