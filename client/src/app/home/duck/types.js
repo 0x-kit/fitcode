@@ -11,6 +11,10 @@ const ADD_PRODUCT = 'add_product';
 const EDIT_PRODUCT = 'edit_product';
 const DELETE_PRODUCT = 'delete_product';
 
+const ADD_DAY = 'add_day';
+const SUBSTRACT_DAY = 'substract_day';
+const SET_DAY = 'set_day';
+
 export default {
   FETCH_GOALS,
   FETCH_MEALS,
@@ -22,5 +26,8 @@ export default {
   SELECT_GRAMS,
   ADD_PRODUCT,
   EDIT_PRODUCT,
-  DELETE_PRODUCT
+  DELETE_PRODUCT,
+  ADD_DAY,
+  SUBSTRACT_DAY,
+  SET_DAY
 };

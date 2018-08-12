@@ -15,12 +15,12 @@ router
 
   /** Basic crud */
 
-  .get('/user/:userId', requireAuth, DiaryController.getDiaries)
+  .get('/user/:userId', DiaryController.getDiaries)
 
   .post('/:diaryId/product', requireAuth, DiaryController.addProduct)
 
   .put('/:diaryId/product', requireAuth, DiaryController.editProduct)
 
-  .delete('/:diaryId/product/:productId',DiaryController.deleteProduct);
+  .delete('/:diaryId/product/:productId', DiaryController.deleteProduct);
 
 module.exports = router;

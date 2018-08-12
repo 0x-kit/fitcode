@@ -2,7 +2,7 @@ const router = require('express').Router();
 const ProductsController = require('../controllers/product');
 
 router
-  .get('/', ProductsController.searchProducts)
+  .get('/search', ProductsController.searchProducts)
 
   .get('/', ProductsController.getProducts)
 

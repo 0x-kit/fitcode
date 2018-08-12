@@ -2,6 +2,8 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, lifecycle } from 'recompose';
+import queryString from 'query-string';
+import moment from 'moment';
 import { homeOperations } from 'app/home/duck';
 
 import withAuth from 'app/common/withAuth';
@@ -16,6 +18,7 @@ const mapStateToProps = state => {
     selectedProduct: state.home.selectedProduct,
     selectedMeal: state.home.selectedMeal,
     selectedGrams: state.home.selectedGrams,
+    date: state.home.date,
     errorMessage: state.home.errorMessage
   };
 };
@@ -32,7 +35,12 @@ export default compose(
   withAuth,
   lifecycle({
     componentDidMount() {
-      this.props.complexFetchHome();
+      const params = queryString.parse(this.props.location.search);
+
+      if (params.date) {
+        this.props.complexSetDay(moment(params.date));
+      }
+      this.props.complexFetchHome(this.props.date);
     }
   })
 )(Home);

@@ -17,7 +17,7 @@ exports.searchProducts = async (req, res) => {
 exports.getProducts = async (req, res) => {
   try {
     const docs = await Product.find({}).select(
-      '_id name brand calories carbs proteins fats'
+      '_id'
     );
     const response = {
       count: docs.length,
@@ -33,7 +33,7 @@ exports.getProducts = async (req, res) => {
         };
       })
     };
-    res.status(200).json({ response });
+    res.status(200).json({ docs });
   } catch (err) {
     res.status(500).json({ error: err });
   }

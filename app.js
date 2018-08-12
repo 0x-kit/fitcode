@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
-
 const keys = require('./config/keys');
 
 const userRoutes = require('./routes/users');
@@ -14,9 +13,11 @@ const diaryRoutes = require('./routes/diary');
 const passport = require('passport');
 const passportConfig = require('./services/passport2');
 
+/** Seed DB Script */
+//const seeds = require('./seed');
+
 mongoose.connect(keys.mongoURI);
 
-//require('./seed');
 /** Middlewares */
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));

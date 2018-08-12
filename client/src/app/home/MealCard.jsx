@@ -4,6 +4,7 @@ import HomeUtils from 'app/home/HomeUtils';
 import EditProductModal from 'app/home/EditProduct.jsx';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
+import { isUndefined } from 'util';
 
 class MealCards extends Component {
   state = { modalOpen: false };
@@ -32,7 +33,10 @@ class MealCards extends Component {
         {!loading && (
           <Card.Group centered>
             {labels.map((label, index) => {
-              const meal = mealsArr.find(meal => meal.part === label);
+              let meal = mealsArr.find(meal => meal.part === label);
+
+              if (isUndefined(meal)) meal = {};
+
               const { _id, products } = meal;
               const macrosPerMeal = HomeUtils.macrosPerMeal(meal);
 

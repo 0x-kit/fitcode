@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 const bcrypt = require('bcrypt');
 const jwt = require('jwt-simple');
 const keys = require('../config/keys');
+const _ = require('lodash');
+
 const GoalSchema = require('./goals');
-const Diary = require('./diary');
-const { Schema } = mongoose;
+const DiaryModel = require('./diary');
 
 const UserSchema = new Schema({
   name: {
@@ -59,25 +61,11 @@ UserSchema.methods.generateJwt = function() {
 
 /** Hooks */
 UserSchema.pre('save', async function(next) {
-  let user = this;
-  const labels = ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Others'];
-  let diaries = [];
+  const user = this;
 
-  labels.forEach(label => {
-    diaries.push(
-      new Diary({
-        user: user._id,
-        part: label,
-        products: []
-      })
-    );
-  });
+  const diaries = _.times(5, index => DiaryModel.createDiary(index, user._id));
 
-  try {
-    await Diary.insertMany(diaries);
-  } catch (error) {
-    console.log(error);
-  }
+  await DiaryModel.insertMany(diaries);
 
   next();
 });

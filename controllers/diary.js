@@ -1,4 +1,7 @@
+const moment = require('moment');
 const Diary = require('../models/diary');
+const User = require('../models/user');
+const _ = require('lodash');
 
 exports.readDiary = async (req, res) => {
   try {
@@ -24,6 +27,7 @@ exports.readDiary = async (req, res) => {
       });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err });
   }
 };
@@ -44,6 +48,7 @@ exports.createDiary = async (req, res) => {
       }
     });
   } catch (err) {
+    console.log(err);
     res.status(422).json({ error: err.message });
   }
 };
@@ -61,6 +66,7 @@ exports.deleteDiary = async (req, res) => {
       });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err });
   }
 };
@@ -81,6 +87,7 @@ exports.updateDiary = async (req, res) => {
       return res.status(200).json({ message: 'Diary updated!', diary: diaryUpdated });
     }
   } catch (err) {
+    console.log(err);
     res.status(422).json({ error: err });
   }
 };
@@ -90,16 +97,35 @@ exports.updateDiary = async (req, res) => {
 exports.getDiaries = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const docs = await Diary.find({ user: userId })
+    const user = await User.findById(userId);
+    const reqDate = req.query.date;
+
+    const startDate = moment(reqDate)
+      .startOf('day')
+      .format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+
+    const endDate = moment(reqDate)
+      .endOf('day')
+      .format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+
+    if (!user) return res.status(404).json({ message: 'Not valid entries found for provided ID' });
+
+    const docs = await Diary.find({ user: userId, date: { $gte: startDate, $lte: endDate } })
       .select(' products user date part')
       .populate('products.product');
 
-    if (docs.length === 0) {
-      return res.status(404).json({ message: 'Not valid entries found for provided ID' });
-    } else {
-      return res.status(200).json(docs);
-    }
+    if (docs.length !== 0) return res.status(200).json(docs);
+
+    const diaries = _.times(5, index => Diary.createDiary(index, userId, startDate));
+    await Diary.insertMany(diaries);
+
+    const newDocs = await Diary.find({ user: userId, date: { $gte: startDate, $lte: endDate } })
+      .select(' products user date part')
+      .populate('products.product');
+
+    if (newDocs.length !== 0) return res.status(200).json(newDocs);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err });
   }
 };
@@ -158,6 +184,7 @@ exports.deleteProduct = async (req, res) => {
       return res.status(200).json([diaryUpdated]);
     }
   } catch (err) {
+    console.log(err);
     res.status(422).json({ error: err });
   }
 };
@@ -197,6 +224,7 @@ exports.editProduct = async (req, res) => {
       return res.status(200).json([diaryUpdated]);
     }
   } catch (err) {
+    console.log(err);
     res.status(422).json({ error: err });
   }
 };

@@ -9,11 +9,16 @@ const {
   selectMeal,
   addProduct,
   editProduct,
-  deleteProduct
+  deleteProduct,
+  addDay,
+  substractDay,
+  setDay
 } = ActionCreators;
 
-const complexFetchHome = () => async dispatch => {
+const complexFetchHome = date => async dispatch => {
   try {
+    const fDate = date.format('YYYY-MM-DD');
+
     const token = localStorage.getItem('token');
 
     const userId = localStorage.getItem('userId');
@@ -21,7 +26,8 @@ const complexFetchHome = () => async dispatch => {
     const reqConfig = { headers: { authorization: token } };
 
     const goals = await axios.get(`/api/user/${userId}/goals`, reqConfig);
-    const meals = await axios.get(`/api/diary/user/${userId}`, reqConfig);
+
+    const meals = await axios.get(`/api/diary/user/${userId}?date=${fDate}`, reqConfig);
 
     dispatch(fetchHome(meals.data, goals.data));
   } catch (error) {
@@ -35,7 +41,7 @@ const complexSearchProducts = term => async dispatch => {
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.get(`/api/product?like=${term}`, reqConfig);
+    const response = await axios.get(`/api/product/search?like=${term}`, reqConfig);
 
     dispatch(searchProducts(response.data));
   } catch (error) {
@@ -87,6 +93,12 @@ const complexDeleteProducts = (mealId, product) => async dispatch => {
   }
 };
 
+const complexAddDay = date => async dispatch => dispatch(addDay(date));
+
+const complexSubstractDay = date => async dispatch => dispatch(substractDay(date));
+
+const complexSetDay = date => async dispatch => dispatch(setDay(date));
+
 export default {
   complexFetchHome,
   complexSearchProducts,
@@ -94,5 +106,8 @@ export default {
   selectMeal,
   complexAddProducts,
   complexEditProducts,
-  complexDeleteProducts
+  complexDeleteProducts,
+  complexAddDay,
+  complexSubstractDay,
+  complexSetDay
 };

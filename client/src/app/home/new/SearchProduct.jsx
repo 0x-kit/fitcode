@@ -66,7 +66,7 @@ class SearchProduct extends Component {
   render() {
     // handleSubmit provided by reduxForm
     const { handleSubmit, products, selectedProduct, selectedMeal } = this.props;
-
+    console.log(products);
     const { modalOpen } = this.state;
     const found = products.length;
 

@@ -31,6 +31,21 @@ const deleteProduct = data => ({
   payload: data
 });
 
+const setDay = date => ({
+  type: types.SET_DAY,
+  payload: date
+});
+
+const addDay = date => ({
+  type: types.ADD_DAY,
+  payload: date
+});
+
+const substractDay = date => ({
+  type: types.SUBSTRACT_DAY,
+  payload: date
+});
+
 export default {
   fetchHome,
   fetchError,
@@ -39,5 +54,8 @@ export default {
   selectMeal,
   addProduct,
   editProduct,
-  deleteProduct
+  deleteProduct,
+  addDay,
+  substractDay,
+  setDay
 };

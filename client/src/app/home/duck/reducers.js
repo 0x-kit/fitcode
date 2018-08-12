@@ -1,5 +1,6 @@
 import types from './types';
 import _ from 'lodash';
+import moment from 'moment';
 
 const INITIAL_STATE = {
   meals: {},
@@ -8,6 +9,7 @@ const INITIAL_STATE = {
   selectedProduct: {},
   selectedMeal: {},
   selectedGrams: {},
+  date: moment(),
   loading: true,
   errorMessage: ''
 };
@@ -78,6 +80,27 @@ const homeReducer = (state = INITIAL_STATE, action) => {
         meals: { ...state.meals, ..._.mapKeys(action.payload, '_id') },
         loading: false
       };
+
+    case types.ADD_DAY:
+      return {
+        ...state,
+        date: action.payload,
+        loading: false
+      };
+
+    case types.SUBSTRACT_DAY:
+      return {
+        ...state,
+        date: action.payload,
+        loading: false
+      };
+
+    case types.SET_DAY:
+      return {
+        ...state,
+        date: action.payload
+      };
+
     default:
       return state;
   }
