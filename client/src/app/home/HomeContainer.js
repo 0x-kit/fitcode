@@ -38,9 +38,20 @@ export default compose(
       const params = queryString.parse(this.props.location.search);
 
       if (params.date) {
+        const now = moment().format('YYYY-MM-DD');
+
+        if (moment(now).isSame(moment(params.date))) {
+          this.props.history.replace({
+            pathname: '/home'
+          });
+        }
         this.props.complexSetDay(moment(params.date));
       }
+
       this.props.complexFetchHome(this.props.date);
+    },
+    componentDidUpdate(prevProps) {
+      if (!this.props.date.isSame(prevProps.date)) this.props.complexFetchHome(this.props.date);
     }
   })
 )(Home);

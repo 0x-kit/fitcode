@@ -6,12 +6,6 @@ import MealCard from 'app/home/MealCard.jsx';
 import Date from 'app/home/Date.jsx';
 
 class HomeComponent extends Component {
-  componentDidUpdate(prevProps) {
-    if (!this.props.date.isSame(prevProps.date)) {
-      this.props.complexFetchHome(this.props.date);
-    }
-  }
-
   render() {
     const { loading } = this.props;
 

@@ -5,78 +5,109 @@ import { Card, Menu, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 class Date extends Component {
-  state = { dateTimeOpen: false };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    this.setState({
-      myDate: this.props.date,
-      dateTimeOpen: false
-    });
-  }
-
-  componentWillUpdate;
-
-  componentWillReceiveProps(props) {
-    this.setState({
+    this.state = {
       myDate: props.date,
-      dateTimeOpen: false
-    });
+      dateTimeOpen: false,
+      now: moment().format('YYYY-MM-DD')
+    };
+  }
+  componentDidUpdate(prevProps) {
+    if (!this.props.date.isSame(prevProps.date)) this.setState({ myDate: this.props.date });
   }
 
-  addDay = date => {
-    // this.props.complexAddDay(date, () => {
-    //   this.props.complexFetchHome(date.format('YYYY-MM-DD'));
-    // });
-    this.props.complexAddDay(date);
+  changeDay = (date, op) => {
+    switch (op) {
+      case 'add':
+        this.props.complexAddDay(date);
+        break;
+      case 'substract':
+        this.props.complexSubstractDay(date);
+        break;
+      default:
+        if (!this.checkNow(date)) {
+          this.props.history.push(`?date=${date.format('YYYY-MM-DD')}`);
+        } else {
+          this.props.history.replace({
+            pathname: '/home'
+          });
+        }
+        this.props.complexSetDay(date);
+    }
   };
 
-  substractDay = date => {
-    // this.props.complexSubstractDay(date, () => {
-    //   this.props.complexFetchHome(date.format('YYYY-MM-DD'));
-    // });
-    this.props.complexSubstractDay(date);
+  checkNow(date) {
+    return moment(this.state.now).isSame(moment(date).format('YYYY-MM-DD'));
+  }
+
+  checkBackwardPath(date = this.state.myDate) {
+    return moment(this.state.now).isSame(
+      moment(
+        moment(date)
+          .clone()
+          .subtract(1, 'day')
+          .format('YYYY-MM-DD')
+      )
+    );
+  }
+
+  checkForwardPath(date = this.state.myDate) {
+    return moment(this.state.now).isSame(
+      moment(
+        moment(date)
+          .clone()
+          .add(1, 'day')
+          .format('YYYY-MM-DD')
+      )
+    );
+  }
+
+  hadleDateOpen = () => {
+    this.setState({ dateTimeOpen: !this.state.dateTimeOpen });
   };
 
   render() {
     const { match } = this.props;
-    const { myDate } = this.state;
-
-    const addDay = moment(myDate).add(1, 'day');
-    const backDay = moment(myDate).subtract(1, 'day');
+    const { myDate, dateTimeOpen } = this.state;
+    const add = moment(myDate).add(1, 'day');
+    const substract = moment(myDate).subtract(1, 'day');
 
     const backwardRoute = {
       pathname: match.path,
-      search: `?date=${backDay.format('YYYY-MM-DD')}`
+      search: this.checkBackwardPath() ? '' : `?date=${substract.format('YYYY-MM-DD')}`
     };
+
     const forwardRoute = {
       pathname: match.path,
-      search: `?date=${addDay.format('YYYY-MM-DD')}`
+      search: this.checkForwardPath() ? '' : `?date=${add.format('YYYY-MM-DD')}`
     };
 
     return (
-      <Card fluid raised>
+      <Card fluid>
         <Menu widths="3">
-          <Menu.Item as={Link} to={backwardRoute} onClick={() => this.substractDay(backDay)}>
+          <Menu.Item as={Link} to={backwardRoute} onClick={() => this.changeDay(substract, 'substract')}>
             <Icon size="big" link name="chevron circle left" />
           </Menu.Item>
 
           <Menu.Item
             className="medium header"
-            name={moment(this.state.myDate).format('LL')}
-            onClick={() => this.setState({ dateTimeOpen: true })}
+            name={moment(myDate).format('LL')}
+            onClick={() => this.hadleDateOpen()}
           />
 
-          <Menu.Item as={Link} to={forwardRoute} onClick={() => this.addDay(addDay)}>
+          <Menu.Item as={Link} to={forwardRoute} onClick={() => this.changeDay(add, 'add')}>
             <Icon size="big" link name="chevron circle right" />
           </Menu.Item>
         </Menu>
-        {this.state.dateTimeOpen && (
+        {dateTimeOpen && (
           <DatetimePicker
-            onChange={value => {
-              this.setState({ dateTimeOpen: false });
-              //console.log(value);
+            onChange={date => {
+              this.changeDay(date);
+              this.hadleDateOpen();
             }}
-            moment={this.state.myDate}
+            moment={myDate}
             time={false}
             color="black"
           />

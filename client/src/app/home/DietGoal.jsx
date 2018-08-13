@@ -50,7 +50,7 @@ const DietGoal = props => {
     <div>
       {!loading && (
         <div>
-          <Card.Group stackable itemsPerRow="2" centered style={{ marginTop: 15}}>
+          <Card.Group stackable itemsPerRow="2" centered style={{ marginTop: 10}}>
             <Card raised>
               <Card.Content header="Goal" textAlign="center" />
               <Card.Content textAlign="center" extra>
