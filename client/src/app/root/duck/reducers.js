@@ -1,5 +1,4 @@
 import types from './types';
-import { reducer as FormReducer } from 'redux-form';
 
 const INITIAL_STATE = {
   authenticated: '',
@@ -17,4 +16,4 @@ const authReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default { FormReducer, authReducer };
+export default { authReducer };

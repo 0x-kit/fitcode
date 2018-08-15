@@ -31,7 +31,7 @@ class Date extends Component {
           this.props.history.push(`?date=${date.format('YYYY-MM-DD')}`);
         } else {
           this.props.history.replace({
-            pathname: '/home'
+            pathname: '/food/diary'
           });
         }
         this.props.complexSetDay(date);

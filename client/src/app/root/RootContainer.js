@@ -1,9 +1,9 @@
 import { bindActionCreators } from 'redux';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
-import { authOperations } from 'app/auth/duck';
+import { authOperations } from 'app/root/duck';
 import queryString from 'query-string';
-import Welcome from 'app/Welcome.jsx';
+import Root from 'app/root/Root.jsx';
 
 const mapStateToProps = state => {
   return {
@@ -33,10 +33,10 @@ export default compose(
         const params = queryString.parse(this.props.location.search);
         if (params.token) {
           this.props.complexSocialSignin(params.token, params.user, () => {
-            this.props.history.push('/home');
+            this.props.history.push('/food/diary');
           });
         }
       }
     }
   })
-)(Welcome);
+)(Root);

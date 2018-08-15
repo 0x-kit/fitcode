@@ -3,7 +3,7 @@ import { Menu, Responsive, Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 class MenuSecondary extends Component {
-  state = { activeItem: 'home' };
+  state = { activeItem: 'food' };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
@@ -17,14 +17,7 @@ class MenuSecondary extends Component {
             <Menu pointing secondary size="massive">
               <Menu.Item
                 as={Link}
-                to="/home"
-                name="home"
-                active={activeItem === 'home'}
-                onClick={this.handleItemClick}
-              />
-              <Menu.Item
-                as={Link}
-                to="/food"
+                to="/food/diary"
                 name="food"
                 active={activeItem === 'food'}
                 onClick={this.handleItemClick}

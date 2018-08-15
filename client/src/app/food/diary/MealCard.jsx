@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, List, Button } from 'semantic-ui-react';
-import HomeUtils from 'app/home/HomeUtils';
-import EditProductModal from 'app/home/EditProduct.jsx';
+import HomeUtils from 'app/food/HomeUtils';
+import EditFood from 'app/food/diary/EditFood.jsx';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { isUndefined } from 'util';
@@ -28,7 +28,7 @@ class MealCards extends Component {
 
     return (
       <div>
-        <EditProductModal openModal={this.state.modalOpen} handleModal={this.handleModal} {...this.props} />
+        <EditFood openModal={this.state.modalOpen} handleModal={this.handleModal} {...this.props} />
 
         {!loading && (
           <Card.Group centered>
@@ -104,8 +104,8 @@ const mealSummaryList = (macrosPerMeal, match, mealLabel, mealId) => {
   /*** */
   const renderAddButton = (match, mealLabel, mealId) => {
     const newRoute = {
-      pathname: `${match.path}/new`,
-      search: `?part=${mealLabel}&id=${mealId}`
+      pathname: `${match.path}/add`,
+      search: `?meal=${mealLabel}&id=${mealId}`
     };
     return (
       <Button as={Link} to={newRoute} size="small" compact primary>

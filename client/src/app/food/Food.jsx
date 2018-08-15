@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { Segment, Container, Dimmer, Loader } from 'semantic-ui-react';
 
-import DietGoal from 'app/home/DietGoal.jsx';
-import MealCard from 'app/home/MealCard.jsx';
-import Date from 'app/home/Date.jsx';
+import DietGoal from 'app/food/diary/DietGoal.jsx';
+import MealCard from 'app/food/diary/MealCard.jsx';
+import Date from 'app/food/diary/Date.jsx';
 
-class HomeComponent extends Component {
+class Food extends Component {
   render() {
     const { loading } = this.props;
-
-    console.log('render()');
-
     return (
       <Container>
         {loading ? (
@@ -30,4 +27,4 @@ class HomeComponent extends Component {
   }
 }
 
-export default HomeComponent;
+export default Food;

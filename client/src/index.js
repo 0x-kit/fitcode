@@ -8,11 +8,10 @@ import reduxThunk from 'redux-thunk';
 import rootReducer from 'app/common/reducers/reducers';
 
 import App from 'app/App';
-import Welcome from 'app/WelcomeContainer';
-import Home from 'app/home/HomeContainer';
-import SearchProduct from 'app/home/new/SearchProductContainer';
+import Root from 'app/root/RootContainer';
+import FoodContainer from 'app/food/FoodContainer';
+import SearchFoodContainer from 'app/food/diary/add/SearchFoodContainer';
 
-const Food = () => <div>Food</div>;
 const Exercise = () => <div>Exercise</div>;
 
 const store = createStore(
@@ -28,11 +27,10 @@ ReactDOM.render(
     <BrowserRouter>
       <App>
         <Switch>
-          <Route path="/home/new" component={SearchProduct} />
-          <Route path="/home" component={Home} />
-          <Route path="/food" component={Food} />
+          <Route path="/food/diary/add" component={SearchFoodContainer} />
+          <Route path="/food/diary" component={FoodContainer} />
           <Route path="/exercise" component={Exercise} />
-          <Route path="/" exact component={Welcome} />
+          <Route path="/" exact component={Root} />
         </Switch>
       </App>
     </BrowserRouter>

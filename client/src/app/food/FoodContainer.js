@@ -1,25 +1,23 @@
-// import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, lifecycle } from 'recompose';
 import queryString from 'query-string';
 import moment from 'moment';
-import { homeOperations } from 'app/home/duck';
+import { homeOperations } from 'app/food/duck';
 
 import withAuth from 'app/common/withAuth';
-import Home from 'app/home/Home.jsx';
+import Food from 'app/food/Food.jsx';
 
 const mapStateToProps = state => {
-  // Return an object that will show up as props inside Home
   return {
-    goalsData: state.home.goals,
-    mealsData: state.home.meals,
-    loading: state.home.loading,
-    selectedProduct: state.home.selectedProduct,
-    selectedMeal: state.home.selectedMeal,
-    selectedGrams: state.home.selectedGrams,
-    date: state.home.date,
-    errorMessage: state.home.errorMessage
+    goalsData: state.food.goals,
+    mealsData: state.food.meals,
+    loading: state.food.loading,
+    selectedProduct: state.food.selectedProduct,
+    selectedMeal: state.food.selectedMeal,
+    selectedGrams: state.food.selectedGrams,
+    date: state.food.date,
+    errorMessage: state.food.errorMessage
   };
 };
 
@@ -42,8 +40,10 @@ export default compose(
 
         if (moment(now).isSame(moment(params.date))) {
           this.props.history.replace({
-            pathname: '/home'
+            pathname: '/food/diary'
           });
+        } else {
+          this.props.history.push(`?date=${params.date}`);
         }
         this.props.complexSetDay(moment(params.date));
       }
@@ -54,4 +54,4 @@ export default compose(
       if (!this.props.date.isSame(prevProps.date)) this.props.complexFetchHome(this.props.date);
     }
   })
-)(Home);
+)(Food);

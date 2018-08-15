@@ -2,8 +2,8 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { authOperations } from './duck';
-import SignUp from 'app/auth/SignUp.jsx';
+import { authOperations } from 'app/root/duck';
+import SignUp from 'app/root/SignUp.jsx';
 
 const mapStateToProps = state => {
   return {

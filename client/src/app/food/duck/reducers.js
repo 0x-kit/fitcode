@@ -1,20 +1,23 @@
 import types from './types';
-import _ from 'lodash';
 import moment from 'moment';
+import _ from 'lodash';
 
 const INITIAL_STATE = {
   meals: {},
   goals: {},
+
   products: [],
   selectedProduct: {},
   selectedMeal: {},
   selectedGrams: {},
-  date: moment(),
+
   loading: true,
-  errorMessage: ''
+  errorMessage: '',
+
+  date: moment()
 };
 
-const homeReducer = (state = INITIAL_STATE, action) => {
+const foodReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.FETCH_HOME:
       return {
@@ -105,5 +108,4 @@ const homeReducer = (state = INITIAL_STATE, action) => {
       return state;
   }
 };
-
-export default { homeReducer };
+export default { foodReducer };

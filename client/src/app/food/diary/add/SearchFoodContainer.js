@@ -2,19 +2,19 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
-import { homeOperations } from 'app/home/duck';
+import { homeOperations } from 'app/food/duck';
 
 import withAuth from 'app/common/withAuth';
-import SearchProduct from 'app/home/new/SearchProduct.jsx';
+import SearchFood from 'app/food/diary/add/SearchFood.jsx';
 
 const mapStateToProps = state => {
   // Return an object that will show up as props inside Home
   return {
-    products: state.home.products,
-    selectedProduct: state.home.selectedProduct,
-    selectedMeal: state.home.selectedMeal,
-    loading: state.home.loading,
-    errorMessage: state.home.errorMessage
+    products: state.food.products,
+    selectedProduct: state.food.selectedProduct,
+    selectedMeal: state.food.selectedMeal,
+    loading: state.food.loading,
+    errorMessage: state.food.errorMessage
   };
 };
 
@@ -28,4 +28,4 @@ export default compose(
     mapDispatchToProps
   ),
   withAuth
-)(SearchProduct);
+)(SearchFood);

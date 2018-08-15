@@ -7,7 +7,7 @@ import { Button, Form, Segment, Header, Input } from 'semantic-ui-react';
 class Signup extends Component {
   onSubmit = values => {
     this.props.complexSignUp(values, () => {
-      this.props.history.push('/home');
+      this.props.history.push('/food/diary');
     });
   };
 
@@ -29,14 +29,7 @@ class Signup extends Component {
 
     return (
       <Form.Field>
-        <Input
-          fluid
-          icon={icon}
-          iconPosition={iconPosition}
-          placeholder={placeholder}
-          type={type}
-          {...field.input}
-        />
+        <Input fluid icon={icon} iconPosition={iconPosition} placeholder={placeholder} type={type} {...field.input} />
         {validateError ? (
           <Header as="label" color="red">
             {error}

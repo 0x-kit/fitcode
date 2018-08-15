@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, List } from 'semantic-ui-react';
-import HomeUtils from 'app/home/HomeUtils';
+import HomeUtils from 'app/food/HomeUtils';
 
 const DietGoal = props => {
   const MacrosList = macros => {

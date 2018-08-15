@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import queryString from 'query-string';
-import AddProduct from 'app/home/new/AddProduct.jsx';
+import AddFood from 'app/food/diary/add/AddFood.jsx';
 
 import { Card, Input, List, Header, Responsive, Container, Segment, Form } from 'semantic-ui-react';
 
-class SearchProduct extends Component {
+class SearchFood extends Component {
   state = { modalOpen: false };
 
   handleModal = flag => {
@@ -66,7 +66,6 @@ class SearchProduct extends Component {
   render() {
     // handleSubmit provided by reduxForm
     const { handleSubmit, products, selectedProduct, selectedMeal } = this.props;
-    console.log(products);
     const { modalOpen } = this.state;
     const found = products.length;
 
@@ -89,7 +88,7 @@ class SearchProduct extends Component {
             <Card.Content extra>{found} products found</Card.Content>
           </Card>
 
-          <AddProduct
+          <AddFood
             complexAddProducts={this.props.complexAddProducts}
             openModal={modalOpen}
             handleModal={this.handleModal}
@@ -101,4 +100,4 @@ class SearchProduct extends Component {
     );
   }
 }
-export default reduxForm({ form: 'search' })(SearchProduct);
+export default reduxForm({ form: 'search' })(SearchFood);

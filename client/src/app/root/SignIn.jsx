@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import FormGrid from 'app/common/styles/FormGrid.jsx';
-import {
-  Button,
-  Form,
-  Segment,
-  Icon,
-  Header,
-  Input,
-  Divider
-} from 'semantic-ui-react';
+import { Button, Form, Segment, Icon, Header, Input, Divider } from 'semantic-ui-react';
 
 class Signin extends Component {
   onSubmit = values => {
     this.props.complexSignin(values, () => {
-      this.props.history.push('/home');
+      this.props.history.push('/food/diary');
     });
   };
 
@@ -36,14 +28,7 @@ class Signin extends Component {
 
     return (
       <Form.Field>
-        <Input
-          fluid
-          icon={icon}
-          iconPosition={iconPosition}
-          placeholder={placeholder}
-          type={type}
-          {...field.input}
-        />
+        <Input fluid icon={icon} iconPosition={iconPosition} placeholder={placeholder} type={type} {...field.input} />
         {validateError ? (
           <Header as="label" color="red">
             {error}
@@ -58,7 +43,7 @@ class Signin extends Component {
   render() {
     // handleSubmit provided by reduxForm
     const { handleSubmit } = this.props;
-    
+
     return (
       <FormGrid>
         <Form onSubmit={handleSubmit(this.onSubmit)}>
@@ -84,12 +69,7 @@ class Signin extends Component {
               Sign in
             </Button>
             <Divider horizontal>OR</Divider>
-            <Button
-              href="/api/auth/google"
-              color="google plus"
-              fluid
-              size="large"
-            >
+            <Button href="/api/auth/google" color="google plus" fluid size="large">
               <Icon name="google plus" /> Sign in using Google
             </Button>
           </Segment>
