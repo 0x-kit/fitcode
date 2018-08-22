@@ -21,7 +21,7 @@ class AddFood extends Component {
     };
 
     this.handleClose();
-    this.props.complexAddProducts(selectedMeal.mealId, newProduct);
+    this.props.complexAddDiaryProduct(selectedMeal.mealId, newProduct);
   };
 
   renderMacros = (product, serving) => {
@@ -45,37 +45,82 @@ class AddFood extends Component {
     );
   };
   renderField = field => {
+    const {
+      placeholder,
+      label,
+      labelPosition,
+      maxLength,
+      type,
+      meta: { touched, error }
+    } = field;
+
+    let validateError = false;
+
+    if (touched && error) {
+      validateError = true;
+    }
     return (
-      <Input
-        fluid
-        label={{ basic: true, content: 'g' }}
-        labelPosition="right"
-        placeholder="Enter weight..."
-        type="text"
-        maxLength="7"
-        {...field.input}
-      />
+      <Form.Field>
+        <Input
+          fluid
+          label={label}
+          labelPosition={labelPosition}
+          placeholder={placeholder}
+          type={type}
+          maxLength={maxLength}
+          {...field.input}
+        />
+        {validateError ? (
+          <Header as="label" color="red" size="tiny" textAlign="center">
+            {error}
+          </Header>
+        ) : (
+          ''
+        )}
+      </Form.Field>
     );
   };
 
   render() {
     const { selectedProduct, serving, handleSubmit, openModal } = this.props;
+    const buttonStyle = { marginBottom: 5, marginTop: 5 };
+    const modalStyle = { width: 300, textAlign: 'center' };
 
     return (
-      <Modal style={{ width: 300, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
+      <Modal style={modalStyle} open={openModal} onClose={this.handleClose} size="mini">
         <Header subheader={selectedProduct.name} content="Add Food" />
         <Modal.Content>{this.renderMacros(selectedProduct, serving)}</Modal.Content>
         <Modal.Actions>
           <Form onSubmit={handleSubmit(this.onSubmit)}>
-            <Field name="serving" component={this.renderField} />
+            <Field
+              name="serving"
+              component={this.renderField}
+              label={{ basic: true, content: 'g' }}
+              labelPosition="right"
+              placeholder="Enter weight..."
+              type="text"
+              maxLength="7"
+            />
 
-            <Button style={{ marginBottom: 5, marginTop: 5 }} primary content="Add" floated="right" />
+            <Button style={buttonStyle} primary content="Add" floated="right" />
           </Form>
         </Modal.Actions>
       </Modal>
     );
   }
 }
+const validate = values => {
+  const errors = {};
+  const required = 'Required field';
+  const numbers = 'This field can only contain numbers';
+
+  if (!values.serving) {
+    errors.serving = required;
+  } else if (isNaN(values.serving)) {
+    errors.serving = numbers;
+  }
+  return errors;
+};
 
 // Selector needed in order to access the value of the 'serving' field of the addProduct form
 // This way we can update in real time the macros depending upon serving size
@@ -87,7 +132,7 @@ export default compose(
       serving: state.food.selectedGrams
     }
   })),
-  reduxForm({ form: 'addProduct', enableReinitialize: true }),
+  reduxForm({ validate, form: 'addProduct', enableReinitialize: true }),
   connect(state => ({
     serving: selector(state, 'serving')
   }))

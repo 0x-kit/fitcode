@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, List, Button } from 'semantic-ui-react';
 import HomeUtils from 'app/food/HomeUtils';
-import EditFood from 'app/food/diary/EditFood.jsx';
+import ManageDiaryFood from 'app/food/diary/ManageDiary.jsx';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { isUndefined } from 'util';
@@ -28,7 +28,7 @@ class MealCards extends Component {
 
     return (
       <div>
-        <EditFood openModal={this.state.modalOpen} handleModal={this.handleModal} {...this.props} />
+        <ManageDiaryFood openModal={this.state.modalOpen} handleModal={this.handleModal} {...this.props} />
 
         {!loading && (
           <Card.Group centered>

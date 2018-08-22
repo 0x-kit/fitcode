@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import queryString from 'query-string';
 import AddFood from 'app/food/diary/add/AddFood.jsx';
+import _ from 'lodash';
 
-import { Card, Input, List, Header, Responsive, Container, Segment, Form } from 'semantic-ui-react';
+import { Card, Input, List, Header, Responsive, Container, Segment, Form, Dimmer, Loader } from 'semantic-ui-react';
 
 class SearchFood extends Component {
   state = { modalOpen: false };
@@ -15,7 +16,7 @@ class SearchFood extends Component {
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
     if (params.id) {
-      this.props.selectMeal(params.id, params.part);
+      this.props.selectMeal(params.id, params.meal);
     }
   }
 
@@ -26,7 +27,6 @@ class SearchFood extends Component {
 
   onSubmit = values => {
     const { term } = values;
-
     this.props.complexSearchProducts(term);
   };
 
@@ -65,39 +65,51 @@ class SearchFood extends Component {
 
   render() {
     // handleSubmit provided by reduxForm
-    const { handleSubmit, products, selectedProduct, selectedMeal } = this.props;
+    const { handleSubmit, products, selectedProduct, selectedMeal, searchMessage } = this.props;
     const { modalOpen } = this.state;
-    const found = products.length;
 
     return (
       <Responsive as={Container}>
-        <Segment padded>
-          <Card raised fluid>
-            <Card.Content textAlign="center">
-              <Header size="medium">
-                Search for a food
-                <Header.Subheader>{selectedMeal.part}</Header.Subheader>
-              </Header>
-            </Card.Content>
-            <Card.Content>
-              <Form onSubmit={handleSubmit(this.onSubmit)}>
-                <Field name="term" component={this.renderField} />
-              </Form>
-            </Card.Content>
-            <Card.Content>{this.renderProductList(products)}</Card.Content>
-            <Card.Content extra>{found} products found</Card.Content>
-          </Card>
+        {_.isEmpty(products) ? (
+          <Dimmer active>
+            <Loader>Loading</Loader>
+          </Dimmer>
+        ) : (
+          <Segment padded>
+            <Card raised fluid>
+              <Card.Content textAlign="center">
+                <Header size="medium">
+                  Search our food database by name
+                  <Header.Subheader>{selectedMeal.part}</Header.Subheader>
+                  <Header.Subheader>{searchMessage}</Header.Subheader>
+                </Header>
+              </Card.Content>
 
-          <AddFood
-            complexAddProducts={this.props.complexAddProducts}
-            openModal={modalOpen}
-            handleModal={this.handleModal}
-            selectedProduct={selectedProduct}
-            selectedMeal={selectedMeal}
-          />
-        </Segment>
+              <Card.Content>
+                <Form onSubmit={handleSubmit(this.onSubmit)}>
+                  <Field name="term" component={this.renderField} />
+                </Form>
+              </Card.Content>
+            </Card>
+
+            {products.length !== 0 && (
+              <Card raised fluid>
+                <Card.Content>{this.renderProductList(products)}</Card.Content>
+              </Card>
+            )}
+
+            <AddFood
+              complexAddDiaryProduct={this.props.complexAddDiaryProduct}
+              openModal={modalOpen}
+              handleModal={this.handleModal}
+              selectedProduct={selectedProduct}
+              selectedMeal={selectedMeal}
+            />
+          </Segment>
+        )}
       </Responsive>
     );
   }
 }
+
 export default reduxForm({ form: 'search' })(SearchFood);

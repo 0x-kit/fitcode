@@ -7,7 +7,7 @@ const { Schema } = mongoose;
 const GoalSchema = new Schema({
   currentWeight: [
     {
-      day: Date,
+      date: Date,
       weight: Number
     }
   ],

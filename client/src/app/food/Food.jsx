@@ -8,6 +8,7 @@ import Date from 'app/food/diary/Date.jsx';
 class Food extends Component {
   render() {
     const { loading } = this.props;
+    console.log(this.props.goalsData);
     return (
       <Container>
         {loading ? (
@@ -18,7 +19,6 @@ class Food extends Component {
           <Segment padded>
             <Date {...this.props} />
             <DietGoal {...this.props} />
-
             <MealCard {...this.props} />
           </Segment>
         )}

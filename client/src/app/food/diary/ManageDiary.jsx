@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { reduxForm, Field, formValueSelector } from 'redux-form';
+import { reduxForm, Field, formValueSelector, reset } from 'redux-form';
 import { Header, Modal, Input, Statistic, Form, Button, Card } from 'semantic-ui-react';
 
 import HomeUtils from 'app/food/HomeUtils';
 
-class EditProduct extends Component {
+class ManageDiary extends Component {
   state = { deleteProduct: false };
 
   handleDelete = flag => {
@@ -15,6 +15,7 @@ class EditProduct extends Component {
 
   handleClose = () => {
     this.props.handleModal(false);
+    this.props.dispatch(reset('editProduct'));
   };
 
   onSubmit = values => {
@@ -26,13 +27,12 @@ class EditProduct extends Component {
     };
 
     if (this.state.deleteProduct === false) {
-      this.props.complexEditProducts(selectedMeal.mealId, newProduct);
+      this.props.complexEditDiaryProduct(selectedMeal.mealId, newProduct);
     } else {
-      this.props.complexDeleteProducts(selectedMeal.mealId, newProduct);
+      this.props.complexDeleteDiaryProduct(selectedMeal.mealId, newProduct);
     }
 
     this.handleClose();
-    //this.props.dispatch(reset('editProduct'));
   };
 
   renderMacros = (product, serving) => {
@@ -56,39 +56,66 @@ class EditProduct extends Component {
     );
   };
   renderField = field => {
+    const {
+      placeholder,
+      label,
+      labelPosition,
+      maxLength,
+      type,
+      meta: { touched, error }
+    } = field;
+
+    let validateError = false;
+
+    if (touched && error) {
+      validateError = true;
+    }
     return (
-      <Input
-        fluid
-        label={{ basic: true, content: 'g' }}
-        labelPosition="right"
-        placeholder="Enter weight..."
-        type="text"
-        maxLength="7"
-        {...field.input}
-      />
+      <Form.Field>
+        <Input
+          fluid
+          label={label}
+          labelPosition={labelPosition}
+          placeholder={placeholder}
+          type={type}
+          maxLength={maxLength}
+          {...field.input}
+        />
+        {validateError ? (
+          <Header as="label" color="red" size="tiny" textAlign="center">
+            {error}
+          </Header>
+        ) : (
+          ''
+        )}
+      </Form.Field>
     );
   };
 
   render() {
     const { selectedProduct, serving, handleSubmit, openModal } = this.props;
 
+    const buttonStyle = { width: 75, marginBottom: 10, marginTop: 10 };
+    const modalStyle = { width: 300, textAlign: 'center' };
     return (
-      <Modal style={{ width: 300, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
+      <Modal style={modalStyle} open={openModal} onClose={this.handleClose} size="mini">
         <Header subheader={selectedProduct.name} content="Edit Food" />
         <Modal.Content>{this.renderMacros(selectedProduct, serving)}</Modal.Content>
         <Modal.Actions>
           <Form onSubmit={handleSubmit(this.onSubmit)}>
-            <Field name="serving" component={this.renderField} />
-
-            <Button
-              style={{ width: 75, marginBottom: 10, marginTop: 10 }}
-              size="tiny"
-              primary
-              content="Edit"
-              floated="right"
+            <Field
+              name="serving"
+              component={this.renderField}
+              label={{ basic: true, content: 'g' }}
+              labelPosition="right"
+              placeholder="Enter weight..."
+              type="text"
+              maxLength="7"
             />
+
+            <Button style={buttonStyle} size="tiny" primary content="Edit" floated="right" />
             <Button
-              style={{ width: 75, marginBottom: 10, marginTop: 10 }}
+              style={buttonStyle}
               size="tiny"
               negative
               content="Delete"
@@ -104,6 +131,19 @@ class EditProduct extends Component {
   }
 }
 
+const validate = values => {
+  const errors = {};
+  const required = 'Required field';
+  const numbers = 'This field can only contain numbers';
+
+  if (!values.serving) {
+    errors.serving = required;
+  } else if (isNaN(values.serving)) {
+    errors.serving = numbers;
+  }
+  return errors;
+};
+
 // Selector needed in order to access the value of the 'serving' field of the editProduct form
 // This way we can update in real time the macros depending upon serving size
 const selector = formValueSelector('editProduct');
@@ -116,10 +156,11 @@ export default compose(
     }
   })),
   reduxForm({
+    validate,
     form: 'editProduct',
     enableReinitialize: true
   }),
   connect(state => ({
     serving: selector(state, 'serving')
   }))
-)(EditProduct);
+)(ManageDiary);

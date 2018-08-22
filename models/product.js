@@ -6,6 +6,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ProductSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
+  },
   name: {
     type: String,
     validate: {

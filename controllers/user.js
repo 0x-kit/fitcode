@@ -94,10 +94,106 @@ exports.getGoals = async (req, res) => {
     if (!goals) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json(goals);
+      return res.status(200).json({
+        macros: goals.goals.macros,
+        goalWeight: goals.goals.goalWeight,
+        currentWeight: goals.goals.currentWeight
+      });
     }
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err });
   }
 };
+
+exports.setMacros = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const newGoals = req.body;
+
+    const goals = await User.findByIdAndUpdate(
+      userId,
+      { $set: { 'goals.macros': newGoals } },
+      {
+        new: true,
+        runValidators: true
+      }
+    ).select('goals.macros');
+
+    if (!goals) {
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+    } else {
+      return res.status(200).json(goals.goals.macros);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+exports.setCurrentWeight = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const currentWeight = req.body;
+
+    const goals = await User.findByIdAndUpdate(
+      userId,
+      { $push: { 'goals.currentWeight': currentWeight } },
+      {
+        new: true,
+        runValidators: true
+      }
+    ).select('goals.currentWeight');
+
+    if (!goals) {
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+    } else {
+      return res.status(200).json(goals.goals);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+exports.setGoalWeight = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const weight = req.body;
+
+    const goals = await User.findByIdAndUpdate(
+      userId,
+      { $set: { 'goals.goalWeight': weight.goalWeight } },
+      {
+        new: true,
+        runValidators: true
+      }
+    ).select('goals.goalWeight');
+
+    if (!goals) {
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+    } else {
+      return res.status(200).json(goals.goals.goalWeight);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+// exports.getCurrentWeight = async (req, res) => {
+//   try {
+//     const userId = req.params.userId;
+
+//     const goals = await User.findById(userId);
+
+//     if (!goals) {
+//       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+//     } else {
+//       return res.status(200).json(goals.goals.currentWeight);
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ error: err });
+//   }
+// };

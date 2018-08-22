@@ -86,13 +86,13 @@ class Date extends Component {
 
     return (
       <Card fluid>
-        <Menu widths="3">
+        <Menu widths="3" style={{ height: '1.1em' }}>
           <Menu.Item as={Link} to={backwardRoute} onClick={() => this.changeDay(substract, 'substract')}>
             <Icon size="big" link name="chevron circle left" />
           </Menu.Item>
 
           <Menu.Item
-            className="medium header"
+            style={{ fontSize: '1.23em', fontWeight: 700 }}
             name={moment(myDate).format('LL')}
             onClick={() => this.hadleDateOpen()}
           />

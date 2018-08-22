@@ -4,9 +4,13 @@ const fetchError = error => ({ type: types.FETCH_HOME_ERROR, payload: error });
 
 const fetchHome = (mealData, goalData) => ({ type: types.FETCH_HOME, payload: { mealData, goalData } });
 
+const getUserProducts = data => ({ type: types.USER_PRODUCTS, payload: data });
+
 const searchProducts = data => ({ type: types.SEARCH_PRODUCTS, payload: data });
 
-const selectProduct = (product, grams) => ({
+const searchProductsMessage = message => ({ type: types.SEARCH_PRODUCTS_MESSAGE, payload: message });
+
+const selectProduct = (product, grams = 100) => ({
   type: types.SELECT_PRODUCT,
   payload: { product, grams }
 });
@@ -16,18 +20,18 @@ const selectMeal = (mealId, part) => ({
   payload: { mealId, part }
 });
 
-const addProduct = data => ({
-  type: types.ADD_PRODUCT,
+const addDiaryProduct = data => ({
+  type: types.ADD_DIARY_PRODUCT,
   payload: data
 });
 
-const editProduct = data => ({
-  type: types.EDIT_PRODUCT,
+const editDiaryProduct = data => ({
+  type: types.EDIT_DIARY_PRODUCT,
   payload: data
 });
 
-const deleteProduct = data => ({
-  type: types.DELETE_PRODUCT,
+const deleteDiaryProduct = data => ({
+  type: types.DELETE_DIARY_PRODUCT,
   payload: data
 });
 
@@ -46,16 +50,41 @@ const substractDay = date => ({
   payload: date
 });
 
+const addPersonalProduct = data => ({
+  type: types.ADD_PERSONAL_PRODUCT,
+  payload: data
+});
+
+const editPersonalProduct = data => ({
+  type: types.EDIT_PERSONAL_PRODUCT,
+  payload: data
+});
+
+const deletePersonalProduct = data => ({
+  type: types.DELETE_PERSONAL_PRODUCT,
+  payload: data
+});
+
 export default {
   fetchHome,
   fetchError,
+
+  getUserProducts,
   searchProducts,
+  searchProductsMessage,
+
   selectProduct,
   selectMeal,
-  addProduct,
-  editProduct,
-  deleteProduct,
+
+  addDiaryProduct,
+  editDiaryProduct,
+  deleteDiaryProduct,
+
   addDay,
   substractDay,
-  setDay
+  setDay,
+
+  addPersonalProduct,
+  editPersonalProduct,
+  deletePersonalProduct
 };

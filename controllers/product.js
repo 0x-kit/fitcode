@@ -14,11 +14,20 @@ exports.searchProducts = async (req, res) => {
   }
 };
 
+exports.getUserProducts = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const docs = await Product.find({ user: userId }).select('_id name brand calories carbs proteins fats user');
+
+    res.status(200).json(docs);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
 exports.getProducts = async (req, res) => {
   try {
-    const docs = await Product.find({}).select(
-      '_id'
-    );
+    const docs = await Product.find({}).select('_id name brand user');
     const response = {
       count: docs.length,
       Products: docs.map(doc => {
@@ -42,14 +51,10 @@ exports.getProducts = async (req, res) => {
 exports.readProduct = async (req, res) => {
   try {
     const productId = req.params.productId;
-    const product = await Product.findById(productId).select(
-      '_id name brand calories carbs proteins fats'
-    );
+    const product = await Product.findById(productId).select('_id name brand calories carbs proteins fats');
 
     if (!product) {
-      return res
-        .status(404)
-        .json({ message: 'Not valid entry found for provided ID' });
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
       return res.status(200).json({
         product: product
@@ -66,18 +71,7 @@ exports.createProduct = async (req, res) => {
 
     await newProduct.save();
 
-    res.status(201).json({
-      message: 'Created product sucessfully',
-      product: {
-        id: newProduct._id,
-        name: newProduct.name,
-        brand: newProduct.brand,
-        calories: newProduct.calories,
-        carbs: newProduct.carbs,
-        proteins: newProduct.proteins,
-        fats: newProduct.fats
-      }
-    });
+    res.status(201).json(newProduct);
   } catch (err) {
     res.status(422).json({ error: err.message });
   }
@@ -87,15 +81,11 @@ exports.deleteProduct = async (req, res) => {
   try {
     const productId = req.params.productId;
     const product = await Product.findByIdAndRemove(productId);
-
+    console.log(product);
     if (!product) {
-      return res
-        .status(404)
-        .json({ message: 'Not valid entry found for provided ID' });
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json({
-        message: 'Product deleted'
-      });
+      return res.status(200).json(product._id);
     }
   } catch (err) {
     res.status(500).json({ error: err });
@@ -107,23 +97,15 @@ exports.updateProduct = async (req, res) => {
     let productId = req.params.productId;
     let newProps = req.body;
 
-    const productUpdated = await Product.findByIdAndUpdate(
-      productId,
-      newProps,
-      {
-        new: true,
-        runValidators: true
-      }
-    );
+    const productUpdated = await Product.findByIdAndUpdate(productId, newProps, {
+      new: true,
+      runValidators: true
+    });
 
     if (!productUpdated) {
-      return res
-        .status(404)
-        .json({ message: 'Not valid entry found for provided ID' });
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res
-        .status(200)
-        .json({ message: 'Product updated!', product: productUpdated });
+      return res.status(200).json(productUpdated);
     }
   } catch (err) {
     res.status(422).json({ error: err });

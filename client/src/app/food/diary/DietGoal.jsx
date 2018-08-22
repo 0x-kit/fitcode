@@ -38,8 +38,8 @@ const DietGoal = props => {
   const { mealsData, goalsData, loading } = props;
   let remaining, goalMacros;
 
-  if (goalsData.goals !== undefined) {
-    goalMacros = goalsData.goals.macros;
+  if (goalsData !== undefined) {
+    goalMacros = goalsData.macros;
     remaining = HomeUtils.macrosRemaining(mealsData, goalMacros);
   } else {
     goalMacros = {};
@@ -50,7 +50,7 @@ const DietGoal = props => {
     <div>
       {!loading && (
         <div>
-          <Card.Group stackable itemsPerRow="2" centered style={{ marginTop: 10}}>
+          <Card.Group stackable itemsPerRow="2" centered style={{ marginTop: 12}}>
             <Card raised>
               <Card.Content header="Goal" textAlign="center" />
               <Card.Content textAlign="center" extra>

@@ -14,6 +14,14 @@ router
 
   /** Basic crud */
 
-  .get('/:userId/goals', UsersController.getGoals);
+  .get('/:userId/goals', UsersController.getGoals)
+
+  // .get('/:userId/currentweight', UsersController.getCurrentWeight)
+
+  .put('/:userId/macros', UsersController.setMacros)
+
+  .put('/:userId/currentweight', UsersController.setCurrentWeight)
+
+  .put('/:userId/goalweight', UsersController.setGoalWeight);
 
 module.exports = router;

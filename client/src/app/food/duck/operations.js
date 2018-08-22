@@ -1,18 +1,24 @@
 import ActionCreators from './actions';
 import axios from 'axios';
+import _ from 'lodash';
 
 const {
   fetchHome,
   fetchError,
+  getUserProducts,
   searchProducts,
+  searchProductsMessage,
   selectProduct,
   selectMeal,
-  addProduct,
-  editProduct,
-  deleteProduct,
+  addDiaryProduct,
+  editDiaryProduct,
+  deleteDiaryProduct,
   addDay,
   substractDay,
-  setDay
+  setDay,
+  addPersonalProduct,
+  editPersonalProduct,
+  deletePersonalProduct
 } = ActionCreators;
 
 const complexFetchHome = date => async dispatch => {
@@ -35,21 +41,31 @@ const complexFetchHome = date => async dispatch => {
   }
 };
 
-const complexSearchProducts = term => async dispatch => {
+const complexSearchProducts = (term, init = false) => async dispatch => {
   try {
+    let response,
+      count,
+      message = '';
     const token = localStorage.getItem('token');
-
+    const userId = localStorage.getItem('userId');
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.get(`/api/product/search?like=${term}`, reqConfig);
+    if (!init && !_.isEmpty(term)) {
+      response = await axios.get(`/api/product/search?like=${term}`, reqConfig);
+      count = response.data.length;
+      message = count === 0 ? 'Not found' : `${count} products found`;
+    } else {
+      response = await axios.get(`/api/product/user/${userId}`, reqConfig);
+    }
 
     dispatch(searchProducts(response.data));
+    dispatch(searchProductsMessage(message));
   } catch (error) {
     dispatch(fetchError(error.message));
   }
 };
 
-const complexAddProducts = (mealId, product) => async dispatch => {
+const complexAddDiaryProduct = (mealId, product) => async dispatch => {
   try {
     const token = localStorage.getItem('token');
 
@@ -57,13 +73,13 @@ const complexAddProducts = (mealId, product) => async dispatch => {
 
     const response = await axios.post(`/api/diary/${mealId}/product`, product, reqConfig);
 
-    dispatch(addProduct(response.data));
+    dispatch(addDiaryProduct(response.data));
   } catch (error) {
     dispatch(fetchError(error.message));
   }
 };
 
-const complexEditProducts = (mealId, product) => async dispatch => {
+const complexEditDiaryProduct = (mealId, product) => async dispatch => {
   try {
     const token = localStorage.getItem('token');
 
@@ -71,13 +87,13 @@ const complexEditProducts = (mealId, product) => async dispatch => {
 
     const response = await axios.put(`/api/diary/${mealId}/product`, product, reqConfig);
 
-    dispatch(editProduct(response.data));
+    dispatch(editDiaryProduct(response.data));
   } catch (error) {
     dispatch(fetchError(error.message));
   }
 };
 
-const complexDeleteProducts = (mealId, product) => async dispatch => {
+const complexDeleteDiaryProduct = (mealId, product) => async dispatch => {
   try {
     const token = localStorage.getItem('token');
 
@@ -87,7 +103,7 @@ const complexDeleteProducts = (mealId, product) => async dispatch => {
 
     const response = await axios.delete(`/api/diary/${mealId}/product/${productId}`, reqConfig);
 
-    dispatch(deleteProduct(response.data));
+    dispatch(deleteDiaryProduct(response.data));
   } catch (error) {
     dispatch(fetchError(error.message));
   }
@@ -99,15 +115,83 @@ const complexSubstractDay = date => async dispatch => dispatch(substractDay(date
 
 const complexSetDay = date => async dispatch => dispatch(setDay(date));
 
+const complexGetUserProducts = () => async dispatch => {
+  try {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.get(`/api/product/user/${userId}`, reqConfig);
+
+    // const count = response.data.length;
+    // const message = count === 0 ? 'Not found' : `${count} products found`;
+
+    dispatch(getUserProducts(response.data));
+    // dispatch(searchProductsMessage(message));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
+const complexEditPersonalProduct = (productId, product) => async dispatch => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.put(`/api/product/${productId}`, product, reqConfig);
+
+    dispatch(editPersonalProduct([response.data]));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
+const complexDeletePersonalProduct = productId => async dispatch => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.delete(`/api/product/${productId}`, reqConfig);
+
+    dispatch(deletePersonalProduct(response.data));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
+const complexAddPersonalProduct = product => async dispatch => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.post('/api/product/', product, reqConfig);
+
+    dispatch(addPersonalProduct([response.data]));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
 export default {
   complexFetchHome,
+  complexGetUserProducts,
   complexSearchProducts,
   selectProduct,
   selectMeal,
-  complexAddProducts,
-  complexEditProducts,
-  complexDeleteProducts,
+
+  complexAddDiaryProduct,
+  complexEditDiaryProduct,
+  complexDeleteDiaryProduct,
+
   complexAddDay,
   complexSubstractDay,
-  complexSetDay
+  complexSetDay,
+
+  complexEditPersonalProduct,
+  complexDeletePersonalProduct,
+  complexAddPersonalProduct
 };

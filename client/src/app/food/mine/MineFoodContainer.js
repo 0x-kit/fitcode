@@ -5,14 +5,13 @@ import { compose, lifecycle } from 'recompose';
 import { homeOperations } from 'app/food/duck';
 
 import withAuth from 'app/common/withAuth';
-import SearchFood from 'app/food/diary/add/SearchFood.jsx';
+import MineFood from 'app/food/mine/MineFood.jsx';
 
 const mapStateToProps = state => {
   // Return an object that will show up as props inside Home
   return {
-    products: state.food.products,
+    userProducts: state.food.userProducts,
     selectedProduct: state.food.selectedProduct,
-    selectedMeal: state.food.selectedMeal,
     loading: state.food.loading,
     errorMessage: state.food.errorMessage,
     searchMessage: state.food.searchMessage
@@ -31,7 +30,7 @@ export default compose(
   withAuth,
   lifecycle({
     componentDidMount() {
-      this.props.complexSearchProducts('', true);
+      this.props.complexGetUserProducts();
     }
   })
-)(SearchFood);
+)(MineFood);

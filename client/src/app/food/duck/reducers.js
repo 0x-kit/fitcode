@@ -7,12 +7,15 @@ const INITIAL_STATE = {
   goals: {},
 
   products: [],
+  userProducts: {},
+
   selectedProduct: {},
   selectedMeal: {},
   selectedGrams: {},
 
   loading: true,
   errorMessage: '',
+  searchMessage: '',
 
   date: moment()
 };
@@ -48,10 +51,24 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         errorMessage: action.payload
       };
 
+    case types.USER_PRODUCTS:
+      return {
+        ...state,
+        userProducts: _.mapKeys(action.payload, '_id'),
+        loading: false
+      };
+
     case types.SEARCH_PRODUCTS:
       return {
         ...state,
         products: action.payload,
+        loading: false
+      };
+
+    case types.SEARCH_PRODUCTS_MESSAGE:
+      return {
+        ...state,
+        searchMessage: action.payload,
         loading: false
       };
 
@@ -70,14 +87,14 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         loading: false
       };
 
-    case types.EDIT_PRODUCT:
+    case types.EDIT_DIARY_PRODUCT:
       return {
         ...state,
         meals: { ...state.meals, ..._.mapKeys(action.payload, '_id') },
         loading: false
       };
 
-    case types.DELETE_PRODUCT:
+    case types.DELETE_DIARY_PRODUCT:
       return {
         ...state,
         meals: { ...state.meals, ..._.mapKeys(action.payload, '_id') },
@@ -102,6 +119,27 @@ const foodReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         date: action.payload
+      };
+
+    case types.EDIT_PERSONAL_PRODUCT:
+      return {
+        ...state,
+        userProducts: { ...state.userProducts, ..._.mapKeys(action.payload, '_id') },
+        loading: false
+      };
+
+    case types.DELETE_PERSONAL_PRODUCT:
+      return {
+        ...state,
+        userProducts: _.omit(state.userProducts, action.payload),
+        loading: false
+      };
+
+    case types.ADD_PERSONAL_PRODUCT:
+      return {
+        ...state,
+        userProducts: { ...state.userProducts, ..._.mapKeys(action.payload, '_id') },
+        loading: false
       };
 
     default:

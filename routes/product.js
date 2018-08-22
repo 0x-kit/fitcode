@@ -4,6 +4,8 @@ const ProductsController = require('../controllers/product');
 router
   .get('/search', ProductsController.searchProducts)
 
+  .get('/user/:userId', ProductsController.getUserProducts)
+
   .get('/', ProductsController.getProducts)
 
   .get('/:productId', ProductsController.readProduct)
