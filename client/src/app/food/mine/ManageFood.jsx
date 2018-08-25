@@ -16,9 +16,10 @@ class ManageFood extends Component {
 
   onSubmit = values => {
     const { selectedProduct } = this.props;
+
     const { name, brand, calories, proteins, carbs, fats } = values;
 
-    const newProduct = {
+    let newProduct = {
       name,
       brand,
       calories,
@@ -30,7 +31,8 @@ class ManageFood extends Component {
     if (this.state.deleteProduct === false) {
       this.props.complexEditPersonalProduct(selectedProduct._id, newProduct);
     } else {
-      this.props.complexDeletePersonalProduct(selectedProduct._id);
+      newProduct.user = null;
+      this.props.complexDeletePersonalProduct(selectedProduct._id, newProduct);
     }
 
     this.handleClose();
@@ -75,6 +77,7 @@ class ManageFood extends Component {
 
   render() {
     const { handleSubmit, openModal } = this.props;
+    const buttonStyle = { width: 155, marginBottom: 10, marginTop: 10 };
     return (
       <Modal style={{ width: 350, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
         <Header subheader="Enter the nutritional info " content="Edit Your Food" />
@@ -129,17 +132,11 @@ class ManageFood extends Component {
               maxLength="7"
             />
 
+            <Button style={buttonStyle} size="tiny" secondary content="Edit" floated="right" />
             <Button
-              style={{ width: 75, marginBottom: 10, marginTop: 10 }}
+              style={buttonStyle}
               size="tiny"
-              primary
-              content="Edit"
-              floated="right"
-            />
-            <Button
-              style={{ width: 75, marginBottom: 10, marginTop: 10 }}
-              size="tiny"
-              negative
+              delete
               content="Delete"
               floated="left"
               onClick={() => {

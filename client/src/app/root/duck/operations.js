@@ -21,6 +21,7 @@ const complexSignUp = (formProps, redirect) => async dispatch => {
 const complexSignin = (formProps, redirect) => async dispatch => {
   try {
     const response = await axios.post('api/auth/signin', formProps);
+
     dispatch(signin(response.data.token));
     //  persist auth state
     localStorage.setItem('token', response.data.token);

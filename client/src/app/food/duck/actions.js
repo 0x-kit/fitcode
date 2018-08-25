@@ -1,8 +1,21 @@
 import types from './types';
 
+const loading = flag => ({
+  type: types.LOADING,
+  payload: flag
+});
+
 const fetchError = error => ({ type: types.FETCH_HOME_ERROR, payload: error });
 
-const fetchHome = (mealData, goalData) => ({ type: types.FETCH_HOME, payload: { mealData, goalData } });
+const setMeals = meals => ({
+  type: types.SET_MEALS,
+  payload: meals
+});
+
+const setMacros = macros => ({
+  type: types.SET_MACROS,
+  payload: macros
+});
 
 const getUserProducts = data => ({ type: types.USER_PRODUCTS, payload: data });
 
@@ -66,8 +79,10 @@ const deletePersonalProduct = data => ({
 });
 
 export default {
-  fetchHome,
+  loading,
   fetchError,
+  setMeals,
+  setMacros,
 
   getUserProducts,
   searchProducts,

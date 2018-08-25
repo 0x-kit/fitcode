@@ -25,7 +25,7 @@ export default compose(
   ),
   withAuth,
   lifecycle({
-    componentDidMount() {
+    componentDidMount(prevProps) {
       this.props.complexFetchGoals();
     }
   })

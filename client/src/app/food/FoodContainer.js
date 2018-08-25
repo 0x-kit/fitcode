@@ -10,14 +10,17 @@ import Food from 'app/food/Food.jsx';
 
 const mapStateToProps = state => {
   return {
-    goalsData: state.food.goals,
     mealsData: state.food.meals,
     loading: state.food.loading,
+    macros: state.food.macros,
+
     selectedProduct: state.food.selectedProduct,
     selectedMeal: state.food.selectedMeal,
     selectedGrams: state.food.selectedGrams,
+
     date: state.food.date,
-    errorMessage: state.food.errorMessage
+    errorMessage: state.food.errorMessage,
+    editMode: state.auth.editMode
   };
 };
 

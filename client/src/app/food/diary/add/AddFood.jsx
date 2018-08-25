@@ -21,7 +21,7 @@ class AddFood extends Component {
     };
 
     this.handleClose();
-    this.props.complexAddDiaryProduct(selectedMeal.mealId, newProduct);
+    this.props.complexAddDiaryProduct(selectedMeal.mealId, newProduct, selectedProduct.user);
   };
 
   renderMacros = (product, serving) => {
@@ -83,7 +83,7 @@ class AddFood extends Component {
 
   render() {
     const { selectedProduct, serving, handleSubmit, openModal } = this.props;
-    const buttonStyle = { marginBottom: 5, marginTop: 5 };
+    const buttonStyle = { marginBottom: 10, width: 272 };
     const modalStyle = { width: 300, textAlign: 'center' };
 
     return (
@@ -102,7 +102,7 @@ class AddFood extends Component {
               maxLength="7"
             />
 
-            <Button style={buttonStyle} primary content="Add" floated="right" />
+            <Button style={buttonStyle} size="small" compact secondary content="Add" floated="right" />
           </Form>
         </Modal.Actions>
       </Modal>

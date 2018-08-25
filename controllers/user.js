@@ -163,7 +163,7 @@ exports.setGoalWeight = async (req, res) => {
 
     const goals = await User.findByIdAndUpdate(
       userId,
-      { $set: { 'goals.goalWeight': weight.goalWeight } },
+      { $set: { 'goals.goalWeight': weight.weight } },
       {
         new: true,
         runValidators: true
@@ -173,7 +173,7 @@ exports.setGoalWeight = async (req, res) => {
     if (!goals) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json(goals.goals.goalWeight);
+      return res.status(200).json(goals.goals);
     }
   } catch (err) {
     console.log(err);

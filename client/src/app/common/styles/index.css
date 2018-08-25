@@ -31,4 +31,34 @@
   text-align: left;
 }
 
+/* .prueba2.ui.statistic > .value, */
+.prueba2.ui.statistics .statistic > .value {
+  font-size: 0.7rem !important;
+}
 
+.prueba2.ui.statistics > .statistic {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.prueba2.ui.statistics.prueba2 {
+  margin: 0;
+}
+
+.label.macrosLabel {
+  width: 5.7em;
+  text-align: center;
+}
+
+.label.macrosLabelContent {
+  width: 3.5em;
+  text-align: center;
+}
+
+.label.weightLabel {
+  width: 9.5em;
+  text-align: center;
+}
+
+@media (min-width: 370px) {
+}

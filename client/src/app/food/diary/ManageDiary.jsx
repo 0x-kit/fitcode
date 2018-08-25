@@ -95,7 +95,7 @@ class ManageDiary extends Component {
   render() {
     const { selectedProduct, serving, handleSubmit, openModal } = this.props;
 
-    const buttonStyle = { width: 75, marginBottom: 10, marginTop: 10 };
+    const buttonStyle = { width: 130, marginBottom: 10, marginTop: 10 };
     const modalStyle = { width: 300, textAlign: 'center' };
     return (
       <Modal style={modalStyle} open={openModal} onClose={this.handleClose} size="mini">
@@ -113,11 +113,10 @@ class ManageDiary extends Component {
               maxLength="7"
             />
 
-            <Button style={buttonStyle} size="tiny" primary content="Edit" floated="right" />
+            <Button style={buttonStyle} size="tiny" secondary content="Edit" floated="right" />
             <Button
               style={buttonStyle}
               size="tiny"
-              negative
               content="Delete"
               floated="left"
               onClick={() => {

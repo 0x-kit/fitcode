@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import queryString from 'query-string';
 import AddFood from 'app/food/diary/add/AddFood.jsx';
-import _ from 'lodash';
 
-import { Card, Input, List, Header, Responsive, Container, Segment, Form, Dimmer, Loader } from 'semantic-ui-react';
+import { Card, Input, List, Header, Responsive, Container, Segment, Form, Transition } from 'semantic-ui-react';
 
 class SearchFood extends Component {
   state = { modalOpen: false };
@@ -31,12 +30,33 @@ class SearchFood extends Component {
   };
 
   renderField = field => {
-    return <Input fluid size="medium" icon="search" type="text" placeholder="Search..." {...field.input} />;
+    const {
+      meta: { touched, error }
+    } = field;
+
+    let validateError = false;
+
+    if (touched && error) {
+      validateError = true;
+    }
+
+    return (
+      <Form.Field>
+        <Input fluid size="medium" icon="search" type="text" placeholder="Search..." {...field.input} />
+        {validateError ? (
+          <Header as="label" color="red" size="tiny" textAlign="center">
+            {error}
+          </Header>
+        ) : (
+          ''
+        )}
+      </Form.Field>
+    );
   };
 
   renderProductList(products) {
     return (
-      <List divided relaxed selection>
+      <Transition.Group as={List} duration={700} animation="fade" divided relaxed selection>
         {products.map(product => {
           const { _id, name, brand, calories, proteins, carbs, fats } = product;
           return (
@@ -59,7 +79,7 @@ class SearchFood extends Component {
             </List.Item>
           );
         })}
-      </List>
+      </Transition.Group>
     );
   }
 
@@ -70,46 +90,51 @@ class SearchFood extends Component {
 
     return (
       <Responsive as={Container}>
-        {_.isEmpty(products) ? (
-          <Dimmer active>
-            <Loader>Loading</Loader>
-          </Dimmer>
-        ) : (
-          <Segment padded>
+        <Segment padded>
+          <Card raised fluid>
+            <Card.Content textAlign="center">
+              <Header size="medium">
+                Search our food database by name or brand
+                <Header.Subheader>{selectedMeal.part}</Header.Subheader>
+                <Header.Subheader>{searchMessage}</Header.Subheader>
+              </Header>
+            </Card.Content>
+
+            <Card.Content>
+              <Form onSubmit={handleSubmit(this.onSubmit)}>
+                <Field name="term" component={this.renderField} />
+              </Form>
+            </Card.Content>
+          </Card>
+
+          {products.length !== 0 && (
             <Card raised fluid>
-              <Card.Content textAlign="center">
-                <Header size="medium">
-                  Search our food database by name
-                  <Header.Subheader>{selectedMeal.part}</Header.Subheader>
-                  <Header.Subheader>{searchMessage}</Header.Subheader>
-                </Header>
-              </Card.Content>
-
-              <Card.Content>
-                <Form onSubmit={handleSubmit(this.onSubmit)}>
-                  <Field name="term" component={this.renderField} />
-                </Form>
-              </Card.Content>
+              <Card.Content>{this.renderProductList(products)}</Card.Content>
             </Card>
+          )}
 
-            {products.length !== 0 && (
-              <Card raised fluid>
-                <Card.Content>{this.renderProductList(products)}</Card.Content>
-              </Card>
-            )}
-
-            <AddFood
-              complexAddDiaryProduct={this.props.complexAddDiaryProduct}
-              openModal={modalOpen}
-              handleModal={this.handleModal}
-              selectedProduct={selectedProduct}
-              selectedMeal={selectedMeal}
-            />
-          </Segment>
-        )}
+          <AddFood
+            complexAddDiaryProduct={this.props.complexAddDiaryProduct}
+            openModal={modalOpen}
+            handleModal={this.handleModal}
+            selectedProduct={selectedProduct}
+            selectedMeal={selectedMeal}
+          />
+        </Segment>
       </Responsive>
     );
   }
 }
 
-export default reduxForm({ form: 'search' })(SearchFood);
+const validate = values => {
+  const errors = {};
+  const required = 'Required field';
+
+  if (!values.term) {
+    errors.term = required;
+  }
+
+  return errors;
+};
+
+export default reduxForm({ validate, form: 'search' })(SearchFood);

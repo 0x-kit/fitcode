@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
-import { Segment, Container, Header, Button, Form, Input } from 'semantic-ui-react';
+import {
+  Segment,
+  Container,
+  Header,
+  Button,
+  Form,
+  Input,
+  Statistic,
+  Card,
+  Grid,
+  Label,
+  Transition
+} from 'semantic-ui-react';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -16,6 +28,7 @@ class Macros extends Component {
       maxLength,
       type,
       labelInput,
+
       meta: { touched, error }
     } = field;
 
@@ -27,15 +40,21 @@ class Macros extends Component {
 
     return (
       <Form.Field>
-        <label>{labelInput}</label>
         <Input
-          label={label}
           labelPosition={labelPosition}
           placeholder={placeholder}
           type={type}
           maxLength={maxLength}
           {...field.input}
-        />
+        >
+          <Label className="macrosLabel" basic>
+            {labelInput}
+          </Label>
+          <input style={{ textAlign: 'center' }} />
+          <Label className="macrosLabelContent" basic>
+            {label.content}
+          </Label>
+        </Input>
         {validateError ? (
           <Header as="label" color="red" size="tiny" textAlign="center">
             {error}
@@ -47,12 +66,16 @@ class Macros extends Component {
     );
   };
   render() {
-    const buttonStyle = { marginTop: '10px' };
-    const { handleSubmit } = this.props;
-
+    const buttonStyle = { marginTop: '15px', width: '275px' };
+    const { handleSubmit, loading } = this.props;
     return (
       <Container>
         <Segment padded="very">
+          <Transition visible={!loading} animation="fade" duration={700}>
+            <Card fluid raised style={{ padding: 15, marginBottom: '2.5em' }}>
+              {StatisticExampleGroup(this.props.macros)}
+            </Card>
+          </Transition>
           <Form onSubmit={handleSubmit(this.onSubmit)}>
             <Form.Group widths={2}>
               <Field
@@ -98,15 +121,36 @@ class Macros extends Component {
                 labelPosition="right"
               />
             </Form.Group>
-            <Button style={buttonStyle} secondary>
-              Set Macros
-            </Button>
+            <Card.Group centered>
+              <Button secondary style={buttonStyle}>
+                Update
+              </Button>
+            </Card.Group>
           </Form>
         </Segment>
       </Container>
     );
   }
 }
+
+const StatisticExampleGroup = macros => (
+  <Grid textAlign="center">
+    <Grid.Row>
+      <Grid.Column computer={4} tablet={4} mobile={8}>
+        <Statistic value={macros.calories} label="Calories" size="tiny" />
+      </Grid.Column>
+      <Grid.Column computer={4} tablet={4} mobile={8}>
+        <Statistic value={macros.proteins} label="Proteins" size="tiny" />
+      </Grid.Column>
+      <Grid.Column computer={4} tablet={4} mobile={8}>
+        <Statistic value={macros.carbs} label="Carbs" size="tiny" />
+      </Grid.Column>
+      <Grid.Column computer={4} tablet={4} mobile={8}>
+        <Statistic value={macros.fats} label="Fats" size="tiny" />
+      </Grid.Column>
+    </Grid.Row>
+  </Grid>
+);
 
 const validate = values => {
   const errors = {};

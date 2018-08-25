@@ -16,6 +16,7 @@ router
 
   .get('/:userId/goals', UsersController.getGoals)
 
+
   // .get('/:userId/currentweight', UsersController.getCurrentWeight)
 
   .put('/:userId/macros', UsersController.setMacros)

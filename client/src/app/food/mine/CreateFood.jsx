@@ -20,7 +20,7 @@ class CreateFood extends Component {
       fats,
       user: localStorage.getItem('userId')
     };
-    console.log(newProduct);
+    // console.log(newProduct);
     this.props.complexAddPersonalProduct(newProduct);
 
     this.handleClose();
@@ -65,6 +65,7 @@ class CreateFood extends Component {
 
   render() {
     const { handleSubmit, openModal } = this.props;
+    const buttonStyle = { marginBottom: 10, width: 322 };
     return (
       <Modal style={{ width: 350, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
         <Header subheader="Enter the nutritional info " content="Create Your Food" />
@@ -119,14 +120,7 @@ class CreateFood extends Component {
               maxLength="7"
             />
 
-            <Button
-              style={{ marginBottom: 10, marginTop: 0 }}
-              size="small"
-              compact
-              primary
-              content="Create"
-              floated="right"
-            />
+            <Button style={buttonStyle} size="small" secondary content="Add"/>
           </Form>
         </Modal.Actions>
       </Modal>

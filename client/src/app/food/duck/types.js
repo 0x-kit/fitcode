@@ -1,7 +1,8 @@
-const FETCH_GOALS = 'fetch_goals';
-const FETCH_MEALS = 'fetch_meals';
 const FETCH_HOME_ERROR = 'fetch_home_error';
-const FETCH_HOME = 'fetch_home';
+const LOADING = 'loading';
+
+const SET_MEALS = 'set_meals';
+const SET_MACROS = 'set_macros';
 
 const USER_PRODUCTS = 'user_products';
 const SEARCH_PRODUCTS = 'search_products';
@@ -24,10 +25,10 @@ const ADD_DAY = 'add_day';
 const SUBSTRACT_DAY = 'substract_day';
 
 export default {
-  FETCH_GOALS,
-  FETCH_MEALS,
-  FETCH_HOME,
+  LOADING,
   FETCH_HOME_ERROR,
+  SET_MEALS,
+  SET_MACROS,
 
   USER_PRODUCTS,
   SEARCH_PRODUCTS,

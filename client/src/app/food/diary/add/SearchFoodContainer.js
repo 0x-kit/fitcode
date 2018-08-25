@@ -31,7 +31,10 @@ export default compose(
   withAuth,
   lifecycle({
     componentDidMount() {
-      this.props.complexSearchProducts('', true);
+      this.props.complexSearchProducts(null, true);
+    },
+    componentWillMount() {
+      this.props.complexSearchProducts(null, true);
     }
   })
 )(SearchFood);

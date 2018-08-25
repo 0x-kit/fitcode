@@ -51,7 +51,7 @@ exports.getProducts = async (req, res) => {
 exports.readProduct = async (req, res) => {
   try {
     const productId = req.params.productId;
-    const product = await Product.findById(productId).select('_id name brand calories carbs proteins fats');
+    const product = await Product.findById(productId).select('_id name brand calories carbs proteins fats user');
 
     if (!product) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
@@ -108,6 +108,7 @@ exports.updateProduct = async (req, res) => {
       return res.status(200).json(productUpdated);
     }
   } catch (err) {
+    console.log(err);
     res.status(422).json({ error: err });
   }
 };

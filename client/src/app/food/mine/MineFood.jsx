@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ManageFood from 'app/food/mine/ManageFood.jsx';
 import CreateFood from 'app/food/mine/CreateFood.jsx';
 import _ from 'lodash';
-import { Card, List, Header, Responsive, Container, Segment, Button } from 'semantic-ui-react';
+import { Card, List, Header, Responsive, Container, Segment, Button, Transition } from 'semantic-ui-react';
 
 class MineFood extends Component {
   state = { manageModal: false, createModal: false };
@@ -19,7 +19,7 @@ class MineFood extends Component {
   renderProductList(products) {
     const productsArr = _.map(products);
     return (
-      <List divided relaxed selection>
+      <Transition.Group as={List} duration={700} animation="fade" divided relaxed selection>
         {productsArr.map(product => {
           const { _id, name, brand, calories, proteins, carbs, fats } = product;
           return (
@@ -42,7 +42,7 @@ class MineFood extends Component {
             </List.Item>
           );
         })}
-      </List>
+      </Transition.Group>
     );
   }
 
@@ -60,7 +60,7 @@ class MineFood extends Component {
             </Card.Content>
             <Card.Content>{this.renderProductList(userProducts)}</Card.Content>
             <Card.Content extra>
-              <Button onClick={() => this.handleCreateModal(true)} size="small" compact primary>
+              <Button secondary onClick={() => this.handleCreateModal(true)} size="small" compact primary>
                 Create Food
               </Button>
             </Card.Content>

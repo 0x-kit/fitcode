@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 const INITIAL_STATE = {
   meals: {},
-  goals: {},
+  macros: {},
 
   products: [],
   userProducts: {},
@@ -22,97 +22,35 @@ const INITIAL_STATE = {
 
 const foodReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case types.FETCH_HOME:
+    /*** food/diary ***/
+    case types.LOADING:
       return {
         ...state,
-        goals: action.payload.goalData,
-        meals: _.mapKeys(action.payload.mealData, '_id'),
-        loading: false
+        loading: action.payload
       };
 
-    case types.FETCH_GOALS:
+    case types.SET_MEALS:
       return {
         ...state,
-        goals: action.payload,
-        loading: false
+        meals: _.mapKeys(action.payload, '_id')
       };
 
-    case types.FETCH_MEALS:
+    case types.SET_MACROS:
       return {
         ...state,
-        meals: _.mapKeys(action.payload, '_id'),
-        loading: false
-      };
-
-    case types.FETCH_HOME_ERROR:
-      return {
-        ...state,
-        loading: false,
-        errorMessage: action.payload
-      };
-
-    case types.USER_PRODUCTS:
-      return {
-        ...state,
-        userProducts: _.mapKeys(action.payload, '_id'),
-        loading: false
-      };
-
-    case types.SEARCH_PRODUCTS:
-      return {
-        ...state,
-        products: action.payload,
-        loading: false
-      };
-
-    case types.SEARCH_PRODUCTS_MESSAGE:
-      return {
-        ...state,
-        searchMessage: action.payload,
-        loading: false
-      };
-
-    case types.SELECT_PRODUCT:
-      return {
-        ...state,
-        selectedProduct: action.payload.product,
-        selectedGrams: action.payload.grams,
-        loading: false
-      };
-
-    case types.SELECT_MEAL:
-      return {
-        ...state,
-        selectedMeal: action.payload,
-        loading: false
-      };
-
-    case types.EDIT_DIARY_PRODUCT:
-      return {
-        ...state,
-        meals: { ...state.meals, ..._.mapKeys(action.payload, '_id') },
-        loading: false
-      };
-
-    case types.DELETE_DIARY_PRODUCT:
-      return {
-        ...state,
-        meals: { ...state.meals, ..._.mapKeys(action.payload, '_id') },
-        loading: false
+        macros: action.payload
       };
 
     case types.ADD_DAY:
       return {
         ...state,
-        date: action.payload,
-        loading: false
+        date: action.payload
       };
 
     case types.SUBSTRACT_DAY:
       return {
         ...state,
-        date: action.payload,
-        loading: false
+        date: action.payload
       };
 
     case types.SET_DAY:
@@ -121,26 +59,78 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         date: action.payload
       };
 
+    case types.EDIT_DIARY_PRODUCT:
+      return {
+        ...state,
+        meals: { ...state.meals, ..._.mapKeys(action.payload, '_id') }
+      };
+
+    case types.DELETE_DIARY_PRODUCT:
+      return {
+        ...state,
+        meals: { ...state.meals, ..._.mapKeys(action.payload, '_id') }
+      };
+
+    case types.SELECT_MEAL:
+      return {
+        ...state,
+        selectedMeal: action.payload
+      };
+
+    case types.FETCH_HOME_ERROR:
+      return {
+        ...state,
+        loading: false,
+        errorMessage: action.payload
+      };
+    /*** end food/diary ***/
+
+    /*** food/diary/add ***/
+    case types.USER_PRODUCTS:
+      return {
+        ...state,
+        userProducts: _.mapKeys(action.payload, '_id')
+      };
+
+    case types.SEARCH_PRODUCTS:
+      return {
+        ...state,
+        products: action.payload
+      };
+
+    case types.SEARCH_PRODUCTS_MESSAGE:
+      return {
+        ...state,
+        searchMessage: action.payload
+      };
+
+    case types.SELECT_PRODUCT:
+      return {
+        ...state,
+        selectedProduct: action.payload.product,
+        selectedGrams: action.payload.grams
+      };
+    /*** end food/diary/add ***/
+
+    /*** food/mine ***/
     case types.EDIT_PERSONAL_PRODUCT:
       return {
         ...state,
-        userProducts: { ...state.userProducts, ..._.mapKeys(action.payload, '_id') },
-        loading: false
+        userProducts: { ...state.userProducts, ..._.mapKeys(action.payload, '_id') }
       };
 
     case types.DELETE_PERSONAL_PRODUCT:
       return {
         ...state,
-        userProducts: _.omit(state.userProducts, action.payload),
-        loading: false
+        userProducts: _.omit(state.userProducts, action.payload)
       };
 
     case types.ADD_PERSONAL_PRODUCT:
       return {
         ...state,
-        userProducts: { ...state.userProducts, ..._.mapKeys(action.payload, '_id') },
-        loading: false
+        userProducts: { ...state.userProducts, ..._.mapKeys(action.payload, '_id') }
       };
+    /*** end food/mine ***/
 
     default:
       return state;

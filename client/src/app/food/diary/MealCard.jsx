@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, List, Button } from 'semantic-ui-react';
+import { Card, List, Button, Transition, Statistic, Segment, Grid } from 'semantic-ui-react';
 import HomeUtils from 'app/food/HomeUtils';
 import ManageDiaryFood from 'app/food/diary/ManageDiary.jsx';
 import { Link } from 'react-router-dom';
@@ -57,15 +57,14 @@ class MealCards extends Component {
 
 const mealProductList = (productsArr = [], mealId, selectProduct) => {
   return (
-    <List divided selection>
-      {productsArr.map(product => {
+    <Transition.Group as={List} duration={700} animation="fade" selection divided>
+      {productsArr.filter(product => product.product !== null).map(product => {
         const {
           _id,
           product: { name, brand }
         } = product;
 
         const { calories, proteins, carbs, fats, grams } = HomeUtils.macrosPerProduct(product);
-
         return (
           <List.Item
             key={_id}
@@ -86,7 +85,7 @@ const mealProductList = (productsArr = [], mealId, selectProduct) => {
           </List.Item>
         );
       })}
-    </List>
+    </Transition.Group>
   );
 };
 
@@ -108,7 +107,7 @@ const mealSummaryList = (macrosPerMeal, match, mealLabel, mealId) => {
       search: `?meal=${mealLabel}&id=${mealId}`
     };
     return (
-      <Button as={Link} to={newRoute} size="small" compact primary>
+      <Button secondary as={Link} to={newRoute} size="small" compact primary>
         Add Food
       </Button>
     );
@@ -121,6 +120,17 @@ const mealSummaryList = (macrosPerMeal, match, mealLabel, mealId) => {
         {renderAddButton(match, mealLabel, mealId)}
       </List.Item>
     </List>
+  );
+};
+
+const prueba = (calories, proteins, carbs, fats) => {
+  return (
+    <Statistic.Group className="prueba2">
+      <Statistic value="KCAL" label={calories} />
+      <Statistic value="P" label={proteins} />
+      <Statistic value="C" label={carbs} />
+      <Statistic value="F" label={fats} />
+    </Statistic.Group>
   );
 };
 

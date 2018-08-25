@@ -9,6 +9,7 @@ import Weight from 'app/goals/Weight.jsx';
 const mapStateToProps = state => {
   return {
     currentWeight: state.goals.currentWeight,
+    weightHistory: state.goals.weightHistory,
     goalWeight: state.goals.goalWeight,
     loading: state.goals.loading,
     errorMessage: state.goals.errorMessage
