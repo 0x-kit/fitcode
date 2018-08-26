@@ -7,13 +7,11 @@ import {
   Form,
   Input,
   Grid,
-  Icon,
   Statistic,
   Card,
   Label,
   List,
-  Transition,
-  Divider
+  Transition
 } from 'semantic-ui-react';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
@@ -32,14 +30,14 @@ class Weight extends Component {
     if (this.props.goalWeight.weight !== goalWeight) {
       const newGoalWeight = { weight: goalWeight };
       this.props.complexEnterGoalWeight(newGoalWeight);
-    } else {
-      if (this.props.currentWeight.weight !== currentWeight) {
-        const newCurrentWeight = {
-          date: moment().format('YYYY-MM-DD'),
-          weight: currentWeight
-        };
-        this.props.complexEnterCurrentWeight(newCurrentWeight);
-      }
+    }
+
+    if (this.props.currentWeight.weight !== currentWeight) {
+      const newCurrentWeight = {
+        date: moment().format('YYYY-MM-DD'),
+        weight: currentWeight
+      };
+      this.props.complexEnterCurrentWeight(newCurrentWeight);
     }
   };
 

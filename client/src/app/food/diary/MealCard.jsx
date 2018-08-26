@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, List, Button, Transition, Statistic, Segment, Grid } from 'semantic-ui-react';
+import { Card, List, Button, Transition } from 'semantic-ui-react';
 import HomeUtils from 'app/food/HomeUtils';
 import ManageDiaryFood from 'app/food/diary/ManageDiary.jsx';
 import { Link } from 'react-router-dom';
@@ -102,12 +102,11 @@ const mealSummaryList = (macrosPerMeal, match, mealLabel, mealId) => {
   };
   /*** */
   const renderAddButton = (match, mealLabel, mealId) => {
-    const newRoute = {
-      pathname: `${match.path}/add`,
-      search: `?meal=${mealLabel}&id=${mealId}`
+    const newRoute2 = {
+      pathname: `/food/diary/add/${mealLabel}/${mealId}`
     };
     return (
-      <Button secondary as={Link} to={newRoute} size="small" compact primary>
+      <Button secondary as={Link} to={newRoute2} size="small" compact primary>
         Add Food
       </Button>
     );
@@ -123,15 +122,15 @@ const mealSummaryList = (macrosPerMeal, match, mealLabel, mealId) => {
   );
 };
 
-const prueba = (calories, proteins, carbs, fats) => {
-  return (
-    <Statistic.Group className="prueba2">
-      <Statistic value="KCAL" label={calories} />
-      <Statistic value="P" label={proteins} />
-      <Statistic value="C" label={carbs} />
-      <Statistic value="F" label={fats} />
-    </Statistic.Group>
-  );
-};
+// const prueba = (calories, proteins, carbs, fats) => {
+//   return (
+//     <Statistic.Group className="prueba2">
+//       <Statistic value="KCAL" label={calories} />
+//       <Statistic value="P" label={proteins} />
+//       <Statistic value="C" label={carbs} />
+//       <Statistic value="F" label={fats} />
+//     </Statistic.Group>
+//   );
+// };
 
 export default MealCards;

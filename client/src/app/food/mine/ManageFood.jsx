@@ -136,7 +136,6 @@ class ManageFood extends Component {
             <Button
               style={buttonStyle}
               size="tiny"
-              delete
               content="Delete"
               floated="left"
               onClick={() => {

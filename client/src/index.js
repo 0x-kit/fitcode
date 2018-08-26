@@ -15,6 +15,7 @@ import SearchFoodContainer from 'app/food/diary/add/SearchFoodContainer';
 import MineFoodContainer from 'app/food/mine/MineFoodContainer';
 import MacrosContainer from 'app/goals/MacrosContainer';
 import WeightContainer from 'app/goals/WeightContainer';
+import NotFound from 'app/common/NotFound';
 
 const Exercise = () => <div>Exercise</div>;
 
@@ -31,13 +32,14 @@ ReactDOM.render(
     <BrowserRouter>
       <App>
         <Switch>
-          <Route path="/food/diary/add" component={SearchFoodContainer} />
-          <Route path="/food/diary" component={FoodContainer} />
-          <Route path="/food/mine" component={MineFoodContainer} />
-          <Route path="/goals/diet" component={MacrosContainer} />
-          <Route path="/goals/weight" component={WeightContainer} />
-          <Route path="/exercise" component={Exercise} />
+          <Route path="/food/diary/add/:meal/:id" exact component={SearchFoodContainer} />
+          <Route path="/food/diary/:date?" exact component={FoodContainer} />
+          <Route path="/food/mine" exact component={MineFoodContainer} />
+          <Route path="/goals/diet" exact component={MacrosContainer} />
+          <Route path="/goals/weight" exact component={WeightContainer} />
+          <Route path="/exercise" exact component={Exercise} />
           <Route path="/" exact component={Root} />
+          <Route component={NotFound} />
         </Switch>
       </App>
     </BrowserRouter>

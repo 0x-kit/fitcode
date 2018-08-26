@@ -27,13 +27,13 @@ class Date extends Component {
         this.props.complexSubstractDay(date);
         break;
       default:
-        if (!this.checkNow(date)) {
-          this.props.history.push(`?date=${date.format('YYYY-MM-DD')}`);
-        } else {
-          this.props.history.replace({
-            pathname: '/food/diary'
-          });
-        }
+        let path;
+        !this.checkNow(date) ? (path = `/food/diary/${date.format('YYYY-MM-DD')}`) : (path = '/food/diary');
+
+        this.props.history.replace({
+          pathname: path
+        });
+
         this.props.complexSetDay(date);
     }
   };
@@ -69,20 +69,17 @@ class Date extends Component {
   };
 
   render() {
-    const { match } = this.props;
     const { myDate, dateTimeOpen } = this.state;
     const add = moment(myDate).add(1, 'day');
     const substract = moment(myDate).subtract(1, 'day');
 
-    const backwardRoute = {
-      pathname: match.path,
-      search: this.checkBackwardPath() ? '' : `?date=${substract.format('YYYY-MM-DD')}`
-    };
+    /*** */
+    const paramBackwardRoute = this.checkBackwardPath() ? '' : substract.format('YYYY-MM-DD');
+    const backwardRoute = { pathname: `/food/diary/${paramBackwardRoute}` };
 
-    const forwardRoute = {
-      pathname: match.path,
-      search: this.checkForwardPath() ? '' : `?date=${add.format('YYYY-MM-DD')}`
-    };
+    const paramForwardRoute = this.checkForwardPath() ? '' : add.format('YYYY-MM-DD');
+    const forwardRoute = { pathname: `/food/diary/${paramForwardRoute}` };
+    /*** */
 
     return (
       <Card fluid>

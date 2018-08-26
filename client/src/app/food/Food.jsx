@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Container, Dimmer, Loader, Transition } from 'semantic-ui-react';
+import { Segment, Container ,Transition } from 'semantic-ui-react';
 
 import DietGoal from 'app/food/diary/DietGoal.jsx';
 import MealCard from 'app/food/diary/MealCard.jsx';

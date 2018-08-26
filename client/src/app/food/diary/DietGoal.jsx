@@ -1,74 +1,80 @@
-import React from 'react';
-import { Card, List } from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { Card, Grid, Statistic, Segment } from 'semantic-ui-react';
 import HomeUtils from 'app/food/HomeUtils';
 import _ from 'lodash';
 
-const DietGoal = props => {
-  const { mealsData, macros } = props;
-  const cardGroupStyle = { marginTop: 12 };
-  let remainingMacros, goalMacros;
+class DietGoal extends Component {
+  state = { toggleContent: false };
+  handleContent = () => this.setState({ toggleContent: !this.state.toggleContent });
+  render() {
+    const { mealsData, macros, loading } = this.props;
+    const { toggleContent } = this.state;
 
-  if (macros !== undefined && !_.isEmpty(macros)) {
-    goalMacros = macros;
-    remainingMacros = HomeUtils.macrosRemaining(mealsData, goalMacros);
+    if (!loading) {
+
+      const remainingMacros = HomeUtils.macrosRemaining(mealsData, macros);
+
+      return (
+        <Card onClick={() => this.handleContent()} raised fluid>
+          {!toggleContent ? calSummary(macros, remainingMacros) : macrosSummary(macros, remainingMacros)}
+        </Card>
+      );
+    }
   }
+}
+
+const calSummary = (goalMacros, remainingMacros) => {
+  const { calories } = goalMacros;
+  const { rCalories } = remainingMacros;
+
+  const renderColumn = (label, columnSize, value) => {
+    return (
+      <Grid.Column computer={columnSize}>
+        <Statistic value={value} label={label} size="mini" className="lxa" />
+      </Grid.Column>
+    );
+  };
 
   return (
-    <div>
-      {goalMacros &&
-        remainingMacros && (
-          <div>
-            <Card.Group stackable itemsPerRow="2" centered style={cardGroupStyle}>
-              <Card raised>
-                <Card.Content header="Goal" textAlign="center" />
-                <Card.Content textAlign="center" extra>
-                  {MacrosList(goalMacros)}
-                </Card.Content>
-              </Card>
-              <Card raised>
-                <Card.Content header="Remaining" textAlign="center" />
-                <Card.Content textAlign="center" extra>
-                  {MacrosList(remainingMacros)}
-                </Card.Content>
-              </Card>
-            </Card.Group>
-          </div>
-        )}
-    </div>
+    <Segment textAlign="center" padded>
+      <Grid textAlign="center">
+        <Grid.Row>
+          {renderColumn('Calories', 3, calories)}
+          {renderColumn('', 1, '-')}
+          {renderColumn('Food', 3, calories - rCalories)}
+          {renderColumn('', 1, '+')}
+          {renderColumn('Exercise', 3, 0)}
+          {renderColumn('', 1, '=')}
+          {renderColumn('Remaining', 3, rCalories)}
+        </Grid.Row>
+      </Grid>
+    </Segment>
   );
 };
 
-const MacrosList = macros => {
-  const { calories, proteins, carbs, fats } = macros;
+const macrosSummary = (goalMacros, remainingMacros) => {
+  const { proteins, carbs, fats } = goalMacros;
+  const { rProteins, rCarbs, rFats } = remainingMacros;
+
+  const renderColumn = (label, columnSize, goal, remaining) => {
+    const value = goal - remaining;
+    return (
+      <Grid.Column computer={columnSize}>
+        <Statistic value={`${value} / ${goal} G`} label={label} size="mini" className="lxa" />
+      </Grid.Column>
+    );
+  };
 
   return (
-    <List size="large" divided horizontal>
-      <List.Item as="a">
-        <List.Content verticalAlign="middle">
-          <List.Header>Calories</List.Header>
-          <List.Description>{isNaN(calories) ? '' : calories}</List.Description>
-        </List.Content>
-      </List.Item>
-      <List.Item as="a">
-        <List.Content verticalAlign="middle">
-          <List.Header>Proteins</List.Header>
-          <List.Description>{isNaN(proteins) ? '' : proteins}</List.Description>
-        </List.Content>
-      </List.Item>
-      <List.Item as="a">
-        <List.Content verticalAlign="middle">
-          <List.Header>Carbs</List.Header>
-          <List.Description>{isNaN(carbs) ? '' : carbs}</List.Description>
-        </List.Content>
-      </List.Item>
-      <List.Item as="a">
-        <List.Content verticalAlign="middle">
-          <List.Header>Fats</List.Header>
-          <List.Description>{isNaN(fats) ? '' : fats}</List.Description>
-        </List.Content>
-      </List.Item>
-    </List>
+    <Segment textAlign="center" padded>
+      <Grid textAlign="center">
+        <Grid.Row>
+          {renderColumn('Proteins', 5, proteins, rProteins)}
+          {renderColumn('Carbs', 5, carbs, rCarbs)}
+          {renderColumn('Fats', 5, fats, rFats)}
+        </Grid.Row>
+      </Grid>
+    </Segment>
   );
 };
-
 export default DietGoal;

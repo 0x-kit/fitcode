@@ -1,10 +1,8 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, lifecycle } from 'recompose';
-import queryString from 'query-string';
-import moment from 'moment';
 import { homeOperations } from 'app/food/duck';
-
+import moment from 'moment';
 import withAuth from 'app/common/withAuth';
 import Food from 'app/food/Food.jsx';
 
@@ -36,25 +34,27 @@ export default compose(
   withAuth,
   lifecycle({
     componentDidMount() {
-      const params = queryString.parse(this.props.location.search);
+      const param = this.props.match.params.date;
 
-      if (params.date) {
-        const now = moment().format('YYYY-MM-DD');
-
-        if (moment(now).isSame(moment(params.date))) {
-          this.props.history.replace({
-            pathname: '/food/diary'
-          });
+      if (param) {
+        const date = moment(param);
+        if (!date.isValid()) {
+          this.props.history.push('/food/diary');
         } else {
-          this.props.history.push(`?date=${params.date}`);
+          const now = moment().format('YYYY-MM-DD');
+          const path = !moment(now).isSame(moment(param)) ? `/food/diary/${param}` : '/food/diary';
+
+          this.props.complexSetDay(moment(param));
+          this.props.history.replace({ pathname: path });
         }
-        this.props.complexSetDay(moment(params.date));
       }
 
       this.props.complexFetchHome(this.props.date);
     },
     componentDidUpdate(prevProps) {
-      if (!this.props.date.isSame(prevProps.date)) this.props.complexFetchHome(this.props.date);
+      if (!this.props.date.isSame(prevProps.date)) {
+        this.props.complexFetchHome(this.props.date);
+      }
     }
   })
 )(Food);

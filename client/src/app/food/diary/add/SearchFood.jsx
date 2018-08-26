@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
-import queryString from 'query-string';
 import AddFood from 'app/food/diary/add/AddFood.jsx';
 
 import { Card, Input, List, Header, Responsive, Container, Segment, Form, Transition } from 'semantic-ui-react';
@@ -11,13 +10,6 @@ class SearchFood extends Component {
   handleModal = flag => {
     this.setState({ modalOpen: flag });
   };
-
-  componentDidMount() {
-    const params = queryString.parse(this.props.location.search);
-    if (params.id) {
-      this.props.selectMeal(params.id, params.meal);
-    }
-  }
 
   selectProduct = product => {
     this.props.selectProduct(product, 100);

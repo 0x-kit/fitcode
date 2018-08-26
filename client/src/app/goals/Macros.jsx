@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import {
   Segment,
   Container,
@@ -133,24 +134,48 @@ class Macros extends Component {
   }
 }
 
-const StatisticExampleGroup = macros => (
-  <Grid textAlign="center">
-    <Grid.Row>
-      <Grid.Column computer={4} tablet={4} mobile={8}>
-        <Statistic value={macros.calories} label="Calories" size="tiny" />
-      </Grid.Column>
-      <Grid.Column computer={4} tablet={4} mobile={8}>
-        <Statistic value={macros.proteins} label="Proteins" size="tiny" />
-      </Grid.Column>
-      <Grid.Column computer={4} tablet={4} mobile={8}>
-        <Statistic value={macros.carbs} label="Carbs" size="tiny" />
-      </Grid.Column>
-      <Grid.Column computer={4} tablet={4} mobile={8}>
-        <Statistic value={macros.fats} label="Fats" size="tiny" />
-      </Grid.Column>
-    </Grid.Row>
-  </Grid>
-);
+// const Field = (name, label, renderField) => (
+//   <Field
+//     name={name}
+//     component={renderField}
+//     labelInput={label}
+//     placeholder={label}
+//     type="text"
+//     maxLength="7"
+//     label={{ content: 'g' }}
+//     labelPosition="right"
+//   />
+// );
+
+const StatisticExampleGroup = macros => {
+  const { calories, proteins, carbs, fats } = macros;
+  return (
+    <Grid textAlign="center">
+      {!_.isNull(calories && proteins && carbs && fats) ? (
+        <Grid.Row>
+          <Grid.Column computer={4} tablet={4} mobile={8}>
+            <Statistic value={calories} label="Calories" size="tiny" />
+          </Grid.Column>
+          <Grid.Column computer={4} tablet={4} mobile={8}>
+            <Statistic value={proteins} label="Proteins" size="tiny" />
+          </Grid.Column>
+          <Grid.Column computer={4} tablet={4} mobile={8}>
+            <Statistic value={carbs} label="Carbs" size="tiny" />
+          </Grid.Column>
+          <Grid.Column computer={4} tablet={4} mobile={8}>
+            <Statistic value={fats} label="Fats" size="tiny" />
+          </Grid.Column>
+        </Grid.Row>
+      ) : (
+        <Grid.Row>
+          <Grid.Column computer={16}>
+            <Statistic label="Enter macros" size="tiny" />
+          </Grid.Column>
+        </Grid.Row>
+      )}
+    </Grid>
+  );
+};
 
 const validate = values => {
   const errors = {};

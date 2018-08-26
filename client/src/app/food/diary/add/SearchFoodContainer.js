@@ -31,10 +31,14 @@ export default compose(
   withAuth,
   lifecycle({
     componentDidMount() {
-      this.props.complexSearchProducts(null, true);
-    },
-    componentWillMount() {
+      const { id, meal } = this.props.match.params;
+      this.props.selectMeal(id, meal);
       this.props.complexSearchProducts(null, true);
     }
+    // componentWillMount() {
+    //   const { id, meal } = this.props.match.params;
+    //   this.props.selectMeal(id, meal);
+    //   this.props.complexSearchProducts(null, true);
+    // }
   })
 )(SearchFood);

@@ -36,12 +36,12 @@ const UserSchema = new Schema({
     type: GoalSchema,
     default: {
       macros: {
-        proteins: 150,
-        carbs: 235,
-        fats: 50,
-        calories: 2000
+        proteins: null,
+        carbs: null,
+        fats: null,
+        calories: null
       },
-      goalWeight: 0,
+      goalWeight: null,
       currentWeight: []
     }
   }

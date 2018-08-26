@@ -81,30 +81,32 @@ class HomeInfo {
       proArr = [],
       carbArr = [],
       fatArr = [],
-      remainingMacros;
+      remainingMacros = {};
 
-    mealsArr.forEach((meal, index) => {
-      let macrosPerMeal = this.macrosPerMeal(meal);
+    if (!_.isEmpty(mealsArr)) {
+      mealsArr.forEach((meal, index) => {
+        let macrosPerMeal = this.macrosPerMeal(meal);
 
-      calArr[index] = 0;
-      proArr[index] = 0;
-      carbArr[index] = 0;
-      fatArr[index] = 0;
+        calArr[index] = 0;
+        proArr[index] = 0;
+        carbArr[index] = 0;
+        fatArr[index] = 0;
 
-      if (!_.isEmpty(macrosPerMeal)) {
-        calArr[index] += macrosPerMeal.calories;
-        proArr[index] += macrosPerMeal.proteins;
-        carbArr[index] += macrosPerMeal.carbs;
-        fatArr[index] += macrosPerMeal.fats;
-      }
-    });
+        if (!_.isEmpty(macrosPerMeal)) {
+          calArr[index] += macrosPerMeal.calories;
+          proArr[index] += macrosPerMeal.proteins;
+          carbArr[index] += macrosPerMeal.carbs;
+          fatArr[index] += macrosPerMeal.fats;
+        }
+      });
 
-    remainingMacros = {
-      calories: goals.calories - calArr.reduce(reducer),
-      proteins: goals.proteins - proArr.reduce(reducer),
-      carbs: goals.carbs - carbArr.reduce(reducer),
-      fats: goals.fats - fatArr.reduce(reducer)
-    };
+      remainingMacros = {
+        rCalories: goals.calories - calArr.reduce(reducer),
+        rProteins: goals.proteins - proArr.reduce(reducer),
+        rCarbs: goals.carbs - carbArr.reduce(reducer),
+        rFats: goals.fats - fatArr.reduce(reducer)
+      };
+    }
 
     return remainingMacros;
   }

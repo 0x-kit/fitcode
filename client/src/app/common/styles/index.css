@@ -1,8 +1,11 @@
+body {
+  min-width: 550px !important;
+}
 .tabpanel {
   margin-top: 50px;
 }
 
-/** Just for the modal*/
+/** Modal*/
 .prueba.ui.statistic > .value,
 .prueba.ui.statistics .statistic > .value {
   font-size: 0.8rem !important;
@@ -20,9 +23,8 @@
 .editYF {
   width: 90px;
 }
-/** JFM end*/
+/** */
 .ui.basic.label.createFood {
-  /* background: none #fff; */
   border: 1px solid rgba(34, 36, 38, 0.15);
   color: rgba(0, 0, 0, 0.87);
   -webkit-box-shadow: none;
@@ -31,7 +33,6 @@
   text-align: left;
 }
 
-/* .prueba2.ui.statistic > .value, */
 .prueba2.ui.statistics .statistic > .value {
   font-size: 0.7rem !important;
 }
@@ -60,5 +61,26 @@
   text-align: center;
 }
 
-@media (min-width: 370px) {
+.ui.statistic.lxa > .value ~ .label,
+.ui.statistics .statistic > .value ~ .label {
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.6);
 }
+
+/* .errorProgress.ui.black.inverted.progress .bar {
+  background-color: #ec2b2be6 !important;
+  filter: contrast(85%);
+  font-size: 1.2rem !important;
+  margin-top: 0.5em;
+}
+
+.successProgress.ui.black.inverted.progress .bar {
+  background-color: #21ba45 !important;
+  filter: contrast(85%);
+  font-size: 1.2rem !important;
+  margin-top: 0.5em;
+} */
+/* 
+.ui.inverted.progress .bar > .progress {
+  margin-left: 5px;
+} */
