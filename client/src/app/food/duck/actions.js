@@ -17,7 +17,14 @@ const setMacros = macros => ({
   payload: macros
 });
 
+const setExerciseCals = cals => ({
+  type: types.SET_EXERCISE_CALS,
+  payload: cals
+});
+
 const getUserProducts = data => ({ type: types.USER_PRODUCTS, payload: data });
+
+const getRecentProducts = data => ({ type: types.RECENT_PRODUCTS, payload: data });
 
 const searchProducts = data => ({ type: types.SEARCH_PRODUCTS, payload: data });
 
@@ -83,8 +90,10 @@ export default {
   fetchError,
   setMeals,
   setMacros,
+  setExerciseCals,
 
   getUserProducts,
+  getRecentProducts,
   searchProducts,
   searchProductsMessage,
 

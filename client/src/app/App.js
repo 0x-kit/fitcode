@@ -1,14 +1,17 @@
 import React from 'react';
-import MenuContainer from 'app/common/menu/MenuContainer';
+import SecondaryMenu from 'app/common/menu/SecondaryMenuContainer';
+import MainMenu from 'app/common/menu/MainMenu';
+import { Container } from 'semantic-ui-react';
 
 import 'app/common/styles/index.css';
 import 'semantic-ui-css/semantic.min.css';
 
 export default ({ children }) => {
   return (
-    <div>
-      <MenuContainer />
+    <Container>
+      <MainMenu />
+      <SecondaryMenu />
       {children}
-    </div>
+    </Container>
   );
 };

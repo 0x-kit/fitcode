@@ -14,20 +14,9 @@ exports.readDiary = async (req, res) => {
     if (!diary) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      const response = {
-        id: diary._id,
-        user: diary.user,
-        date: diary.date,
-        part: diary.part,
-        products: diary.products
-      };
-
-      return res.status(200).json({
-        diary: response
-      });
+      return res.status(200).json(diary);
     }
   } catch (err) {
-    console.log(err);
     res.status(500).json({ error: err });
   }
 };
@@ -37,18 +26,8 @@ exports.createDiary = async (req, res) => {
     const newDiary = new Diary(req.body);
     await newDiary.save();
 
-    res.status(201).json({
-      message: 'Created diary sucessfully',
-      diary: {
-        id: newDiary._id,
-        user: newDiary.user,
-        date: newDiary.date,
-        part: newDiary.part,
-        products: newDiary.products
-      }
-    });
+    res.status(201).json(newDiary);
   } catch (err) {
-    console.log(err);
     res.status(422).json({ error: err.message });
   }
 };
@@ -228,27 +207,3 @@ exports.editProduct = async (req, res) => {
     res.status(422).json({ error: err });
   }
 };
-
-// exports.getUserProducts = async (req, res) => {
-//   try {
-//     const userId = req.params.userId;
-//     const part = 'Breakfast';
-//     const user = await User.findById(userId);
-
-//     if (!user) return res.status(404).json({ message: 'Not valid entries found for provided ID' });
-
-//     const docs = await Diary.find({ user: userId, products: { $exists: true, $not: { $size: 0 } } })
-//       .and({ part: part })
-//       .select('-_id products.product')
-//       .populate('product._id');
-
-//     const prueba = reduce(docs, function(products, value) {
-//       console.log(prueba);
-//     });
-
-//     return res.status(200).json(docs);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ error: err });
-//   }
-// };

@@ -1,5 +1,9 @@
 const User = require('../models/user');
-const bcrypt = require('bcrypt');
+const moment = require('moment');
+const Exercise = require('../models/exercise');
+const Diary = require('../models/diary');
+const Product = require('../models/product');
+const mongoose = require('mongoose');
 
 exports.getUsers = async (req, res) => {
   try {
@@ -106,6 +110,22 @@ exports.getGoals = async (req, res) => {
   }
 };
 
+exports.getExercises = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const date = moment()
+      .startOf('day')
+      .format('YYYY-MM-DD');
+
+    const docs = await Exercise.find({ user: userId, date: date }).select('_id date user calories name');
+
+    res.status(200).json(docs);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
 exports.setMacros = async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -181,19 +201,28 @@ exports.setGoalWeight = async (req, res) => {
   }
 };
 
-// exports.getCurrentWeight = async (req, res) => {
-//   try {
-//     const userId = req.params.userId;
+exports.getRecentProducts = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const part = req.query.part;
+    const user = await User.findById(userId);
 
-//     const goals = await User.findById(userId);
+    let productsArr = [];
 
-//     if (!goals) {
-//       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
-//     } else {
-//       return res.status(200).json(goals.goals.currentWeight);
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ error: err });
-//   }
-// };
+    if (!user) return res.status(404).json({ message: 'Not valid entries found for provided ID' });
+
+    const diaries = await Diary.find({ user: userId, products: { $exists: true, $not: { $size: 0 } } })
+      .and({ part: part })
+      .select('-_id products.product')
+      .populate('product._id');
+
+    diaries.map(({ products }) => products.map(({ product }) => productsArr.push(mongoose.Types.ObjectId(product))));
+
+    const products = await Product.find({ _id: { $in: productsArr } });
+
+    return res.status(200).json(products);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};

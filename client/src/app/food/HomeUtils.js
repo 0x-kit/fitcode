@@ -1,10 +1,6 @@
 import _ from 'lodash';
 
 class HomeInfo {
-  static mealsToArr = meals => {
-    return _.map(meals);
-  };
-
   static macrosPerProduct(product) {
     const per = (num, amount) => {
       return Math.round((num * amount) / 100);
@@ -75,7 +71,7 @@ class HomeInfo {
   static macrosRemaining(meals, goals) {
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
-    const mealsArr = this.mealsToArr(meals);
+    const mealsArr = _.map(meals);
 
     let calArr = [],
       proArr = [],

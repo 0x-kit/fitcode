@@ -1,47 +1,8 @@
 const Product = require('../models/product');
 
-exports.searchProducts = async (req, res) => {
-  try {
-    const term = new RegExp(req.query.like, 'i');
-
-    const docs = await Product.find()
-      .or([{ name: term }, { brand: term }])
-      .select('_id name brand calories carbs proteins fats');
-
-    return res.status(200).json(docs);
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
-};
-
-exports.getUserProducts = async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const docs = await Product.find({ user: userId }).select('_id name brand calories carbs proteins fats user');
-
-    res.status(200).json(docs);
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
-};
-
 exports.getProducts = async (req, res) => {
   try {
     const docs = await Product.find({}).select('_id name brand user');
-    const response = {
-      count: docs.length,
-      Products: docs.map(doc => {
-        return {
-          id: doc._id,
-          name: doc.name,
-          brand: doc.brand,
-          calories: doc.calories,
-          carbs: doc.carbs,
-          proteins: doc.proteins,
-          fats: doc.fats
-        };
-      })
-    };
     res.status(200).json({ docs });
   } catch (err) {
     res.status(500).json({ error: err });
@@ -110,5 +71,30 @@ exports.updateProduct = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(422).json({ error: err });
+  }
+};
+
+exports.searchProducts = async (req, res) => {
+  try {
+    const term = new RegExp(req.query.like, 'i');
+
+    const docs = await Product.find()
+      .or([{ name: term }, { brand: term }])
+      .select('_id name brand calories carbs proteins fats');
+
+    return res.status(200).json(docs);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
+exports.getUserProducts = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const docs = await Product.find({ user: userId }).select('_id name brand calories carbs proteins fats user');
+
+    res.status(200).json(docs);
+  } catch (err) {
+    res.status(500).json({ error: err });
   }
 };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import DatetimePicker from 'react-semantic-datetime';
-import { Card, Menu, Icon } from 'semantic-ui-react';
+import { Menu, Icon, Card } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 class Date extends Component {
@@ -69,6 +69,7 @@ class Date extends Component {
   };
 
   render() {
+    const { loading } = this.props;
     const { myDate, dateTimeOpen } = this.state;
     const add = moment(myDate).add(1, 'day');
     const substract = moment(myDate).subtract(1, 'day');
@@ -82,32 +83,38 @@ class Date extends Component {
     /*** */
 
     return (
-      <Card fluid>
-        <Menu widths="3" style={{ height: '1.1em' }}>
-          <Menu.Item as={Link} to={backwardRoute} onClick={() => this.changeDay(substract, 'substract')}>
-            <Icon size="big" link name="chevron circle left" />
-          </Menu.Item>
+      <Card raised fluid style={{ padding: '0' }}>
+        {!loading ? (
+          <div>
+            <Menu widths="3" style={{ height: '1.1em', border: '0', boxShadow: 'none' }}>
+              <Menu.Item as={Link} to={backwardRoute} onClick={() => this.changeDay(substract, 'substract')}>
+                <Icon size="big" link name="chevron circle left" />
+              </Menu.Item>
 
-          <Menu.Item
-            style={{ fontSize: '1.23em', fontWeight: 700 }}
-            name={moment(myDate).format('LL')}
-            onClick={() => this.hadleDateOpen()}
-          />
+              <Menu.Item
+                style={{ fontSize: '1.23em', fontWeight: 700 }}
+                name={moment(myDate).format('LL')}
+                onClick={() => this.hadleDateOpen()}
+              />
 
-          <Menu.Item as={Link} to={forwardRoute} onClick={() => this.changeDay(add, 'add')}>
-            <Icon size="big" link name="chevron circle right" />
-          </Menu.Item>
-        </Menu>
-        {dateTimeOpen && (
-          <DatetimePicker
-            onChange={date => {
-              this.changeDay(date);
-              this.hadleDateOpen();
-            }}
-            moment={myDate}
-            time={false}
-            color="black"
-          />
+              <Menu.Item as={Link} to={forwardRoute} onClick={() => this.changeDay(add, 'add')}>
+                <Icon size="big" link name="chevron circle right" />
+              </Menu.Item>
+            </Menu>
+            {dateTimeOpen && (
+              <DatetimePicker
+                onChange={date => {
+                  this.changeDay(date);
+                  this.hadleDateOpen();
+                }}
+                moment={myDate}
+                time={false}
+                color="black"
+              />
+            )}
+          </div>
+        ) : (
+          <div />
         )}
       </Card>
     );

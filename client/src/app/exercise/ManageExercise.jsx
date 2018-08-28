@@ -1,27 +1,36 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import moment from 'moment';
 import { reduxForm, Field, reset } from 'redux-form';
 import { Header, Modal, Input, Form, Button } from 'semantic-ui-react';
 
-class CreateFood extends Component {
+class ManageFood extends Component {
+  state = { deleteProduct: false };
+
+  handleDelete = flag => this.setState({ deleteProduct: flag });
+
   handleClose = () => {
     this.props.handleModal(false);
-    this.props.dispatch(reset('createFood'));
+    this.props.dispatch(reset('manageExercise'));
   };
 
   onSubmit = values => {
-    //console.log(values);
-    const { name, brand, calories, proteins, carbs, fats } = values;
-    const newProduct = {
+    const { selectedExercise } = this.props;
+    const { name, calories } = values;
+
+    const newExercise = {
+      user: localStorage.getItem('userId'),
+      date: moment().format('YYYY-MM-DD'),
       name,
-      brand,
-      calories,
-      proteins,
-      carbs,
-      fats,
-      user: localStorage.getItem('userId')
+      calories
     };
-    // console.log(newProduct);
-    this.props.complexAddPersonalProduct(newProduct);
+
+    if (this.state.deleteProduct === false) {
+      this.props.complexEditExercise(selectedExercise._id, newExercise);
+    } else {
+      this.props.complexDeleteExercise(selectedExercise._id);
+    }
 
     this.handleClose();
   };
@@ -65,10 +74,10 @@ class CreateFood extends Component {
 
   render() {
     const { handleSubmit, openModal } = this.props;
-    const buttonStyle = { marginBottom: 10, width: 322 };
+    const buttonStyle = { width: 155, marginBottom: 10, marginTop: 10 };
     return (
       <Modal style={{ width: 350, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
-        <Header subheader="Enter the nutritional info " content="Create Your Food" />
+        <Header subheader="Enter name and calories" content="Edit Your Exercise" />
         <Modal.Actions>
           <Form onSubmit={handleSubmit(this.onSubmit)}>
             <Field
@@ -77,13 +86,6 @@ class CreateFood extends Component {
               label={{ basic: true, content: 'Name', className: 'createFood' }}
               labelPosition="left"
               placeholder="Enter name..."
-            />
-            <Field
-              name="brand"
-              component={this.renderField}
-              label={{ basic: true, content: 'Brand', className: 'createFood' }}
-              labelPosition="left"
-              placeholder="Enter brand..."
             />
 
             <Field
@@ -95,32 +97,16 @@ class CreateFood extends Component {
               maxLength="7"
             />
 
-            <Field
-              name="proteins"
-              component={this.renderField}
-              label={{ basic: true, content: 'Proteins', className: 'createFood' }}
-              labelPosition="left"
-              placeholder="Enter proteins..."
-              maxLength="7"
+            <Button style={buttonStyle} size="tiny" secondary content="Edit" floated="right" />
+            <Button
+              style={buttonStyle}
+              size="tiny"
+              content="Delete"
+              floated="left"
+              onClick={() => {
+                this.handleDelete(true);
+              }}
             />
-            <Field
-              name="carbs"
-              component={this.renderField}
-              label={{ basic: true, content: 'Carbs', className: 'createFood' }}
-              labelPosition="left"
-              placeholder="Enter carbs..."
-              maxLength="7"
-            />
-            <Field
-              name="fats"
-              component={this.renderField}
-              label={{ basic: true, content: 'Fats', className: 'createFood' }}
-              labelPosition="left"
-              placeholder="Enter fats..."
-              maxLength="7"
-            />
-
-            <Button style={buttonStyle} size="small" secondary content="Add" />
           </Form>
         </Modal.Actions>
       </Modal>
@@ -139,37 +125,21 @@ const validate = values => {
     errors.name = 'Name must be at least 2 characters length"';
   }
 
-  if (!values.brand) {
-    errors.brand = required;
-  } else if (values.brand.length < 2) {
-    errors.brand = 'Brand must be at least 2 characters length"';
-  }
-
   if (!values.calories) {
     errors.calories = required;
   } else if (isNaN(values.calories)) {
     errors.calories = numbers;
   }
 
-  if (!values.proteins) {
-    errors.proteins = required;
-  } else if (isNaN(values.proteins)) {
-    errors.proteins = numbers;
-  }
-
-  if (!values.carbs) {
-    errors.carbs = required;
-  } else if (isNaN(values.carbs)) {
-    errors.carbs = numbers;
-  }
-
-  if (!values.fats) {
-    errors.fats = required;
-  } else if (isNaN(values.fats)) {
-    errors.fats = numbers;
-  }
-
   return errors;
 };
 
-export default reduxForm({ validate, form: 'createFood', enableReinitialize: true })(CreateFood);
+export default compose(
+  connect(state => ({
+    initialValues: {
+      name: state.exercise.selectedExercise.name,
+      calories: state.exercise.selectedExercise.calories
+    }
+  })),
+  reduxForm({ validate, form: 'manageExercise', enableReinitialize: true })
+)(ManageFood);

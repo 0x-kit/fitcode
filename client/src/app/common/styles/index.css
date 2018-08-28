@@ -61,8 +61,7 @@ body {
   text-align: center;
 }
 
-.ui.statistic.lxa > .value ~ .label,
-.ui.statistics .statistic > .value ~ .label {
+.ui.statistic.lxa > .value ~ .label {
   font-weight: 300;
   color: rgba(0, 0, 0, 0.6);
 }

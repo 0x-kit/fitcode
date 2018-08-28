@@ -1,7 +1,7 @@
 import ActionCreators from './actions';
 import axios from 'axios';
 
-const { authError, signup, signin, socialSignin, signout } = ActionCreators;
+const { authError, signup, signin, socialSignin, signout, selectMainTab, selectSecondaryTab } = ActionCreators;
 
 const complexSignUp = (formProps, redirect) => async dispatch => {
   try {
@@ -57,5 +57,7 @@ export default {
   complexSignUp,
   complexSignin,
   complexSocialSignin,
-  complexSignout
+  complexSignout,
+  selectMainTab,
+  selectSecondaryTab
 };

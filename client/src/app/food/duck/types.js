@@ -3,8 +3,10 @@ const LOADING = 'loading';
 
 const SET_MEALS = 'set_meals';
 const SET_MACROS = 'set_macros';
+const SET_EXERCISE_CALS = 'set_exercise_cals';
 
 const USER_PRODUCTS = 'user_products';
+const RECENT_PRODUCTS = 'recent_products';
 const SEARCH_PRODUCTS = 'search_products';
 const SEARCH_PRODUCTS_MESSAGE = 'search_products_message';
 
@@ -29,8 +31,10 @@ export default {
   FETCH_HOME_ERROR,
   SET_MEALS,
   SET_MACROS,
+  SET_EXERCISE_CALS,
 
   USER_PRODUCTS,
+  RECENT_PRODUCTS,
   SEARCH_PRODUCTS,
   SEARCH_PRODUCTS_MESSAGE,
   SELECT_PRODUCT,

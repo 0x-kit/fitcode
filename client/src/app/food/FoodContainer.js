@@ -11,6 +11,7 @@ const mapStateToProps = state => {
     mealsData: state.food.meals,
     loading: state.food.loading,
     macros: state.food.macros,
+    exerciseCals: state.food.exerciseCals,
 
     selectedProduct: state.food.selectedProduct,
     selectedMeal: state.food.selectedMeal,
@@ -33,7 +34,7 @@ export default compose(
   ),
   withAuth,
   lifecycle({
-    componentDidMount() {
+    componentWillMount() {
       const param = this.props.match.params.date;
 
       if (param) {
@@ -43,13 +44,11 @@ export default compose(
         } else {
           const now = moment().format('YYYY-MM-DD');
           const path = !moment(now).isSame(moment(param)) ? `/food/diary/${param}` : '/food/diary';
-
-          this.props.complexSetDay(moment(param));
           this.props.history.replace({ pathname: path });
         }
       }
 
-      this.props.complexFetchHome(this.props.date);
+      this.props.complexFetchHome(moment(param));
     },
     componentDidUpdate(prevProps) {
       if (!this.props.date.isSame(prevProps.date)) {

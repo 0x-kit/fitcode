@@ -20,10 +20,6 @@ import moment from 'moment';
 import _ from 'lodash';
 
 class Weight extends Component {
-  // state = { setCurrentWeight: false };
-
-  // handleCurrentWeight = flag => this.setState({ setCurrentWeight: flag });
-
   onSubmit = values => {
     const { goalWeight, currentWeight } = values;
 
@@ -109,81 +105,79 @@ class Weight extends Component {
 
   render() {
     const buttonStyle = { marginTop: '15px', marginBottom: '15px', width: '275px' };
+    const cardGroupStyle = { marginBottom: '1.5em' };
+    const cardStyle = { padding: 15 };
     const { handleSubmit, loading, currentWeight, goalWeight, weightHistory } = this.props;
-    // if (!loading) {
-    //   console.log('goalW', this.props.goalWeight);
-    //   console.log('currentW', this.props.currentWeight);
-    // }
+
     return (
       <Container>
-        <Segment padded="very">
-          <Card.Group itemsPerRow="2" style={{ marginBottom: '1.5em' }}>
-            <Transition visible={!loading} animation="fade" duration={700}>
-              <Card fluid raised style={{ padding: 15 }}>
+        {!loading ? (
+          <Segment padded="very">
+            <Card.Group itemsPerRow="2" style={cardGroupStyle}>
+              <Card fluid raised style={cardStyle}>
                 {weightGrid(currentWeight.weight, 'Current')}
               </Card>
-            </Transition>
-            <Transition visible={!loading} animation="fade" duration={700}>
-              <Card fluid raised style={{ padding: 15 }}>
+
+              <Card fluid raised style={cardStyle}>
                 {weightGrid(goalWeight.weight, 'Goal')}
               </Card>
-            </Transition>
-          </Card.Group>
-
-          <Form onSubmit={handleSubmit(this.onSubmit)}>
-            <Form.Group widths={2}>
-              <Field
-                name="currentWeight"
-                component={this.renderField}
-                label={{ content: 'kg', pointing: 'left' }}
-                labelPosition="right"
-                placeholder="Enter your current weight..."
-                type="text"
-                maxLength="7"
-                labelInput="Current Weight"
-              />
-              <Field
-                name="goalWeight"
-                component={this.renderField}
-                label={{ content: 'kg', pointing: 'left' }}
-                labelPosition="right"
-                placeholder="Enter your goal weight..."
-                type="text"
-                maxLength="7"
-                labelInput="Goal Weight"
-              />
-            </Form.Group>
-            <Card.Group centered>
-              <Button secondary style={buttonStyle}>
-                Update
-              </Button>
             </Card.Group>
-          </Form>
-          {/* <Divider horizontal>Weight History</Divider> */}
-          {weightHistory.length !== 0 && (
-            <Card fluid raised>
-              <Card.Content>
-                <Card.Header>Weight History</Card.Header>
-              </Card.Content>
-              <Card.Content>{this.renderWeightList(weightHistory)}</Card.Content>
-            </Card>
-          )}
-        </Segment>
+
+            <Form onSubmit={handleSubmit(this.onSubmit)}>
+              <Form.Group widths={2}>
+                <Field
+                  name="currentWeight"
+                  component={this.renderField}
+                  label={{ content: 'kg', pointing: 'left' }}
+                  labelPosition="right"
+                  placeholder="Enter your current weight..."
+                  type="text"
+                  maxLength="7"
+                  labelInput="Current Weight"
+                />
+                <Field
+                  name="goalWeight"
+                  component={this.renderField}
+                  label={{ content: 'kg', pointing: 'left' }}
+                  labelPosition="right"
+                  placeholder="Enter your goal weight..."
+                  type="text"
+                  maxLength="7"
+                  labelInput="Goal Weight"
+                />
+              </Form.Group>
+              <Card.Group centered>
+                <Button secondary style={buttonStyle}>
+                  Update
+                </Button>
+              </Card.Group>
+            </Form>
+
+            {weightHistory.length !== 0 && (
+              <Card fluid raised>
+                <Card.Content>
+                  <Card.Header>Weight History</Card.Header>
+                </Card.Content>
+                <Card.Content>{this.renderWeightList(weightHistory)}</Card.Content>
+              </Card>
+            )}
+          </Segment>
+        ) : (
+          <div />
+        )}
       </Container>
     );
   }
 }
 
-const weightGrid = (weight = '', label) => {
+const weightGrid = (weight, label) => {
+  const value = !_.isNull(weight) ? `${weight} Kg` : '';
+  const weightLabel = !_.isNull(weight) ? label : `Enter ${label} weight`;
   return (
     <Grid textAlign="center">
       <Grid.Row>
         <Grid.Column computer={8} mobile={16}>
-          <Statistic
-            value={!_.isNull(weight) ? `${weight} Kg` : ''}
-            label={!_.isNull(weight) ? label : `Enter ${label} weight`}
-            size="tiny"
-          />
+          <Statistic value={value} label={weightLabel} size="tiny" />
         </Grid.Column>
       </Grid.Row>
     </Grid>

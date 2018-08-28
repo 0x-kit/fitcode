@@ -37,20 +37,22 @@ class ManageDiary extends Component {
 
   renderMacros = (product, serving) => {
     const { calories, proteins, carbs, fats } = product;
+    const labels = ['Calories', 'Proteins', 'Carbs', 'Fats'];
+    const terms = [calories, proteins, carbs, fats];
 
+    const renderStatistic = (label, term, serving, index) => (
+      <Statistic
+        key={index}
+        value={label}
+        label={isNaN(HomeUtils.per(term, serving)) ? '' : HomeUtils.per(term, serving)}
+      />
+    );
     return (
       <Card.Group centered>
         <Statistic.Group className="prueba">
-          <Statistic
-            value="Calories"
-            label={isNaN(HomeUtils.per(calories, serving)) ? '' : HomeUtils.per(calories, serving)}
-          />
-          <Statistic
-            value="Proteins"
-            label={isNaN(HomeUtils.per(proteins, serving)) ? '' : HomeUtils.per(proteins, serving)}
-          />
-          <Statistic value="Carbs" label={isNaN(HomeUtils.per(carbs, serving)) ? '' : HomeUtils.per(carbs, serving)} />
-          <Statistic value="Fats" label={isNaN(HomeUtils.per(fats, serving)) ? '' : HomeUtils.per(fats, serving)} />
+          {labels.map((label, index) => {
+            return renderStatistic(label, terms[index], serving, index);
+          })}
         </Statistic.Group>
       </Card.Group>
     );

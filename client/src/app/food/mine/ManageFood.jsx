@@ -34,7 +34,6 @@ class ManageFood extends Component {
       newProduct.user = null;
       this.props.complexDeletePersonalProduct(selectedProduct._id, newProduct);
     }
-
     this.handleClose();
   };
 

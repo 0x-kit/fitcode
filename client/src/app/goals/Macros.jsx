@@ -1,18 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import {
-  Segment,
-  Container,
-  Header,
-  Button,
-  Form,
-  Input,
-  Statistic,
-  Card,
-  Grid,
-  Label,
-  Transition
-} from 'semantic-ui-react';
+import { Segment, Container, Header, Button, Form, Input, Statistic, Card, Grid, Label } from 'semantic-ui-react';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -68,67 +56,69 @@ class Macros extends Component {
   };
   render() {
     const buttonStyle = { marginTop: '15px', width: '275px' };
+    const cardStyle = { padding: 15, marginBottom: '2.5em' };
     const { handleSubmit, loading } = this.props;
     return (
       <Container>
-        <Segment padded="very">
-          <Transition visible={!loading} animation="fade" duration={700}>
-            <Card fluid raised style={{ padding: 15, marginBottom: '2.5em' }}>
-              {StatisticExampleGroup(this.props.macros)}
+        {!loading ? (
+          <Segment padded="very">
+            <Card fluid raised style={cardStyle}>
+              {macrosGrid(this.props.macros)}
             </Card>
-          </Transition>
-          <Form onSubmit={handleSubmit(this.onSubmit)}>
-            <Form.Group widths={2}>
-              <Field
-                name="calories"
-                component={this.renderField}
-                labelInput="Calories"
-                placeholder="Calories"
-                type="text"
-                maxLength="7"
-                label={{ content: 'kcal' }}
-                labelPosition="right"
-              />
-              <Field
-                name="proteins"
-                component={this.renderField}
-                labelInput="Proteins"
-                placeholder="Proteins"
-                type="text"
-                maxLength="7"
-                label={{ content: 'g' }}
-                labelPosition="right"
-              />
-            </Form.Group>
-            <Form.Group widths={2}>
-              <Field
-                name="carbs"
-                component={this.renderField}
-                labelInput="Carbs"
-                placeholder="Carbs"
-                type="text"
-                maxLength="7"
-                label={{ content: 'g' }}
-                labelPosition="right"
-              />
-              <Field
-                name="fats"
-                component={this.renderField}
-                labelInput="Fats"
-                placeholder="Fats"
-                type="text"
-                maxLength="7"
-                label={{ content: 'g' }}
-                labelPosition="right"
-              />
-            </Form.Group>
-            <Card.Group centered>
-              <Button secondary style={buttonStyle}>
-                Update
-              </Button>
-            </Card.Group>
-          </Form>
-        </Segment>
+
+            <Form onSubmit={handleSubmit(this.onSubmit)}>
+              <Form.Group widths={2}>
+                <Field
+                  name="calories"
+                  component={this.renderField}
+                  labelInput="Calories"
+                  placeholder="Calories"
+                  type="text"
+                  maxLength="7"
+                  label={{ content: 'kcal' }}
+                  labelPosition="right"
+                />
+                <Field
+                  name="proteins"
+                  component={this.renderField}
+                  labelInput="Proteins"
+                  placeholder="Proteins"
+                  type="text"
+                  maxLength="7"
+                  label={{ content: 'g' }}
+                  labelPosition="right"
+                />
+              </Form.Group>
+              <Form.Group widths={2}>
+                <Field
+                  name="carbs"
+                  component={this.renderField}
+                  labelInput="Carbs"
+                  placeholder="Carbs"
+                  type="text"
+                  maxLength="7"
+                  label={{ content: 'g' }}
+                  labelPosition="right"
+                />
+                <Field
+                  name="fats"
+                  component={this.renderField}
+                  labelInput="Fats"
+                  placeholder="Fats"
+                  type="text"
+                  maxLength="7"
+                  label={{ content: 'g' }}
+                  labelPosition="right"
+                />
+              </Form.Group>
+              <Card.Group centered>
+                <Button content="Update" secondary style={buttonStyle} />
+              </Card.Group>
+            </Form>
+          </Segment>
+        ) : (
+          <div />
+        )}
       </Container>
     );
   }
@@ -147,24 +137,23 @@ class Macros extends Component {
 //   />
 // );
 
-const StatisticExampleGroup = macros => {
+const macrosGrid = macros => {
   const { calories, proteins, carbs, fats } = macros;
+  const labels = ['Calories', 'Proteins', 'Carbs', 'Fats'];
+  const values = [calories, proteins, carbs, fats];
+
+  const renderStatistic = (label, value, index) => (
+    <Grid.Column computer={4} tablet={4} mobile={8} key={index}>
+      <Statistic value={value} label={label} size="tiny" />
+    </Grid.Column>
+  );
   return (
     <Grid textAlign="center">
       {!_.isNull(calories && proteins && carbs && fats) ? (
         <Grid.Row>
-          <Grid.Column computer={4} tablet={4} mobile={8}>
-            <Statistic value={calories} label="Calories" size="tiny" />
-          </Grid.Column>
-          <Grid.Column computer={4} tablet={4} mobile={8}>
-            <Statistic value={proteins} label="Proteins" size="tiny" />
-          </Grid.Column>
-          <Grid.Column computer={4} tablet={4} mobile={8}>
-            <Statistic value={carbs} label="Carbs" size="tiny" />
-          </Grid.Column>
-          <Grid.Column computer={4} tablet={4} mobile={8}>
-            <Statistic value={fats} label="Fats" size="tiny" />
-          </Grid.Column>
+          {labels.map((label, index) => {
+            return renderStatistic(label, values[index], index);
+          })}
         </Grid.Row>
       ) : (
         <Grid.Row>

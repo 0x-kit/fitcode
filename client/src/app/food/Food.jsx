@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Container ,Transition } from 'semantic-ui-react';
+import { Segment, Transition, Divider } from 'semantic-ui-react';
 
 import DietGoal from 'app/food/diary/DietGoal.jsx';
 import MealCard from 'app/food/diary/MealCard.jsx';
@@ -10,15 +10,16 @@ class Food extends Component {
     const { loading } = this.props;
 
     return (
-      <Transition visible={!loading} animation="fade" duration={700}>
-        <Container>
-          <Segment padded>
+      <Transition.Group animation="fade" duration={700}>
+        {!loading && (
+          <Segment raised>
             <Date {...this.props} />
             <DietGoal {...this.props} />
+            <Divider horizontal />
             <MealCard {...this.props} />
           </Segment>
-        </Container>
-      </Transition>
+        )}
+      </Transition.Group>
     );
   }
 }

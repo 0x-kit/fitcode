@@ -1,27 +1,24 @@
 import React, { Component } from 'react';
 import { reduxForm, Field, reset } from 'redux-form';
 import { Header, Modal, Input, Form, Button } from 'semantic-ui-react';
-
-class CreateFood extends Component {
+import moment from 'moment';
+class CreateExercise extends Component {
   handleClose = () => {
     this.props.handleModal(false);
     this.props.dispatch(reset('createFood'));
   };
 
   onSubmit = values => {
-    //console.log(values);
-    const { name, brand, calories, proteins, carbs, fats } = values;
-    const newProduct = {
+    // console.log(values);
+    const { name, calories } = values;
+    const newExercise = {
+      user: localStorage.getItem('userId'),
+      date: moment().format('YYYY-MM-DD'),
       name,
-      brand,
-      calories,
-      proteins,
-      carbs,
-      fats,
-      user: localStorage.getItem('userId')
+      calories
     };
-    // console.log(newProduct);
-    this.props.complexAddPersonalProduct(newProduct);
+
+    this.props.complexAddExercise(newExercise);
 
     this.handleClose();
   };
@@ -68,7 +65,7 @@ class CreateFood extends Component {
     const buttonStyle = { marginBottom: 10, width: 322 };
     return (
       <Modal style={{ width: 350, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
-        <Header subheader="Enter the nutritional info " content="Create Your Food" />
+        <Header subheader="Enter name and calories" content="Add Your Exercise" />
         <Modal.Actions>
           <Form onSubmit={handleSubmit(this.onSubmit)}>
             <Field
@@ -78,13 +75,6 @@ class CreateFood extends Component {
               labelPosition="left"
               placeholder="Enter name..."
             />
-            <Field
-              name="brand"
-              component={this.renderField}
-              label={{ basic: true, content: 'Brand', className: 'createFood' }}
-              labelPosition="left"
-              placeholder="Enter brand..."
-            />
 
             <Field
               name="calories"
@@ -92,31 +82,6 @@ class CreateFood extends Component {
               label={{ basic: true, content: 'Calories', className: 'createFood' }}
               labelPosition="left"
               placeholder="Enter calories..."
-              maxLength="7"
-            />
-
-            <Field
-              name="proteins"
-              component={this.renderField}
-              label={{ basic: true, content: 'Proteins', className: 'createFood' }}
-              labelPosition="left"
-              placeholder="Enter proteins..."
-              maxLength="7"
-            />
-            <Field
-              name="carbs"
-              component={this.renderField}
-              label={{ basic: true, content: 'Carbs', className: 'createFood' }}
-              labelPosition="left"
-              placeholder="Enter carbs..."
-              maxLength="7"
-            />
-            <Field
-              name="fats"
-              component={this.renderField}
-              label={{ basic: true, content: 'Fats', className: 'createFood' }}
-              labelPosition="left"
-              placeholder="Enter fats..."
               maxLength="7"
             />
 
@@ -139,37 +104,13 @@ const validate = values => {
     errors.name = 'Name must be at least 2 characters length"';
   }
 
-  if (!values.brand) {
-    errors.brand = required;
-  } else if (values.brand.length < 2) {
-    errors.brand = 'Brand must be at least 2 characters length"';
-  }
-
   if (!values.calories) {
     errors.calories = required;
   } else if (isNaN(values.calories)) {
     errors.calories = numbers;
   }
 
-  if (!values.proteins) {
-    errors.proteins = required;
-  } else if (isNaN(values.proteins)) {
-    errors.proteins = numbers;
-  }
-
-  if (!values.carbs) {
-    errors.carbs = required;
-  } else if (isNaN(values.carbs)) {
-    errors.carbs = numbers;
-  }
-
-  if (!values.fats) {
-    errors.fats = required;
-  } else if (isNaN(values.fats)) {
-    errors.fats = numbers;
-  }
-
   return errors;
 };
 
-export default reduxForm({ validate, form: 'createFood', enableReinitialize: true })(CreateFood);
+export default reduxForm({ validate, form: 'createExercise', enableReinitialize: true })(CreateExercise);

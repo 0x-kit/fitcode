@@ -14,10 +14,11 @@ router
 
   /** Basic crud */
 
+  .get('/:userId/products', UsersController.getRecentProducts)
+
   .get('/:userId/goals', UsersController.getGoals)
 
-
-  // .get('/:userId/currentweight', UsersController.getCurrentWeight)
+  .get('/:userId/exercise', UsersController.getExercises)
 
   .put('/:userId/macros', UsersController.setMacros)
 

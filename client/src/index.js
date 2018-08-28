@@ -13,16 +13,21 @@ import Root from 'app/root/RootContainer';
 import FoodContainer from 'app/food/FoodContainer';
 import SearchFoodContainer from 'app/food/diary/add/SearchFoodContainer';
 import MineFoodContainer from 'app/food/mine/MineFoodContainer';
+
 import MacrosContainer from 'app/goals/MacrosContainer';
 import WeightContainer from 'app/goals/WeightContainer';
+import ExerciseContainer from 'app/exercise/ExerciseContainer';
 import NotFound from 'app/common/NotFound';
-
-const Exercise = () => <div>Exercise</div>;
 
 const store = createStore(
   rootReducer,
   {
-    auth: { authenticated: localStorage.getItem('token') }
+    auth: {
+      authenticated: localStorage.getItem('token'),
+      mainTab: 'food',
+      secondaryTab: 'diary',
+      activeIndex: 0
+    }
   },
   applyMiddleware(reduxThunk)
 );
@@ -37,7 +42,7 @@ ReactDOM.render(
           <Route path="/food/mine" exact component={MineFoodContainer} />
           <Route path="/goals/diet" exact component={MacrosContainer} />
           <Route path="/goals/weight" exact component={WeightContainer} />
-          <Route path="/exercise" exact component={Exercise} />
+          <Route path="/exercise" exact component={ExerciseContainer} />
           <Route path="/" exact component={Root} />
           <Route component={NotFound} />
         </Switch>

@@ -8,7 +8,6 @@ import withAuth from 'app/common/withAuth';
 import SearchFood from 'app/food/diary/add/SearchFood.jsx';
 
 const mapStateToProps = state => {
-  // Return an object that will show up as props inside Home
   return {
     products: state.food.products,
     selectedProduct: state.food.selectedProduct,
@@ -33,12 +32,7 @@ export default compose(
     componentDidMount() {
       const { id, meal } = this.props.match.params;
       this.props.selectMeal(id, meal);
-      this.props.complexSearchProducts(null, true);
+      this.props.complexGetRecentProducts(meal);
     }
-    // componentWillMount() {
-    //   const { id, meal } = this.props.match.params;
-    //   this.props.selectMeal(id, meal);
-    //   this.props.complexSearchProducts(null, true);
-    // }
   })
 )(SearchFood);

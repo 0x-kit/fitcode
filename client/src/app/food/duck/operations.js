@@ -1,14 +1,15 @@
 import ActionCreators from './actions';
 import axios from 'axios';
 // import _ from 'lodash';
-import { isUndefined } from 'util';
 
 const {
   loading,
   fetchError,
   setMacros,
   setMeals,
+  setExerciseCals,
   getUserProducts,
+  getRecentProducts,
   searchProducts,
   searchProductsMessage,
   selectProduct,
@@ -38,9 +39,15 @@ const complexFetchHome = date => async dispatch => {
 
     const meals = await axios.get(`/api/diary/user/${userId}?date=${fDate}`, reqConfig);
 
+    const exercises = await axios.get(`/api/user/${userId}/exercise`, reqConfig);
+
+    dispatch(setDay(date));
+
     dispatch(setMeals(meals.data));
 
     dispatch(setMacros(goals.data.macros));
+
+    dispatch(setExerciseCals(exercises.data));
 
     dispatch(loading(false));
   } catch (error) {
@@ -48,29 +55,23 @@ const complexFetchHome = date => async dispatch => {
   }
 };
 
-const complexSearchProducts = (term, loadUserProducts = false) => async dispatch => {
+const complexSearchProducts = term => async dispatch => {
   try {
     let response,
       count,
       message = '';
+
     const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
     const reqConfig = { headers: { authorization: token } };
 
-    if (loadUserProducts) {
-      response = await axios.get(`/api/product/user/${userId}`, reqConfig);
+    response = await axios.get(`/api/product/search?like=${term}`, reqConfig);
+    count = response.data.length;
 
-      dispatch(searchProducts(response.data));
+    if (count === 0) {
+      message = 'Not found';
     } else {
-      response = await axios.get(`/api/product/search?like=${term}`, reqConfig);
-      count = response.data.length;
-
-      if (count === 0) {
-        message = 'Not found';
-      } else {
-        message = `${count} products found`;
-        dispatch(searchProducts(response.data));
-      }
+      message = `${count} products found`;
+      dispatch(searchProducts(response.data));
     }
 
     dispatch(searchProductsMessage(message));
@@ -79,16 +80,11 @@ const complexSearchProducts = (term, loadUserProducts = false) => async dispatch
   }
 };
 
-const complexAddDiaryProduct = (mealId, diaryProduct, user) => async dispatch => {
+const complexAddDiaryProduct = (mealId, diaryProduct) => async dispatch => {
   try {
     const token = localStorage.getItem('token');
 
-    const userId = localStorage.getItem('userId');
-
     const reqConfig = { headers: { authorization: token } };
-
-    //register this product as user's
-    if (isUndefined(user)) await axios.put(`/api/product/${diaryProduct.product}`, { user: userId }, reqConfig);
 
     const response = await axios.post(`/api/diary/${mealId}/product`, diaryProduct, reqConfig);
 
@@ -132,11 +128,18 @@ const complexAddDay = date => async dispatch => dispatch(addDay(date));
 
 const complexSubstractDay = date => async dispatch => dispatch(substractDay(date));
 
-const complexSetDay = date => async dispatch => dispatch(setDay(date));
+const complexSetDay = date => async dispatch => {
+  dispatch(loading(true));
+
+  dispatch(setDay(date));
+
+  dispatch(loading(false));
+};
 
 const complexGetUserProducts = () => async dispatch => {
   try {
     const token = localStorage.getItem('token');
+
     const userId = localStorage.getItem('userId');
 
     const reqConfig = { headers: { authorization: token } };
@@ -147,6 +150,27 @@ const complexGetUserProducts = () => async dispatch => {
     // const message = count === 0 ? 'Not found' : `${count} products found`;
 
     dispatch(getUserProducts(response.data));
+    dispatch(loading(false));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
+const complexGetRecentProducts = part => async dispatch => {
+  try {
+    dispatch(loading(true));
+    const token = localStorage.getItem('token');
+
+    const userId = localStorage.getItem('userId');
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.get(`/api/user/${userId}/products?part=${part}`, reqConfig);
+
+    // const count = response.data.length;
+    // const message = count === 0 ? 'Not found' : `${count} products found`;
+
+    dispatch(getRecentProducts(response.data));
     dispatch(loading(false));
   } catch (error) {
     dispatch(fetchError(error.message));
@@ -210,6 +234,7 @@ const complexAddPersonalProduct = product => async dispatch => {
 export default {
   complexFetchHome,
   complexGetUserProducts,
+  complexGetRecentProducts,
   complexSearchProducts,
   selectProduct,
   selectMeal,

@@ -36,10 +36,10 @@ const UserSchema = new Schema({
     type: GoalSchema,
     default: {
       macros: {
-        proteins: null,
-        carbs: null,
-        fats: null,
-        calories: null
+        proteins: 0,
+        carbs: 0,
+        fats: 0,
+        calories: 0
       },
       goalWeight: null,
       currentWeight: []
@@ -72,7 +72,7 @@ UserSchema.pre('save', async function(next) {
 
 UserSchema.pre('save', function(next) {
   let user = this;
-  console.log('preHook', user._id);
+
   if (!user.isModified('password')) {
     return next();
   }

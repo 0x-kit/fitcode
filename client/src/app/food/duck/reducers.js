@@ -5,6 +5,7 @@ import _ from 'lodash';
 const INITIAL_STATE = {
   meals: {},
   macros: {},
+  exerciseCals: { calories: 0 },
 
   products: [],
   userProducts: {},
@@ -92,6 +93,12 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         userProducts: _.mapKeys(action.payload, '_id')
       };
 
+    case types.RECENT_PRODUCTS:
+      return {
+        ...state,
+        products: action.payload
+      };
+
     case types.SEARCH_PRODUCTS:
       return {
         ...state,
@@ -131,6 +138,17 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         userProducts: { ...state.userProducts, ..._.mapKeys(action.payload, '_id') }
       };
     /*** end food/mine ***/
+
+    case types.SET_EXERCISE_CALS:
+      let calories = 0;
+      if (!_.isEmpty(action.payload)) {
+        action.payload.forEach(ex => (calories += ex.calories));
+      }
+
+      return {
+        ...state,
+        exerciseCals: { calories }
+      };
 
     default:
       return state;

@@ -51,23 +51,15 @@ class SearchFood extends Component {
       <Transition.Group as={List} duration={700} animation="fade" divided relaxed selection>
         {products.map(product => {
           const { _id, name, brand, calories, proteins, carbs, fats } = product;
+          const constantDescription = '100g';
+          const header = `${calories} KCAL | ${proteins} P | ${carbs} C | ${fats} F`;
+
           return (
             <List.Item onClick={() => this.selectProduct(product)} key={_id}>
-              <List.Content floated="right">
-                <List.Header>(100g)</List.Header>
-              </List.Content>
-              <List.Content floated="right" verticalAlign="middle">
-                <List.Description floated="right">
-                  {calories} KCAL | {proteins} P | {carbs} C |{fats} F
-                </List.Description>
-              </List.Content>
-
+              <List.Content floated="right" description={constantDescription} />
+              <List.Content floated="right" verticalAlign="middle" header={header} />
               <List.Icon name="food" size="large" verticalAlign="middle" />
-
-              <List.Content verticalAlign="middle">
-                <List.Header as="a">{name}</List.Header>
-                <List.Description>{brand}</List.Description>
-              </List.Content>
+              <List.Content header={{ content: name, as: 'a' }} description={brand} verticalAlign="middle" />
             </List.Item>
           );
         })}
@@ -99,11 +91,9 @@ class SearchFood extends Component {
             </Card.Content>
           </Card>
 
-          {products.length !== 0 && (
-            <Card raised fluid>
-              <Card.Content>{this.renderProductList(products)}</Card.Content>
-            </Card>
-          )}
+          <Card raised fluid>
+            <Card.Content>{this.renderProductList(products)}</Card.Content>
+          </Card>
 
           <AddFood
             complexAddDiaryProduct={this.props.complexAddDiaryProduct}
