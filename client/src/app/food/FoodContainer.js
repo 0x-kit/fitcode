@@ -46,9 +46,10 @@ export default compose(
           const path = !moment(now).isSame(moment(param)) ? `/food/diary/${param}` : '/food/diary';
           this.props.history.replace({ pathname: path });
         }
+        this.props.complexFetchHome(moment(param));
+      } else {
+        this.props.complexFetchHome(this.props.date);
       }
-
-      this.props.complexFetchHome(moment(param));
     },
     componentDidUpdate(prevProps) {
       if (!this.props.date.isSame(prevProps.date)) {

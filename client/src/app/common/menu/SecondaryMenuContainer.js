@@ -5,6 +5,7 @@ import { authOperations } from 'app/root/duck';
 import { withRouter } from 'react-router';
 import _ from 'lodash';
 
+
 import SecondaryMenu from 'app/common/menu/SecondaryMenu.jsx';
 
 const mapDispatchToProps = dispatch => {
@@ -16,7 +17,8 @@ const mapStateToProps = state => {
     authenticated: state.auth.authenticated,
     mainTab: state.auth.mainTab,
     secondaryTab: state.auth.secondaryTab,
-    activeIndex: state.auth.activeIndex
+    activeIndex: state.auth.activeIndex,
+    date: state.food.date
   };
 };
 
