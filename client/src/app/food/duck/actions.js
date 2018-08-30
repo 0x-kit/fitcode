@@ -26,9 +26,9 @@ const getUserProducts = data => ({ type: types.USER_PRODUCTS, payload: data });
 
 const getRecentProducts = data => ({ type: types.RECENT_PRODUCTS, payload: data });
 
-const searchProducts = data => ({ type: types.SEARCH_PRODUCTS, payload: data });
+const searchProducts = (products, message) => ({ type: types.SEARCH_PRODUCTS, payload: { products, message } });
 
-const searchProductsMessage = message => ({ type: types.SEARCH_PRODUCTS_MESSAGE, payload: message });
+const resetMessage = message => ({ type: types.RESET_MESSAGE, payload: message });
 
 const selectProduct = (product, grams = 100) => ({
   type: types.SELECT_PRODUCT,
@@ -40,19 +40,19 @@ const selectMeal = (mealId, part) => ({
   payload: { mealId, part }
 });
 
-const addDiaryProduct = data => ({
+const addDiaryProduct = message => ({
   type: types.ADD_DIARY_PRODUCT,
-  payload: data
+  payload: message
 });
 
-const editDiaryProduct = data => ({
+const editDiaryProduct = (diary, message) => ({
   type: types.EDIT_DIARY_PRODUCT,
-  payload: data
+  payload: { diary, message }
 });
 
-const deleteDiaryProduct = data => ({
+const deleteDiaryProduct = (diary, message) => ({
   type: types.DELETE_DIARY_PRODUCT,
-  payload: data
+  payload: { diary, message }
 });
 
 const setDay = date => ({
@@ -70,19 +70,19 @@ const substractDay = date => ({
   payload: date
 });
 
-const addPersonalProduct = data => ({
+const addPersonalProduct = (product, message) => ({
   type: types.ADD_PERSONAL_PRODUCT,
-  payload: data
+  payload: { product, message }
 });
 
-const editPersonalProduct = data => ({
+const editPersonalProduct = (product, message) => ({
   type: types.EDIT_PERSONAL_PRODUCT,
-  payload: data
+  payload: { product, message }
 });
 
-const deletePersonalProduct = data => ({
+const deletePersonalProduct = (product, message) => ({
   type: types.DELETE_PERSONAL_PRODUCT,
-  payload: data
+  payload: { product, message }
 });
 
 export default {
@@ -95,7 +95,6 @@ export default {
   getUserProducts,
   getRecentProducts,
   searchProducts,
-  searchProductsMessage,
 
   selectProduct,
   selectMeal,
@@ -110,5 +109,6 @@ export default {
 
   addPersonalProduct,
   editPersonalProduct,
-  deletePersonalProduct
+  deletePersonalProduct,
+  resetMessage
 };

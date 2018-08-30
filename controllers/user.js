@@ -7,9 +7,9 @@ const mongoose = require('mongoose');
 
 exports.getUsers = async (req, res) => {
   try {
-    const docs = await User.find({}).select('name email _id hash_password goals');
+    const users = await User.find({}).select('name email _id hash_password goals');
 
-    res.status(200).json({ docs });
+    res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ error: err });
   }
@@ -23,9 +23,7 @@ exports.readUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json({
-        user: user
-      });
+      return res.status(200).json(user);
     }
   } catch (err) {
     res.status(500).json({ error: err });
@@ -39,7 +37,7 @@ exports.createUser = async (req, res) => {
     await newUser.save();
 
     res.status(201).json({
-      message: 'Created user sucessfully',
+      message: 'User sucessfully created.',
       user: {
         id: newUser._id,
         name: newUser.name,
@@ -63,7 +61,8 @@ exports.deleteUser = async (req, res) => {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
       return res.status(200).json({
-        message: 'User deleted'
+        message: 'User sucessfully deleted.',
+        user
       });
     }
   } catch (err) {
@@ -84,7 +83,7 @@ exports.updateUser = async (req, res) => {
     if (!userUpdated) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json({ message: 'User updated!', user: userUpdated });
+      return res.status(200).json({ message: 'User sucessfully updated.', user: userUpdated });
     }
   } catch (err) {
     err.name === 'ValidationError' ? res.status(422).json({ error: err }) : res.status(500).json({ error: err });
@@ -143,7 +142,7 @@ exports.setMacros = async (req, res) => {
     if (!goals) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json(goals.goals.macros);
+      return res.status(200).json({ message: 'Macros sucessfully updated.', macros: goals.goals.macros });
     }
   } catch (err) {
     console.log(err);
@@ -168,7 +167,8 @@ exports.setCurrentWeight = async (req, res) => {
     if (!goals) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json(goals.goals);
+      const currentWeight = goals.goals;
+      return res.status(200).json({ message: 'Current Weight sucessfully added.', currentWeight });
     }
   } catch (err) {
     console.log(err);
@@ -193,7 +193,7 @@ exports.setGoalWeight = async (req, res) => {
     if (!goals) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json(goals.goals);
+      return res.status(200).json({ message: 'Goal Weight sucessfully updated.', goalWeight: goals.goals });
     }
   } catch (err) {
     console.log(err);

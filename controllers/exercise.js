@@ -30,7 +30,7 @@ exports.createExercise = async (req, res) => {
 
     await newExercise.save();
 
-    res.status(201).json(newExercise);
+    res.status(201).json({ message: 'Exercise successfully created.', exercise: newExercise });
   } catch (err) {
     res.status(422).json({ error: err.message });
   }
@@ -44,7 +44,7 @@ exports.deleteExercise = async (req, res) => {
     if (!exercise) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json(exercise._id);
+      return res.status(200).json({ message: 'Exercise successfully deleted.', exercise });
     }
   } catch (err) {
     res.status(500).json({ error: err });
@@ -64,7 +64,7 @@ exports.updateExercise = async (req, res) => {
     if (!exerciseUpdated) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json(exerciseUpdated);
+      return res.status(200).json({ message: 'Exercise successfully updated.', exercise: exerciseUpdated });
     }
   } catch (err) {
     console.log(err);

@@ -8,7 +8,7 @@ const SET_EXERCISE_CALS = 'set_exercise_cals';
 const USER_PRODUCTS = 'user_products';
 const RECENT_PRODUCTS = 'recent_products';
 const SEARCH_PRODUCTS = 'search_products';
-const SEARCH_PRODUCTS_MESSAGE = 'search_products_message';
+const RESET_MESSAGE = 'reset_message';
 
 const ADD_PERSONAL_PRODUCT = 'add_personal_product';
 const EDIT_PERSONAL_PRODUCT = 'edit_personal_product';
@@ -36,7 +36,6 @@ export default {
   USER_PRODUCTS,
   RECENT_PRODUCTS,
   SEARCH_PRODUCTS,
-  SEARCH_PRODUCTS_MESSAGE,
   SELECT_PRODUCT,
   SELECT_MEAL,
   SELECT_GRAMS,
@@ -51,5 +50,6 @@ export default {
 
   ADD_PERSONAL_PRODUCT,
   EDIT_PERSONAL_PRODUCT,
-  DELETE_PERSONAL_PRODUCT
+  DELETE_PERSONAL_PRODUCT,
+  RESET_MESSAGE
 };

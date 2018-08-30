@@ -56,8 +56,8 @@ class SearchFood extends Component {
 
           return (
             <List.Item onClick={() => this.selectProduct(product)} key={_id}>
-              <List.Content floated="right" description={constantDescription} />
-              <List.Content floated="right" verticalAlign="middle" header={header} />
+              <List.Content floated="right" content={constantDescription} />
+              <List.Content floated="right" verticalAlign="middle" description={header} />
               <List.Icon name="food" size="large" verticalAlign="middle" />
               <List.Content header={{ content: name, as: 'a' }} description={brand} verticalAlign="middle" />
             </List.Item>
@@ -71,6 +71,11 @@ class SearchFood extends Component {
     // handleSubmit provided by reduxForm
     const { handleSubmit, products, selectedProduct, selectedMeal, searchMessage } = this.props;
     const { modalOpen } = this.state;
+    const searchStyle = {
+      fontSize: '.82857143em',
+      fontWeight: 700,
+      color: '#db2828'
+    };
 
     return (
       <Responsive as={Container}>
@@ -80,7 +85,7 @@ class SearchFood extends Component {
               <Header size="medium">
                 Search our food database by name or brand
                 <Header.Subheader>{selectedMeal.part}</Header.Subheader>
-                <Header.Subheader>{searchMessage}</Header.Subheader>
+                <Header.Subheader style={searchStyle}>{searchMessage}</Header.Subheader>
               </Header>
             </Card.Content>
 
@@ -90,10 +95,11 @@ class SearchFood extends Component {
               </Form>
             </Card.Content>
           </Card>
-
-          <Card raised fluid>
-            <Card.Content>{this.renderProductList(products)}</Card.Content>
-          </Card>
+          {products.length !== 0 && (
+            <Card raised fluid>
+              <Card.Content>{this.renderProductList(products)}</Card.Content>
+            </Card>
+          )}
 
           <AddFood
             complexAddDiaryProduct={this.props.complexAddDiaryProduct}

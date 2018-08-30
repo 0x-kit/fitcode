@@ -111,6 +111,7 @@ class AddFood extends Component {
     );
   }
 }
+
 const validate = values => {
   const errors = {};
   const required = 'Required field';
@@ -126,7 +127,7 @@ const validate = values => {
 
 // Selector needed in order to access the value of the 'serving' field of the addProduct form
 // This way we can update in real time the macros depending upon serving size
-const selector = formValueSelector('addProduct');
+const selector = formValueSelector('addDiaryProduct');
 
 export default compose(
   connect(state => ({
@@ -134,7 +135,7 @@ export default compose(
       serving: state.food.selectedGrams
     }
   })),
-  reduxForm({ validate, form: 'addProduct', enableReinitialize: true }),
+  reduxForm({ validate, form: 'addDiaryProduct', enableReinitialize: true }),
   connect(state => ({
     serving: selector(state, 'serving')
   }))

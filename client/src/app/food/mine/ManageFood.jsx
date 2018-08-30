@@ -32,7 +32,7 @@ class ManageFood extends Component {
       this.props.complexEditPersonalProduct(selectedProduct._id, newProduct);
     } else {
       newProduct.user = null;
-      this.props.complexDeletePersonalProduct(selectedProduct._id, newProduct);
+      this.props.complexDeletePersonalProduct(selectedProduct._id);
     }
     this.handleClose();
   };

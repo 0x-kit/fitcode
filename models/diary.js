@@ -46,14 +46,5 @@ DiarySchema.statics.createDiary = function(index, userId, date = moment()) {
   };
 };
 
-// DiarySchema.statics.findDiaries = async function(userId, startDate, endDate) {
-//   const docs = await Diary.find({ user: userId, date: { $gte: startDate, $lte: endDate } })
-//     .select(' products user date part')
-//     .populate('products.product');
-//     console.log(docs);
-//   return docs;
-
-// };
-
 const Diary = mongoose.model('diary', DiarySchema);
 module.exports = Diary;

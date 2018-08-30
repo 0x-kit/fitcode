@@ -1,5 +1,6 @@
 const FETCH_GOALS_ERROR = 'fetch_goals_error';
 const LOADING = 'loading';
+const RESET_MESSAGE = 'reset_message';
 
 const FETCH_GOALS = 'fetch_home';
 const EDIT_MACROS = 'edit_macros';
@@ -12,5 +13,6 @@ export default {
   EDIT_MACROS,
   SET_CURRENT_WEIGHT,
   SET_GOAL_WEIGHT,
-  LOADING
+  LOADING,
+  RESET_MESSAGE
 };

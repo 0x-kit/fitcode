@@ -5,6 +5,7 @@ const ADD_EXERCISE = 'add_exercise';
 const DELETE_EXERCISE = 'delete_exercise';
 const SELECT_EXERCISE = 'select_exercise';
 const LOADING = 'loading';
+const RESET_MESSAGE = 'reset_message';
 
 export default {
   FETCH_EXERCISE_ERROR,
@@ -13,5 +14,6 @@ export default {
   ADD_EXERCISE,
   DELETE_EXERCISE,
   SELECT_EXERCISE,
-  LOADING
+  LOADING,
+  RESET_MESSAGE
 };

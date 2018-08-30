@@ -8,7 +8,8 @@ const INITIAL_STATE = {
   exerciseCals: { calories: 0 },
 
   errorMessage: '',
-  loading: true
+  loading: true,
+  message: ''
 };
 
 const exerciseReducer = (state = INITIAL_STATE, action) => {
@@ -17,6 +18,12 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loading: action.payload
+      };
+
+    case types.RESET_MESSAGE:
+      return {
+        ...state,
+        message: action.payload
       };
 
     case types.SELECT_EXERCISE:
@@ -39,19 +46,22 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
     case types.ADD_EXERCISE:
       return {
         ...state,
-        userExercises: { ...state.userExercises, ..._.mapKeys(action.payload, '_id') }
+        userExercises: { ...state.userExercises, ..._.mapKeys(action.payload.exercise, '_id') },
+        message: action.payload.message
       };
 
     case types.EDIT_EXERCISE:
       return {
         ...state,
-        userExercises: { ...state.userExercises, ..._.mapKeys(action.payload, '_id') }
+        userExercises: { ...state.userExercises, ..._.mapKeys(action.payload.exercise, '_id') },
+        message: action.payload.message
       };
 
     case types.DELETE_EXERCISE:
       return {
         ...state,
-        userExercises: _.omit(state.userExercises, action.payload)
+        userExercises: _.omit(state.userExercises, action.payload.exercise),
+        message: action.payload.message
       };
 
     case types.FETCH_EXERCISE_ERROR:

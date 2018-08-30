@@ -1,7 +1,7 @@
 import ActionCreators from './actions';
 import axios from 'axios';
 
-const { loading, fetchGoals, fetchError, editMacros, setCurrentWeight, setGoalWeight } = ActionCreators;
+const { loading, fetchGoals, fetchError, editMacros, setCurrentWeight, setGoalWeight, resetMessage } = ActionCreators;
 
 const complexFetchGoals = () => async dispatch => {
   try {
@@ -32,8 +32,9 @@ const complexEditMacros = newMacros => async dispatch => {
     const reqConfig = { headers: { authorization: token } };
 
     const response = await axios.put(`/api/user/${userId}/macros`, newMacros, reqConfig);
+    const { macros, message } = response.data;
 
-    dispatch(editMacros(response.data));
+    dispatch(editMacros(macros, message));
 
     dispatch(loading(false));
   } catch (error) {
@@ -41,7 +42,7 @@ const complexEditMacros = newMacros => async dispatch => {
   }
 };
 
-const complexEnterCurrentWeight = currentWeight => async dispatch => {
+const complexEnterCurrentWeight = newCurrentWeight => async dispatch => {
   try {
     dispatch(loading(true));
 
@@ -51,9 +52,9 @@ const complexEnterCurrentWeight = currentWeight => async dispatch => {
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.put(`/api/user/${userId}/currentweight`, currentWeight, reqConfig);
-
-    dispatch(setCurrentWeight(response.data));
+    const response = await axios.put(`/api/user/${userId}/currentweight`, newCurrentWeight, reqConfig);
+    const { currentWeight, message } = response.data;
+    dispatch(setCurrentWeight(currentWeight, message));
 
     dispatch(loading(false));
   } catch (error) {
@@ -61,7 +62,7 @@ const complexEnterCurrentWeight = currentWeight => async dispatch => {
   }
 };
 
-const complexEnterGoalWeight = goalWeight => async dispatch => {
+const complexEnterGoalWeight = newGoalWeight => async dispatch => {
   try {
     dispatch(loading(true));
 
@@ -71,9 +72,10 @@ const complexEnterGoalWeight = goalWeight => async dispatch => {
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.put(`/api/user/${userId}/goalweight`, goalWeight, reqConfig);
+    const response = await axios.put(`/api/user/${userId}/goalweight`, newGoalWeight, reqConfig);
+    const { goalWeight, message } = response.data;
 
-    dispatch(setGoalWeight(response.data));
+    dispatch(setGoalWeight(goalWeight, message));
 
     dispatch(loading(false));
   } catch (error) {
@@ -85,5 +87,6 @@ export default {
   complexFetchGoals,
   complexEditMacros,
   complexEnterCurrentWeight,
-  complexEnterGoalWeight
+  complexEnterGoalWeight,
+  resetMessage
 };

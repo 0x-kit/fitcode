@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   loading: true,
   errorMessage: '',
   searchMessage: '',
+  message: '',
 
   date: moment()
 };
@@ -60,16 +61,24 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         date: action.payload
       };
 
+    case types.ADD_DIARY_PRODUCT:
+      return {
+        ...state,
+        message: action.payload
+      };
+
     case types.EDIT_DIARY_PRODUCT:
       return {
         ...state,
-        meals: { ...state.meals, ..._.mapKeys(action.payload, '_id') }
+        meals: { ...state.meals, ..._.mapKeys(action.payload.diary, '_id') },
+        message: action.payload.message
       };
 
     case types.DELETE_DIARY_PRODUCT:
       return {
         ...state,
-        meals: { ...state.meals, ..._.mapKeys(action.payload, '_id') }
+        meals: { ...state.meals, ..._.mapKeys(action.payload.diary, '_id') },
+        message: action.payload.message
       };
 
     case types.SELECT_MEAL:
@@ -100,15 +109,18 @@ const foodReducer = (state = INITIAL_STATE, action) => {
       };
 
     case types.SEARCH_PRODUCTS:
+      const products = action.payload.products.length !== 0 ? action.payload.products : state.products;
+
       return {
         ...state,
-        products: action.payload
+        products: products,
+        searchMessage: action.payload.message
       };
 
-    case types.SEARCH_PRODUCTS_MESSAGE:
+    case types.RESET_MESSAGE:
       return {
         ...state,
-        searchMessage: action.payload
+        message: action.payload
       };
 
     case types.SELECT_PRODUCT:
@@ -123,19 +135,22 @@ const foodReducer = (state = INITIAL_STATE, action) => {
     case types.EDIT_PERSONAL_PRODUCT:
       return {
         ...state,
-        userProducts: { ...state.userProducts, ..._.mapKeys(action.payload, '_id') }
+        userProducts: { ...state.userProducts, ..._.mapKeys(action.payload.product, '_id') },
+        message: action.payload.message
       };
 
     case types.DELETE_PERSONAL_PRODUCT:
       return {
         ...state,
-        userProducts: _.omit(state.userProducts, action.payload)
+        userProducts: _.omit(state.userProducts, action.payload.product),
+        message: action.payload.message
       };
 
     case types.ADD_PERSONAL_PRODUCT:
       return {
         ...state,
-        userProducts: { ...state.userProducts, ..._.mapKeys(action.payload, '_id') }
+        userProducts: { ...state.userProducts, ..._.mapKeys(action.payload.product, '_id') },
+        message: action.payload.message
       };
     /*** end food/mine ***/
 

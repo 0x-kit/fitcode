@@ -5,6 +5,7 @@ import { compose, lifecycle } from 'recompose';
 import { homeOperations } from 'app/food/duck';
 
 import withAuth from 'app/common/withAuth';
+
 import SearchFood from 'app/food/diary/add/SearchFood.jsx';
 
 const mapStateToProps = state => {

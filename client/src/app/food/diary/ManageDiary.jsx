@@ -147,7 +147,7 @@ const validate = values => {
 
 // Selector needed in order to access the value of the 'serving' field of the editProduct form
 // This way we can update in real time the macros depending upon serving size
-const selector = formValueSelector('editProduct');
+const selector = formValueSelector('manageDiaryProduct');
 
 // The order matters
 export default compose(
@@ -158,7 +158,7 @@ export default compose(
   })),
   reduxForm({
     validate,
-    form: 'editProduct',
+    form: 'manageDiaryProduct',
     enableReinitialize: true
   }),
   connect(state => ({

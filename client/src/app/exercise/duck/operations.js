@@ -8,7 +8,8 @@ const {
   editExercise,
   addExercise,
   deleteExercise,
-  selectExercise
+  selectExercise,
+  resetMessage
 } = ActionCreators;
 
 const complexFetchExercises = () => async dispatch => {
@@ -38,8 +39,9 @@ const complexEditExercise = (exerciseId, newExercise) => async dispatch => {
     const reqConfig = { headers: { authorization: token } };
 
     const response = await axios.put(`/api/exercise/${exerciseId}`, newExercise, reqConfig);
+    const { exercise, message } = response.data;
 
-    dispatch(editExercise([response.data]));
+    dispatch(editExercise([exercise], message));
 
     dispatch(loading(false));
   } catch (error) {
@@ -56,8 +58,9 @@ const complexAddExercise = newExercise => async dispatch => {
     const reqConfig = { headers: { authorization: token } };
 
     const response = await axios.post(`/api/exercise`, newExercise, reqConfig);
+    const { exercise, message } = response.data;
 
-    dispatch(addExercise([response.data]));
+    dispatch(addExercise([exercise], message));
 
     dispatch(loading(false));
   } catch (error) {
@@ -74,8 +77,8 @@ const complexDeleteExercise = exerciseId => async dispatch => {
     const reqConfig = { headers: { authorization: token } };
 
     const response = await axios.delete(`/api/exercise/${exerciseId}`, reqConfig);
-
-    dispatch(deleteExercise(response.data));
+    const { exercise, message } = response.data;
+    dispatch(deleteExercise(exercise._id, message));
 
     dispatch(loading(false));
   } catch (error) {
@@ -88,5 +91,6 @@ export default {
   complexAddExercise,
   complexEditExercise,
   complexDeleteExercise,
-  selectExercise
+  selectExercise,
+  resetMessage
 };

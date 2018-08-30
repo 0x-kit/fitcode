@@ -5,23 +5,25 @@ const loading = flag => ({
   payload: flag
 });
 
+const resetMessage = message => ({ type: types.RESET_MESSAGE, payload: message });
+
 const fetchError = error => ({ type: types.FETCH_EXERCISE_ERROR, payload: error });
 
 const fetchExercises = data => ({ type: types.FETCH_EXERCISES, payload: data });
 
-const editExercise = data => ({
+const editExercise = (exercise, message) => ({
   type: types.EDIT_EXERCISE,
-  payload: data
+  payload: { exercise, message }
 });
 
-const addExercise = data => ({
+const addExercise = (exercise, message) => ({
   type: types.ADD_EXERCISE,
-  payload: data
+  payload: { exercise, message }
 });
 
-const deleteExercise = data => ({
+const deleteExercise = (exercise, message) => ({
   type: types.DELETE_EXERCISE,
-  payload: data
+  payload: { exercise, message }
 });
 
 const selectExercise = data => ({
@@ -36,5 +38,6 @@ export default {
   addExercise,
   deleteExercise,
   selectExercise,
-  loading
+  loading,
+  resetMessage
 };

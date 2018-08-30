@@ -2,8 +2,8 @@ const Product = require('../models/product');
 
 exports.getProducts = async (req, res) => {
   try {
-    const docs = await Product.find({}).select('_id name brand user');
-    res.status(200).json({ docs });
+    const products = await Product.find({}).select('_id name brand user');
+    res.status(200).json(products);
   } catch (err) {
     res.status(500).json({ error: err });
   }
@@ -17,9 +17,7 @@ exports.readProduct = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json({
-        product: product
-      });
+      return res.status(200).json(product);
     }
   } catch (err) {
     res.status(500).json({ error: err });
@@ -32,24 +30,9 @@ exports.createProduct = async (req, res) => {
 
     await newProduct.save();
 
-    res.status(201).json(newProduct);
+    res.status(201).json({ message: 'Product successfully created.', product: newProduct });
   } catch (err) {
     res.status(422).json({ error: err.message });
-  }
-};
-
-exports.deleteProduct = async (req, res) => {
-  try {
-    const productId = req.params.productId;
-    const product = await Product.findByIdAndRemove(productId);
-    console.log(product);
-    if (!product) {
-      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
-    } else {
-      return res.status(200).json(product._id);
-    }
-  } catch (err) {
-    res.status(500).json({ error: err });
   }
 };
 
@@ -66,7 +49,7 @@ exports.updateProduct = async (req, res) => {
     if (!productUpdated) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json(productUpdated);
+      return res.status(200).json({ message: 'Product successfully updated.', product: productUpdated });
     }
   } catch (err) {
     console.log(err);
@@ -74,15 +57,37 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
+exports.deleteProduct = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const newProps = { user: null };
+
+    const productDeleted = await Product.findByIdAndUpdate(productId, newProps, {
+      new: true,
+      runValidators: true
+    });
+
+    if (!productDeleted) {
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+    } else {
+      return res.status(200).json({ message: 'Product successfully deleted.', product: productDeleted });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
 exports.searchProducts = async (req, res) => {
   try {
     const term = new RegExp(req.query.like, 'i');
 
-    const docs = await Product.find()
+    const products = await Product.find()
       .or([{ name: term }, { brand: term }])
       .select('_id name brand calories carbs proteins fats');
 
-    return res.status(200).json(docs);
+    const message = products.length === 0 ? 'Not products found.' : `${products.length} products found.`;
+
+    return res.status(200).json({ message, products });
   } catch (err) {
     res.status(500).json({ error: err });
   }
@@ -91,9 +96,9 @@ exports.searchProducts = async (req, res) => {
 exports.getUserProducts = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const docs = await Product.find({ user: userId }).select('_id name brand calories carbs proteins fats user');
+    const products = await Product.find({ user: userId }).select('_id name brand calories carbs proteins fats user');
 
-    res.status(200).json(docs);
+    res.status(200).json(products);
   } catch (err) {
     res.status(500).json({ error: err });
   }

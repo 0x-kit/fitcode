@@ -25,9 +25,9 @@ class Exercise extends Component {
           const { _id, name, calories } = exercise;
           return (
             <List.Item onClick={() => this.selectExercise(exercise)} key={_id}>
-              <List.Content floated="right" verticalAlign="middle" content={`${calories} KCAL`} />
+              <List.Content floated="right" verticalAlign="middle" description={`${calories} KCAL`} />
 
-              <List.Icon name="food" size="large" verticalAlign="middle" />
+              <List.Icon name="heartbeat" size="large" verticalAlign="middle" />
 
               <List.Content verticalAlign="middle">
                 <List.Header as="a">{name}</List.Header>

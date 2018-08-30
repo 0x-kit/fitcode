@@ -5,15 +5,6 @@ const authController = require('../controllers/auth2');
 const requireAuth = authController.requireAuth;
 
 router
-  .get('/:diaryId', DiaryController.readDiary)
-
-  .post('/', DiaryController.createDiary)
-
-  .put('/:diaryId', DiaryController.updateDiary)
-
-  .delete('/:diaryId', DiaryController.deleteDiary)
-
-  /** Basic crud */
 
   .get('/user/:userId', DiaryController.getDiaries)
 

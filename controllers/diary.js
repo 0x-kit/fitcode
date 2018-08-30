@@ -2,76 +2,7 @@ const moment = require('moment');
 const Diary = require('../models/diary');
 const User = require('../models/user');
 const _ = require('lodash');
-
-exports.readDiary = async (req, res) => {
-  try {
-    const diaryId = req.params.diaryId;
-    const diary = await Diary.findById(diaryId)
-      .select(' products _id user date name part')
-      .populate({ path: 'user', select: 'name' })
-      .populate({ path: 'products.product', select: 'name' });
-
-    if (!diary) {
-      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
-    } else {
-      return res.status(200).json(diary);
-    }
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
-};
-
-exports.createDiary = async (req, res) => {
-  try {
-    const newDiary = new Diary(req.body);
-    await newDiary.save();
-
-    res.status(201).json(newDiary);
-  } catch (err) {
-    res.status(422).json({ error: err.message });
-  }
-};
-
-exports.deleteDiary = async (req, res) => {
-  try {
-    const diaryId = req.params.diaryId;
-    const diary = await Diary.findByIdAndRemove(diaryId);
-
-    if (!diary) {
-      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
-    } else {
-      return res.status(200).json({
-        message: 'Diary deleted'
-      });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err });
-  }
-};
-
-exports.updateDiary = async (req, res) => {
-  try {
-    let diaryId = req.params.diaryId;
-    let newProps = req.body;
-
-    const diaryUpdated = await Diary.findByIdAndUpdate(diaryId, newProps, {
-      new: true,
-      runValidators: true
-    });
-
-    if (!diaryUpdated) {
-      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
-    } else {
-      return res.status(200).json({ message: 'Diary updated!', diary: diaryUpdated });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(422).json({ error: err });
-  }
-};
-
-/** Basic crud */
+const mongoose = require('mongoose');
 
 exports.getDiaries = async (req, res) => {
   try {
@@ -114,6 +45,18 @@ exports.addProduct = async (req, res) => {
     const diaryId = req.params.diaryId;
     const newProduct = req.body;
 
+    const diaryProducts = await Diary.findById(diaryId)
+      .select('-_id products.product')
+      .populate('product._id');
+
+    const productId = mongoose.Types.ObjectId(newProduct.product);
+    const productsArr = diaryProducts.products;
+    const alreadyExists = _.find(productsArr, { product: productId });
+
+    if (!_.isUndefined(alreadyExists)) {
+      return res.status(200).json({ message: 'Product is already added. Just edit grams.' });
+    }
+
     const diaryUpdated = await Diary.findByIdAndUpdate(
       diaryId,
       {
@@ -129,7 +72,7 @@ exports.addProduct = async (req, res) => {
     if (!diaryUpdated) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json({ message: 'Product added!', diary: diaryUpdated });
+      return res.status(200).json({ message: 'Product successfully added.' });
     }
   } catch (err) {
     console.log(err);
@@ -160,7 +103,7 @@ exports.deleteProduct = async (req, res) => {
     if (!diaryUpdated) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     } else {
-      return res.status(200).json([diaryUpdated]);
+      return res.status(200).json({ message: 'Product successfully deleted.', diary: diaryUpdated });
     }
   } catch (err) {
     console.log(err);
@@ -200,7 +143,7 @@ exports.editProduct = async (req, res) => {
         .populate({ path: 'user', select: 'name' })
         .populate({ path: 'products.product' });
 
-      return res.status(200).json([diaryUpdated]);
+      return res.status(200).json({ message: 'Product successfully updated.', diary: diaryUpdated });
     }
   } catch (err) {
     console.log(err);

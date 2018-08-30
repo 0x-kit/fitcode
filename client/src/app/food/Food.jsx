@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Segment, Transition, Divider } from 'semantic-ui-react';
-
 import DietGoal from 'app/food/diary/DietGoal.jsx';
 import MealCard from 'app/food/diary/MealCard.jsx';
 import Date from 'app/food/diary/Date.jsx';
+import _ from 'lodash';
 
 class Food extends Component {
   render() {

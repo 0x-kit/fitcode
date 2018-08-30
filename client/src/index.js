@@ -37,7 +37,7 @@ ReactDOM.render(
     <BrowserRouter>
       <App>
         <Switch>
-          <Route path="/food/diary/add/:meal/:id" exact component={SearchFoodContainer} />
+          <Route path="/food/diary/:date?/add/:meal/:id" exact component={SearchFoodContainer} />
           <Route path="/food/diary/:date?" exact component={FoodContainer} />
           <Route path="/food/mine" exact component={MineFoodContainer} />
           <Route path="/goals/diet" exact component={MacrosContainer} />

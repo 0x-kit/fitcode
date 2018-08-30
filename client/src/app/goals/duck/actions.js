@@ -5,22 +5,24 @@ const loading = flag => ({
   payload: flag
 });
 
+const resetMessage = message => ({ type: types.RESET_MESSAGE, payload: message });
+
 const fetchError = error => ({ type: types.FETCH_GOALS_ERROR, payload: error });
 
 const fetchGoals = data => ({ type: types.FETCH_GOALS, payload: data });
 
-const editMacros = data => ({
+const editMacros = (macros, message) => ({
   type: types.EDIT_MACROS,
-  payload: data
+  payload: { macros, message }
 });
 
-const setCurrentWeight = currentWeight => ({
+const setCurrentWeight = (currentWeight, message) => ({
   type: types.SET_CURRENT_WEIGHT,
-  payload: currentWeight
+  payload: { currentWeight, message }
 });
-const setGoalWeight = goalWeight => ({
+const setGoalWeight = (goalWeight, message) => ({
   type: types.SET_GOAL_WEIGHT,
-  payload: goalWeight
+  payload: { goalWeight, message }
 });
 
 export default {
@@ -29,5 +31,6 @@ export default {
   editMacros,
   setCurrentWeight,
   setGoalWeight,
-  loading
+  loading,
+  resetMessage
 };

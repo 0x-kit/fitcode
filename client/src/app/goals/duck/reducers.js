@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   currentWeight: {},
 
   errorMessage: '',
+  message: '',
   loading: true
 };
 
@@ -20,6 +21,13 @@ const goalsReducer = (state = INITIAL_STATE, action) => {
         ...state,
         loading: action.payload
       };
+
+    case types.RESET_MESSAGE:
+      return {
+        ...state,
+        message: action.payload
+      };
+
     case types.FETCH_GOALS:
       const { macros, currentWeight } = action.payload;
       const goalWeight = {
@@ -46,23 +54,26 @@ const goalsReducer = (state = INITIAL_STATE, action) => {
     case types.EDIT_MACROS:
       return {
         ...state,
-        macros: { ...action.payload }
+        macros: { ...action.payload.macros },
+        message: action.payload.message
       };
 
     case types.SET_CURRENT_WEIGHT:
       return {
         ...state,
-        currentWeight: action.payload.currentWeight.slice(-1)[0],
-        weightHistory: action.payload.currentWeight.reverse()
+        currentWeight: action.payload.currentWeight.currentWeight.slice(-1)[0],
+        weightHistory: action.payload.currentWeight.currentWeight.reverse(),
+        message: action.payload.message
       };
 
     case types.SET_GOAL_WEIGHT:
       const newGoalWeight = {
-        weight: action.payload.goalWeight
+        weight: action.payload.goalWeight.goalWeight
       };
       return {
         ...state,
-        goalWeight: newGoalWeight
+        goalWeight: newGoalWeight,
+        message: action.payload.message
       };
 
     default:

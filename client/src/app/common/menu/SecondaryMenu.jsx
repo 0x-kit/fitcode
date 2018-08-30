@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Menu, Responsive, Container, Tab } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import _ from 'lodash';
 import moment from 'moment';
+import { Menu, Responsive, Container, Tab } from 'semantic-ui-react';
+import _ from 'lodash';
+
 class MenuSecondary extends Component {
   constructor(props) {
     super(props);
@@ -95,7 +96,7 @@ class MenuSecondary extends Component {
   render() {
     const menuStyle = { pointing: true, size: 'huge', borderless: true, widths: 3 };
     const { authenticated, activeIndex, date } = this.props;
-
+    console.log(this.props.goalsNotification);
     return (
       <div style={{ marginTop: 75 }}>
         {authenticated && (

@@ -11,7 +11,6 @@ const {
   getUserProducts,
   getRecentProducts,
   searchProducts,
-  searchProductsMessage,
   selectProduct,
   selectMeal,
   addDiaryProduct,
@@ -22,7 +21,8 @@ const {
   setDay,
   addPersonalProduct,
   editPersonalProduct,
-  deletePersonalProduct
+  deletePersonalProduct,
+  resetMessage
 } = ActionCreators;
 
 const complexFetchHome = date => async dispatch => {
@@ -57,24 +57,13 @@ const complexFetchHome = date => async dispatch => {
 
 const complexSearchProducts = term => async dispatch => {
   try {
-    let response,
-      count,
-      message = '';
-
     const token = localStorage.getItem('token');
     const reqConfig = { headers: { authorization: token } };
 
-    response = await axios.get(`/api/product/search?like=${term}`, reqConfig);
-    count = response.data.length;
+    const response = await axios.get(`/api/product/search?like=${term}`, reqConfig);
+    const { products, message } = response.data;
 
-    if (count === 0) {
-      message = 'Not found';
-    } else {
-      message = `${count} products found`;
-      dispatch(searchProducts(response.data));
-    }
-
-    dispatch(searchProductsMessage(message));
+    dispatch(searchProducts(products, message));
   } catch (error) {
     dispatch(fetchError(error.message));
   }
@@ -87,8 +76,9 @@ const complexAddDiaryProduct = (mealId, diaryProduct) => async dispatch => {
     const reqConfig = { headers: { authorization: token } };
 
     const response = await axios.post(`/api/diary/${mealId}/product`, diaryProduct, reqConfig);
+    const { message } = response.data;
 
-    dispatch(addDiaryProduct(response.data));
+    dispatch(addDiaryProduct(message));
   } catch (error) {
     dispatch(fetchError(error.message));
   }
@@ -101,8 +91,9 @@ const complexEditDiaryProduct = (mealId, product) => async dispatch => {
     const reqConfig = { headers: { authorization: token } };
 
     const response = await axios.put(`/api/diary/${mealId}/product`, product, reqConfig);
+    const { diary, message } = response.data;
 
-    dispatch(editDiaryProduct(response.data));
+    dispatch(editDiaryProduct([diary], message));
   } catch (error) {
     dispatch(fetchError(error.message));
   }
@@ -117,8 +108,9 @@ const complexDeleteDiaryProduct = (mealId, product) => async dispatch => {
     const productId = product.product;
 
     const response = await axios.delete(`/api/diary/${mealId}/product/${productId}`, reqConfig);
+    const { diary, message } = response.data;
 
-    dispatch(deleteDiaryProduct(response.data));
+    dispatch(deleteDiaryProduct([diary], message));
   } catch (error) {
     dispatch(fetchError(error.message));
   }
@@ -146,10 +138,8 @@ const complexGetUserProducts = () => async dispatch => {
 
     const response = await axios.get(`/api/product/user/${userId}`, reqConfig);
 
-    // const count = response.data.length;
-    // const message = count === 0 ? 'Not found' : `${count} products found`;
-
     dispatch(getUserProducts(response.data));
+
     dispatch(loading(false));
   } catch (error) {
     dispatch(fetchError(error.message));
@@ -167,9 +157,6 @@ const complexGetRecentProducts = part => async dispatch => {
 
     const response = await axios.get(`/api/user/${userId}/products?part=${part}`, reqConfig);
 
-    // const count = response.data.length;
-    // const message = count === 0 ? 'Not found' : `${count} products found`;
-
     dispatch(getRecentProducts(response.data));
     dispatch(loading(false));
   } catch (error) {
@@ -177,7 +164,7 @@ const complexGetRecentProducts = part => async dispatch => {
   }
 };
 
-const complexEditPersonalProduct = (productId, product) => async dispatch => {
+const complexEditPersonalProduct = (productId, updatedProduct) => async dispatch => {
   try {
     dispatch(loading(true));
 
@@ -185,9 +172,10 @@ const complexEditPersonalProduct = (productId, product) => async dispatch => {
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.put(`/api/product/${productId}`, product, reqConfig);
+    const response = await axios.put(`/api/product/${productId}`, updatedProduct, reqConfig);
+    const { product, message } = response.data;
 
-    dispatch(editPersonalProduct([response.data]));
+    dispatch(editPersonalProduct([product], message));
 
     dispatch(loading(false));
   } catch (error) {
@@ -195,7 +183,7 @@ const complexEditPersonalProduct = (productId, product) => async dispatch => {
   }
 };
 
-const complexDeletePersonalProduct = (productId, product) => async dispatch => {
+const complexDeletePersonalProduct = productId => async dispatch => {
   try {
     dispatch(loading(true));
 
@@ -203,9 +191,10 @@ const complexDeletePersonalProduct = (productId, product) => async dispatch => {
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.put(`/api/product/${productId}`, product, reqConfig);
+    const response = await axios.delete(`/api/product/${productId}`, reqConfig);
+    const { product, message } = response.data;
 
-    dispatch(deletePersonalProduct(response.data._id));
+    dispatch(deletePersonalProduct(product._id, message));
 
     dispatch(loading(false));
   } catch (error) {
@@ -213,7 +202,7 @@ const complexDeletePersonalProduct = (productId, product) => async dispatch => {
   }
 };
 
-const complexAddPersonalProduct = product => async dispatch => {
+const complexAddPersonalProduct = newProduct => async dispatch => {
   try {
     dispatch(loading(true));
 
@@ -221,9 +210,10 @@ const complexAddPersonalProduct = product => async dispatch => {
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.post('/api/product/', product, reqConfig);
+    const response = await axios.post('/api/product/', newProduct, reqConfig);
+    const { product, message } = response.data;
 
-    dispatch(addPersonalProduct([response.data]));
+    dispatch(addPersonalProduct([product], message));
 
     dispatch(loading(false));
   } catch (error) {
@@ -249,5 +239,6 @@ export default {
 
   complexEditPersonalProduct,
   complexDeletePersonalProduct,
-  complexAddPersonalProduct
+  complexAddPersonalProduct,
+  resetMessage
 };
