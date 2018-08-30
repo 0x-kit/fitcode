@@ -30,6 +30,8 @@ const searchProducts = (products, message) => ({ type: types.SEARCH_PRODUCTS, pa
 
 const resetMessage = message => ({ type: types.RESET_MESSAGE, payload: message });
 
+const resetSearchMessage = (message = '') => ({ type: types.RESET_SEARCH_MESSAGE, payload: message });
+
 const selectProduct = (product, grams = 100) => ({
   type: types.SELECT_PRODUCT,
   payload: { product, grams }
@@ -110,5 +112,6 @@ export default {
   addPersonalProduct,
   editPersonalProduct,
   deletePersonalProduct,
-  resetMessage
+  resetMessage,
+  resetSearchMessage
 };

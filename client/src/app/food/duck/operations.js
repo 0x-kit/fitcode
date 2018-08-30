@@ -22,7 +22,8 @@ const {
   addPersonalProduct,
   editPersonalProduct,
   deletePersonalProduct,
-  resetMessage
+  resetMessage,
+  resetSearchMessage
 } = ActionCreators;
 
 const complexFetchHome = date => async dispatch => {
@@ -240,5 +241,6 @@ export default {
   complexEditPersonalProduct,
   complexDeletePersonalProduct,
   complexAddPersonalProduct,
-  resetMessage
+  resetMessage,
+  resetSearchMessage
 };

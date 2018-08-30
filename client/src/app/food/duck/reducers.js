@@ -123,6 +123,12 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         message: action.payload
       };
 
+    case types.RESET_SEARCH_MESSAGE:
+      return {
+        ...state,
+        searchMessage: action.payload
+      };
+
     case types.SELECT_PRODUCT:
       return {
         ...state,

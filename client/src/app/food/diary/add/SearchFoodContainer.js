@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, lifecycle } from 'recompose';
 import { homeOperations } from 'app/food/duck';
+import _ from 'lodash';
 
 import withAuth from 'app/common/withAuth';
 
@@ -34,6 +35,11 @@ export default compose(
       const { id, meal } = this.props.match.params;
       this.props.selectMeal(id, meal);
       this.props.complexGetRecentProducts(meal);
+    },
+    componentWillMount() {
+      if (!_.isEmpty(this.props.searchMessage)) {
+        this.props.resetSearchMessage();
+      }
     }
   })
 )(SearchFood);

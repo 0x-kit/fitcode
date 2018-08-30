@@ -9,6 +9,7 @@ const USER_PRODUCTS = 'user_products';
 const RECENT_PRODUCTS = 'recent_products';
 const SEARCH_PRODUCTS = 'search_products';
 const RESET_MESSAGE = 'reset_message';
+const RESET_SEARCH_MESSAGE = 'reset_search_message';
 
 const ADD_PERSONAL_PRODUCT = 'add_personal_product';
 const EDIT_PERSONAL_PRODUCT = 'edit_personal_product';
@@ -51,5 +52,6 @@ export default {
   ADD_PERSONAL_PRODUCT,
   EDIT_PERSONAL_PRODUCT,
   DELETE_PERSONAL_PRODUCT,
-  RESET_MESSAGE
+  RESET_MESSAGE,
+  RESET_SEARCH_MESSAGE
 };

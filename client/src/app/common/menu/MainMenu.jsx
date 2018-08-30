@@ -13,7 +13,7 @@ class MainMenu extends Component {
     return (
       <Menu as={Menu} fixed="top" size="massive" inverted>
         <Container>
-          <Menu.Item as={Link} to={!authenticated ? '/' : '/home'} header>
+          <Menu.Item as={Link} to={!authenticated ? '/' : '/food/diary'} header>
             <h2>
               <Icon color="green" name="code" style={{ marginRight: '1.5em' }} />
               Fitcode
