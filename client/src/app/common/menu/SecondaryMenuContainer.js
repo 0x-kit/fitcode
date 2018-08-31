@@ -48,11 +48,14 @@ export default compose(
   lifecycle({
     componentWillMount() {
       const path = this.props.location.pathname.split('/');
-      const mainTab = path[1];
-      const secondaryTab = _.isUndefined(path[2]) ? '' : path[2];
 
-      this.props.selectMainTab(mainTab);
-      this.props.selectSecondaryTab(secondaryTab);
+      if (!_.isEmpty(path[1])) {
+        const mainTab = path[1];
+        const secondaryTab = _.isUndefined(path[2]) ? '' : path[2];
+
+        this.props.selectMainTab(mainTab);
+        this.props.selectSecondaryTab(secondaryTab);
+      }
     },
     componentDidUpdate(prevProps) {
       const {

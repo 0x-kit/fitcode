@@ -3,9 +3,9 @@ import types from './types';
 const INITIAL_STATE = {
   authenticated: '',
   errorMessage: '',
-  mainTab: '',
-  secondaryTab: '',
-  activeIndex: ''
+  mainTab: 'food',
+  secondaryTab: 'diary',
+  activeIndex: 0
 };
 
 const TABS = ['food', 'exercise', 'goals'];

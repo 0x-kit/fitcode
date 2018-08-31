@@ -96,7 +96,6 @@ class MenuSecondary extends Component {
   render() {
     const menuStyle = { pointing: true, size: 'huge', borderless: true, widths: 3 };
     const { authenticated, activeIndex, date } = this.props;
-    console.log(this.props.goalsNotification);
     return (
       <div style={{ marginTop: 75 }}>
         {authenticated && (
