@@ -1,6 +1,7 @@
 body {
-  min-width: 550px !important;
+  min-width: 400px !important;
 }
+
 .tabpanel {
   margin-top: 50px;
 }
@@ -47,17 +48,17 @@ body {
 }
 
 .label.macrosLabel {
-  width: 5.7em;
+  width: 5.1em;
   text-align: center;
 }
 
 .label.macrosLabelContent {
-  width: 3.5em;
+  width: 3.3em;
   text-align: center;
 }
 
 .label.weightLabel {
-  width: 9.5em;
+  width: 11.0em;
   text-align: center;
 }
 
@@ -107,3 +108,9 @@ div.ui.info.message {
   -webkit-box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.22) inset, 0 0 0 0 transparent;
   box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.22) inset, 0 0 0 0 transparent;
 }
+
+.mobContent div.description {
+  margin-left: 2.05em;
+  margin-top: 0.5em;
+}
+

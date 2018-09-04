@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Card, List, Button, Transition } from 'semantic-ui-react';
+import { Card, List, Button, Transition, Responsive } from 'semantic-ui-react';
 import utils from 'app/food/HomeUtils';
 import ManageDiaryFood from 'app/food/diary/ManageDiary.jsx';
 import { Link } from 'react-router-dom';
@@ -32,7 +32,10 @@ class MealCards extends Component {
     return (
       <Card key={_id} fluid raised>
         <Card.Content header={part} />
-        <Card.Content>{renderProductList(products, this.selectProduct, _id)}</Card.Content>
+        <Card.Content>
+          {renderProductList(products, this.selectProduct, _id)}
+          {renderProductList2(products, this.selectProduct, _id)}
+        </Card.Content>
         <Card.Content extra>{renderSummary(macrosPerMeal, part, _id, this.props.match)}</Card.Content>
       </Card>
     );
@@ -60,7 +63,7 @@ class MealCards extends Component {
 
 const renderProductList = (productsArr = [], selectProduct, mealId) => {
   return (
-    <Transition.Group as={List} duration={700} animation="fade" selection divided>
+    <Responsive as={List} minWidth={615} selection divided>
       {productsArr.filter(product => product.product !== null).map(product => {
         const {
           _id,
@@ -69,6 +72,7 @@ const renderProductList = (productsArr = [], selectProduct, mealId) => {
 
         const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
         const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+
         return (
           <List.Item
             key={_id}
@@ -76,14 +80,48 @@ const renderProductList = (productsArr = [], selectProduct, mealId) => {
               selectProduct(product, mealId);
             }}
           >
+            <List.Icon name="food" style={{ float: 'left' }} size="large" verticalAlign="top" />
+
+            <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
+
             <List.Content content={`(${grams}g)`} floated="right" />
-            <List.Content floated="right" verticalAlign="middle" description={header} />
-            <List.Icon name="food" size="large" verticalAlign="middle" />
-            <List.Content header={{ content: name, as: 'a' }} description={brand} verticalAlign="middle" />
+            <List.Content floated="right" description={header} />
           </List.Item>
         );
       })}
-    </Transition.Group>
+    </Responsive>
+  );
+};
+
+const renderProductList2 = (productsArr = [], selectProduct, mealId) => {
+  return (
+    <Responsive as={List} minWidth={320} maxWidth={614} selection divided>
+      {productsArr.filter(product => product.product !== null).map(product => {
+        const {
+          _id,
+          product: { name, brand }
+        } = product;
+
+        const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
+        const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+
+        return (
+          <List.Item
+            key={_id}
+            onClick={() => {
+              selectProduct(product, mealId);
+            }}
+          >
+            <List.Icon name="food" style={{ float: 'left' }} size="large" verticalAlign="top" />
+
+            <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
+
+            <List.Content content={`(${grams}g)`} floated="right" />
+            <List.Content floated="left" description={header} className="mobContent" />
+          </List.Item>
+        );
+      })}
+    </Responsive>
   );
 };
 
@@ -92,33 +130,57 @@ const renderSummary = (macrosPerMeal, mealLabel, mealId, match) => {
     const { calories, proteins, carbs, fats } = macrosPerMeal;
     const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
     const style = { paddingRight: '0.5em' };
-    return <List.Content floated="right" header={header} style={style} />;
+
+    return <List.Content floated="right" description={header} style={style} />;
   };
 
   const renderAddButton = (mealLabel, mealId) => {
     const path = {
       pathname: `${match.url}/add/${mealLabel}/${mealId}`
     };
+
     return (
-      <Button
-        content="Add Food"
-        as={Link}
-        to={path}
-        // onClick={() => selectMeal({ mealId, mealLabel })}
-        size="small"
-        secondary
-        compact
-        primary
-      />
+      <List.Content floated="left">
+        <Button
+          content="Add Food"
+          as={Link}
+          to={path}
+          // onClick={() => selectMeal({ mealId, mealLabel })}
+          size="small"
+          secondary
+          compact
+          primary
+        />
+      </List.Content>
     );
   };
+
   return (
     <List>
       <List.Item>
-        {!_.isEmpty(macrosPerMeal) ? renderMacrosPerMeal(macrosPerMeal) : ''}
         {renderAddButton(mealLabel, mealId)}
+        {!_.isEmpty(macrosPerMeal) ? renderMacrosPerMeal(macrosPerMeal) : ''}
       </List.Item>
     </List>
   );
 };
 export default MealCards;
+
+{
+  /* <Responsive
+as={List.Item}
+minWidth={320}
+maxWidth={569}
+key={_id}
+onClick={() => {
+  selectProduct(product, mealId);
+}}
+>
+<List.Icon name="food" style={{ float: 'left' }} size="large" verticalAlign="top" />
+
+<List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
+
+<List.Content content={`(${grams}g)`} floated="right" />
+<List.Content floated="right" description={header} />
+</Responsive> */
+}

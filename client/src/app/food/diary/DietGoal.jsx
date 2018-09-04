@@ -50,7 +50,7 @@ const renderCalories = (goalMacros, remainingMacros, exerciseCals, handleContent
 
   return (
     <Segment basic padded>
-      <Grid textAlign="center">
+      <Grid textAlign="center" stackable>
         <Grid.Row>
           {renderColumn('Calories', calories)}
           {renderOperator('-')}

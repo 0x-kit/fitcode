@@ -1,120 +1,36 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Segment, Container, Header, Button, Form, Input, Statistic, Card, Grid, Label } from 'semantic-ui-react';
-import { reduxForm, Field } from 'redux-form';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import { Segment, Container, Statistic, Card, Grid, Button } from 'semantic-ui-react';
+import ManageMacros from 'app/goals/ManageMacros.jsx';
 
 class Macros extends Component {
-  onSubmit = macros => {
-    this.props.complexEditMacros(macros);
+  state = { modalOpen: false };
+
+  handleModal = flag => {
+    this.setState({ modalOpen: flag });
   };
-  renderField = field => {
-    const {
-      placeholder,
-      label,
-      labelPosition,
-      maxLength,
-      type,
-      labelInput,
 
-      meta: { touched, error }
-    } = field;
-
-    let validateError = false;
-
-    if (touched && error) {
-      validateError = true;
-    }
-
-    return (
-      <Form.Field>
-        <Input
-          labelPosition={labelPosition}
-          placeholder={placeholder}
-          type={type}
-          maxLength={maxLength}
-          {...field.input}
-        >
-          <Label className="macrosLabel" basic>
-            {labelInput}
-          </Label>
-          <input style={{ textAlign: 'center' }} />
-          <Label className="macrosLabelContent" basic>
-            {label.content}
-          </Label>
-        </Input>
-        {validateError ? (
-          <Header as="label" color="red" size="tiny" textAlign="center">
-            {error}
-          </Header>
-        ) : (
-          ''
-        )}
-      </Form.Field>
-    );
-  };
   render() {
-    const buttonStyle = { marginTop: '15px', width: '275px' };
     const cardStyle = { padding: 15, marginBottom: '2.5em' };
-    const { handleSubmit, loading } = this.props;
+    const buttonStyle = { marginTop: '15px', width: '275px' };
+    const { loading } = this.props;
     return (
       <Container>
         {!loading ? (
           <Segment padded="very">
-            <Card fluid raised style={cardStyle}>
-              {macrosGrid(this.props.macros)}
-            </Card>
+            <Card.Group centered>
+              <Card fluid raised style={cardStyle}>
+                {macrosGrid(this.props.macros)}
+              </Card>
 
-            <Form onSubmit={handleSubmit(this.onSubmit)}>
-              <Form.Group widths={2}>
-                <Field
-                  name="calories"
-                  component={this.renderField}
-                  labelInput="Calories"
-                  placeholder="Calories"
-                  type="text"
-                  maxLength="7"
-                  label={{ content: 'kcal' }}
-                  labelPosition="right"
-                />
-                <Field
-                  name="proteins"
-                  component={this.renderField}
-                  labelInput="Proteins"
-                  placeholder="Proteins"
-                  type="text"
-                  maxLength="7"
-                  label={{ content: 'g' }}
-                  labelPosition="right"
-                />
-              </Form.Group>
-              <Form.Group widths={2}>
-                <Field
-                  name="carbs"
-                  component={this.renderField}
-                  labelInput="Carbs"
-                  placeholder="Carbs"
-                  type="text"
-                  maxLength="7"
-                  label={{ content: 'g' }}
-                  labelPosition="right"
-                />
-                <Field
-                  name="fats"
-                  component={this.renderField}
-                  labelInput="Fats"
-                  placeholder="Fats"
-                  type="text"
-                  maxLength="7"
-                  label={{ content: 'g' }}
-                  labelPosition="right"
-                />
-              </Form.Group>
-              <Card.Group centered>
-                <Button content="Update" secondary style={buttonStyle} />
-              </Card.Group>
-            </Form>
+              <Button onClick={() => this.handleModal(true)} content="Update" secondary style={buttonStyle} />
+            </Card.Group>
+
+            <ManageMacros
+              complexEditMacros={this.props.complexEditMacros}
+              openModal={this.state.modalOpen}
+              handleModal={this.handleModal}
+            />
           </Segment>
         ) : (
           <div />
@@ -123,19 +39,6 @@ class Macros extends Component {
     );
   }
 }
-
-// const Field = (name, label, renderField) => (
-//   <Field
-//     name={name}
-//     component={renderField}
-//     labelInput={label}
-//     placeholder={label}
-//     type="text"
-//     maxLength="7"
-//     label={{ content: 'g' }}
-//     labelPosition="right"
-//   />
-// );
 
 const macrosGrid = macros => {
   const { calories, proteins, carbs, fats } = macros;
@@ -166,46 +69,4 @@ const macrosGrid = macros => {
   );
 };
 
-const validate = values => {
-  const errors = {};
-  const required = 'Required field';
-  const numbers = 'This field can only contain numbers';
-
-  if (!values.calories) {
-    errors.calories = required;
-  } else if (isNaN(values.calories)) {
-    errors.calories = numbers;
-  }
-
-  if (!values.proteins) {
-    errors.proteins = required;
-  } else if (isNaN(values.proteins)) {
-    errors.proteins = numbers;
-  }
-
-  if (!values.carbs) {
-    errors.carbs = required;
-  } else if (isNaN(values.carbs)) {
-    errors.carbs = numbers;
-  }
-
-  if (!values.fats) {
-    errors.fats = required;
-  } else if (isNaN(values.fats)) {
-    errors.fats = numbers;
-  }
-
-  return errors;
-};
-
-export default compose(
-  connect(state => ({
-    initialValues: {
-      calories: state.goals.macros.calories,
-      proteins: state.goals.macros.proteins,
-      carbs: state.goals.macros.carbs,
-      fats: state.goals.macros.fats
-    }
-  })),
-  reduxForm({ validate, form: 'setGoals', enableReinitialize: true })
-)(Macros);
+export default Macros;
