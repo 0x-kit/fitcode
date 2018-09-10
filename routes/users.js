@@ -20,6 +20,8 @@ router
 
   .get('/:userId/exercise', UsersController.getExercises)
 
+  .get('/:userId/recipe', UsersController.getRecipes)
+
   .put('/:userId/macros', UsersController.setMacros)
 
   .put('/:userId/currentweight', UsersController.setCurrentWeight)

@@ -9,6 +9,7 @@ const INITIAL_STATE = {
 
   products: [],
   userProducts: {},
+  userRecipes: {},
 
   selectedProduct: {},
   selectedMeal: {},
@@ -169,6 +170,14 @@ const foodReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         exerciseCals: { calories }
+      };
+
+    /*** recipes ***/
+
+    case types.FETCH_RECIPES:
+      return {
+        ...state,
+        userRecipes: _.mapKeys(action.payload, "_id")
       };
 
     default:

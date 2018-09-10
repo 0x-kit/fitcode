@@ -1,14 +1,16 @@
-import { combineReducers } from 'redux';
-import { reducer as FormReducer } from 'redux-form';
-import root from 'app/root/duck';
-import food from 'app/food/duck';
-import goals from 'app/goals/duck';
-import exercise from 'app/exercise/duck';
+import { combineReducers } from "redux";
+import { reducer as FormReducer } from "redux-form";
+import root from "app/root/duck";
+import food from "app/food/duck";
+import goals from "app/goals/duck";
+import exercise from "app/exercise/duck";
+import recipe from "app/recipe/duck";
 
 export default combineReducers({
   auth: root.authReducer,
   form: FormReducer,
   food: food.foodReducer,
   goals: goals.goalsReducer,
-  exercise: exercise.exerciseReducer
+  exercise: exercise.exerciseReducer,
+  recipe: recipe.recipeReducer
 });

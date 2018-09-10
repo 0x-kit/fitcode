@@ -1,13 +1,17 @@
-const User = require('../models/user');
-const moment = require('moment');
-const Exercise = require('../models/exercise');
-const Diary = require('../models/diary');
-const Product = require('../models/product');
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const moment = require("moment");
+
+const User = require("../models/user");
+const Exercise = require("../models/exercise");
+const Diary = require("../models/diary");
+const Product = require("../models/product");
+const Recipe = require("../models/recipe");
 
 exports.getUsers = async (req, res) => {
   try {
-    const users = await User.find({}).select('name email _id hash_password goals');
+    const users = await User.find({}).select(
+      "name email _id hash_password goals"
+    );
 
     res.status(200).json(users);
   } catch (err) {
@@ -18,10 +22,12 @@ exports.getUsers = async (req, res) => {
 exports.readUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const user = await User.findById(userId).select('name email _id');
+    const user = await User.findById(userId).select("name email _id");
 
     if (!user) {
-      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+      return res
+        .status(404)
+        .json({ message: "Not valid entry found for provided ID" });
     } else {
       return res.status(200).json(user);
     }
@@ -37,7 +43,7 @@ exports.createUser = async (req, res) => {
     await newUser.save();
 
     res.status(201).json({
-      message: 'User sucessfully created.',
+      message: "User sucessfully created.",
       user: {
         id: newUser._id,
         name: newUser.name,
@@ -46,7 +52,7 @@ exports.createUser = async (req, res) => {
       }
     });
   } catch (err) {
-    err.name === 'ValidationError'
+    err.name === "ValidationError"
       ? res.status(422).json({ error: err.message })
       : res.status(500).json({ error: err });
   }
@@ -58,10 +64,12 @@ exports.deleteUser = async (req, res) => {
     const user = await User.findByIdAndRemove(userId);
 
     if (!user) {
-      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+      return res
+        .status(404)
+        .json({ message: "Not valid entry found for provided ID" });
     } else {
       return res.status(200).json({
-        message: 'User sucessfully deleted.',
+        message: "User sucessfully deleted.",
         user
       });
     }
@@ -81,21 +89,29 @@ exports.updateUser = async (req, res) => {
     });
 
     if (!userUpdated) {
-      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+      return res
+        .status(404)
+        .json({ message: "Not valid entry found for provided ID" });
     } else {
-      return res.status(200).json({ message: 'User sucessfully updated.', user: userUpdated });
+      return res
+        .status(200)
+        .json({ message: "User sucessfully updated.", user: userUpdated });
     }
   } catch (err) {
-    err.name === 'ValidationError' ? res.status(422).json({ error: err }) : res.status(500).json({ error: err });
+    err.name === "ValidationError"
+      ? res.status(422).json({ error: err })
+      : res.status(500).json({ error: err });
   }
 };
 
 exports.getGoals = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const goals = await User.findById(userId).select('goals');
+    const goals = await User.findById(userId).select("goals");
     if (!goals) {
-      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+      return res
+        .status(404)
+        .json({ message: "Not valid entry found for provided ID" });
     } else {
       return res.status(200).json({
         macros: goals.goals.macros,
@@ -113,10 +129,12 @@ exports.getExercises = async (req, res) => {
   try {
     const userId = req.params.userId;
     const date = moment()
-      .startOf('day')
-      .format('YYYY-MM-DD');
+      .startOf("day")
+      .format("YYYY-MM-DD");
 
-    const docs = await Exercise.find({ user: userId, date: date }).select('_id date user calories name');
+    const docs = await Exercise.find({ user: userId, date: date }).select(
+      "_id date user calories name"
+    );
 
     res.status(200).json(docs);
   } catch (err) {
@@ -132,17 +150,24 @@ exports.setMacros = async (req, res) => {
 
     const goals = await User.findByIdAndUpdate(
       userId,
-      { $set: { 'goals.macros': newGoals } },
+      { $set: { "goals.macros": newGoals } },
       {
         new: true,
         runValidators: true
       }
-    ).select('goals.macros');
+    ).select("goals.macros");
 
     if (!goals) {
-      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+      return res
+        .status(404)
+        .json({ message: "Not valid entry found for provided ID" });
     } else {
-      return res.status(200).json({ message: 'Macros sucessfully updated.', macros: goals.goals.macros });
+      return res
+        .status(200)
+        .json({
+          message: "Macros sucessfully updated.",
+          macros: goals.goals.macros
+        });
     }
   } catch (err) {
     console.log(err);
@@ -157,18 +182,22 @@ exports.setCurrentWeight = async (req, res) => {
 
     const goals = await User.findByIdAndUpdate(
       userId,
-      { $push: { 'goals.currentWeight': currentWeight } },
+      { $push: { "goals.currentWeight": currentWeight } },
       {
         new: true,
         runValidators: true
       }
-    ).select('goals.currentWeight');
+    ).select("goals.currentWeight");
 
     if (!goals) {
-      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+      return res
+        .status(404)
+        .json({ message: "Not valid entry found for provided ID" });
     } else {
       const currentWeight = goals.goals;
-      return res.status(200).json({ message: 'Current Weight sucessfully added.', currentWeight });
+      return res
+        .status(200)
+        .json({ message: "Current Weight sucessfully added.", currentWeight });
     }
   } catch (err) {
     console.log(err);
@@ -183,17 +212,24 @@ exports.setGoalWeight = async (req, res) => {
 
     const goals = await User.findByIdAndUpdate(
       userId,
-      { $set: { 'goals.goalWeight': weight.weight } },
+      { $set: { "goals.goalWeight": weight.weight } },
       {
         new: true,
         runValidators: true
       }
-    ).select('goals.goalWeight');
+    ).select("goals.goalWeight");
 
     if (!goals) {
-      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+      return res
+        .status(404)
+        .json({ message: "Not valid entry found for provided ID" });
     } else {
-      return res.status(200).json({ message: 'Goal Weight sucessfully updated.', goalWeight: goals.goals });
+      return res
+        .status(200)
+        .json({
+          message: "Goal Weight sucessfully updated.",
+          goalWeight: goals.goals
+        });
     }
   } catch (err) {
     console.log(err);
@@ -209,18 +245,42 @@ exports.getRecentProducts = async (req, res) => {
 
     let productsArr = [];
 
-    if (!user) return res.status(404).json({ message: 'Not valid entries found for provided ID' });
+    if (!user)
+      return res
+        .status(404)
+        .json({ message: "Not valid entries found for provided ID" });
 
-    const diaries = await Diary.find({ user: userId, products: { $exists: true, $not: { $size: 0 } } })
+    const diaries = await Diary.find({
+      user: userId,
+      products: { $exists: true, $not: { $size: 0 } }
+    })
       .and({ part: part })
-      .select('-_id products.product')
-      .populate('product._id');
+      .select("-_id products.product")
+      .populate("product._id");
 
-    diaries.map(({ products }) => products.map(({ product }) => productsArr.push(mongoose.Types.ObjectId(product))));
+    diaries.map(({ products }) =>
+      products.map(({ product }) =>
+        productsArr.push(mongoose.Types.ObjectId(product))
+      )
+    );
 
     const products = await Product.find({ _id: { $in: productsArr } });
 
     return res.status(200).json(products);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+exports.getRecipes = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const docs = await Recipe.find({ user: userId }).select("_id user name products")
+      .populate("products.product");
+
+    res.status(200).json(docs);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err });

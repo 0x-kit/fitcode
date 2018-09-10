@@ -10,6 +10,7 @@ const authRoutes = require('./routes/auth2');
 const productRoutes = require('./routes/product');
 const diaryRoutes = require('./routes/diary');
 const exerciseRoutes = require('./routes/exercise');
+const recipeRoutes = require('./routes/recipe');
 
 const passport = require('passport');
 const passportConfig = require('./services/passport2');
@@ -32,6 +33,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/diary', diaryRoutes);
 app.use('/api/exercise', exerciseRoutes);
+app.use('/api/recipe', recipeRoutes);
 
 /** If none of the routes above handle the request */
 

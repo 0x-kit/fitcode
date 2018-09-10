@@ -1,31 +1,37 @@
-const FETCH_HOME_ERROR = 'fetch_home_error';
-const LOADING = 'loading';
+const FETCH_HOME_ERROR = "fetch_home_error";
+const LOADING = "loading";
 
-const SET_MEALS = 'set_meals';
-const SET_MACROS = 'set_macros';
-const SET_EXERCISE_CALS = 'set_exercise_cals';
+const SET_MEALS = "set_meals";
+const SET_MACROS = "set_macros";
+const SET_EXERCISE_CALS = "set_exercise_cals";
 
-const USER_PRODUCTS = 'user_products';
-const RECENT_PRODUCTS = 'recent_products';
-const SEARCH_PRODUCTS = 'search_products';
-const RESET_MESSAGE = 'reset_message';
-const RESET_SEARCH_MESSAGE = 'reset_search_message';
+const USER_PRODUCTS = "user_products";
+const RECENT_PRODUCTS = "recent_products";
+const SEARCH_PRODUCTS = "search_products";
+const RESET_MESSAGE = "reset_message";
+const RESET_SEARCH_MESSAGE = "reset_search_message";
 
-const ADD_PERSONAL_PRODUCT = 'add_personal_product';
-const EDIT_PERSONAL_PRODUCT = 'edit_personal_product';
-const DELETE_PERSONAL_PRODUCT = 'delete_personal_product';
+const ADD_PERSONAL_PRODUCT = "add_personal_product";
+const EDIT_PERSONAL_PRODUCT = "edit_personal_product";
+const DELETE_PERSONAL_PRODUCT = "delete_personal_product";
 
-const ADD_DIARY_PRODUCT = 'add_diary_product';
-const EDIT_DIARY_PRODUCT = 'edit_diary_product';
-const DELETE_DIARY_PRODUCT = 'delete_diary_product';
+const ADD_DIARY_PRODUCT = "add_diary_product";
+const EDIT_DIARY_PRODUCT = "edit_diary_product";
+const DELETE_DIARY_PRODUCT = "delete_diary_product";
 
-const SELECT_PRODUCT = 'select_product';
-const SELECT_MEAL = 'select_meal';
-const SELECT_GRAMS = 'select_grams';
+const SELECT_PRODUCT = "select_product";
+const SELECT_MEAL = "select_meal";
+const SELECT_GRAMS = "select_grams";
 
-const SET_DAY = 'set_day';
-const ADD_DAY = 'add_day';
-const SUBSTRACT_DAY = 'substract_day';
+const SET_DAY = "set_day";
+const ADD_DAY = "add_day";
+const SUBSTRACT_DAY = "substract_day";
+
+const FETCH_RECIPES = "fetch_recipes";
+const EDIT_RECIPE = "edit_recipe";
+const ADD_RECIPE = "add_recipe";
+const DELETE_RECIPE = "delete_recipe";
+const SELECT_RECIPE = "select_recipe";
 
 export default {
   LOADING,
@@ -53,5 +59,11 @@ export default {
   EDIT_PERSONAL_PRODUCT,
   DELETE_PERSONAL_PRODUCT,
   RESET_MESSAGE,
-  RESET_SEARCH_MESSAGE
+  RESET_SEARCH_MESSAGE,
+
+  FETCH_RECIPES,
+  EDIT_RECIPE,
+  ADD_RECIPE,
+  DELETE_RECIPE,
+  SELECT_RECIPE
 };

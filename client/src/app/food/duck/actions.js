@@ -1,4 +1,4 @@
-import types from './types';
+import types from "./types";
 
 const loading = flag => ({
   type: types.LOADING,
@@ -24,13 +24,25 @@ const setExerciseCals = cals => ({
 
 const getUserProducts = data => ({ type: types.USER_PRODUCTS, payload: data });
 
-const getRecentProducts = data => ({ type: types.RECENT_PRODUCTS, payload: data });
+const getRecentProducts = data => ({
+  type: types.RECENT_PRODUCTS,
+  payload: data
+});
 
-const searchProducts = (products, message) => ({ type: types.SEARCH_PRODUCTS, payload: { products, message } });
+const searchProducts = (products, message) => ({
+  type: types.SEARCH_PRODUCTS,
+  payload: { products, message }
+});
 
-const resetMessage = message => ({ type: types.RESET_MESSAGE, payload: message });
+const resetMessage = message => ({
+  type: types.RESET_MESSAGE,
+  payload: message
+});
 
-const resetSearchMessage = (message = '') => ({ type: types.RESET_SEARCH_MESSAGE, payload: message });
+const resetSearchMessage = (message = "") => ({
+  type: types.RESET_SEARCH_MESSAGE,
+  payload: message
+});
 
 const selectProduct = (product, grams = 100) => ({
   type: types.SELECT_PRODUCT,
@@ -87,6 +99,28 @@ const deletePersonalProduct = (product, message) => ({
   payload: { product, message }
 });
 
+const fetchRecipes = data => ({ type: types.FETCH_RECIPES, payload: data });
+
+const editRecipe = (recipe, message) => ({
+  type: types.EDIT_RECIPE,
+  payload: { recipe, message }
+});
+
+const addRecipe = (recipe, message) => ({
+  type: types.ADD_RECIPE,
+  payload: { recipe, message }
+});
+
+const deleteRecipe = (recipe, message) => ({
+  type: types.DELETE_RECIPE,
+  payload: { recipe, message }
+});
+
+const selectRecipe = data => ({
+  type: types.SELECT_RECIPE,
+  payload: data
+});
+
 export default {
   loading,
   fetchError,
@@ -113,5 +147,11 @@ export default {
   editPersonalProduct,
   deletePersonalProduct,
   resetMessage,
-  resetSearchMessage
+  resetSearchMessage,
+
+  fetchRecipes,
+  addRecipe,
+  editRecipe,
+  deleteRecipe,
+  selectRecipe
 };

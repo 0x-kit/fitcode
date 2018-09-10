@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _ from "lodash";
 
 class HomeInfo {
   static macrosPerProduct(product) {
@@ -110,6 +110,55 @@ class HomeInfo {
   static per = (num, amount) => {
     return Math.round((num * amount) / 100);
   };
+
+  static macrosPerRecipe(recipe) {
+    console.log(recipe);
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+    let calArr = [],
+      proArr = [],
+      carbArr = [],
+      fatArr = [],
+      macrosPerRecipe = {};
+    var flag;
+
+    if (recipe.products !== undefined && !_.isEmpty(recipe.products)) {
+      recipe.products.forEach((product, index) => {
+        flag = product.product;
+
+        if (_.isNull(flag)) {
+          return;
+        }
+
+        let serving = this.macrosPerProduct(product);
+        const { calories, proteins, carbs, fats } = serving;
+
+        calArr[index] = 0;
+        proArr[index] = 0;
+        carbArr[index] = 0;
+        fatArr[index] = 0;
+
+        calArr[index] += calories;
+        proArr[index] += proteins;
+        carbArr[index] += carbs;
+        fatArr[index] += fats;
+      });
+
+      if (_.isNull(flag)) {
+        return;
+      }
+
+      macrosPerRecipe = {
+        name: recipe.name,
+        calories: calArr.reduce(reducer),
+        proteins: proArr.reduce(reducer),
+        carbs: carbArr.reduce(reducer),
+        fats: fatArr.reduce(reducer)
+      };
+    }
+
+    return macrosPerRecipe;
+  }
 }
 
 export default HomeInfo;

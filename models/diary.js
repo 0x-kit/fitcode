@@ -48,3 +48,5 @@ DiarySchema.statics.createDiary = function(index, userId, date = moment()) {
 
 const Diary = mongoose.model('diary', DiarySchema);
 module.exports = Diary;
+
+
