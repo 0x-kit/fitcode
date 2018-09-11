@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import moment from 'moment';
-import { reduxForm, Field, reset } from 'redux-form';
-import { Header, Modal, Input, Form, Button } from 'semantic-ui-react';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { compose } from "recompose";
+import moment from "moment";
+import { reduxForm, Field, reset } from "redux-form";
+import { Header, Modal, Input, Form, Button } from "semantic-ui-react";
 
 class ManageFood extends Component {
   state = { deleteProduct: false };
@@ -11,8 +11,9 @@ class ManageFood extends Component {
   handleDelete = flag => this.setState({ deleteProduct: flag });
 
   handleClose = () => {
+    this.handleDelete(false);
     this.props.handleModal(false);
-    this.props.dispatch(reset('manageExercise'));
+    this.props.dispatch(reset("manageExercise"));
   };
 
   onSubmit = values => {
@@ -20,8 +21,8 @@ class ManageFood extends Component {
     const { name, calories } = values;
 
     const newExercise = {
-      user: localStorage.getItem('userId'),
-      date: moment().format('YYYY-MM-DD'),
+      user: localStorage.getItem("userId"),
+      date: moment().format("YYYY-MM-DD"),
       name,
       calories
     };
@@ -66,7 +67,7 @@ class ManageFood extends Component {
             {error}
           </Header>
         ) : (
-          ''
+          ""
         )}
       </Form.Field>
     );
@@ -76,14 +77,22 @@ class ManageFood extends Component {
     const { handleSubmit, openModal } = this.props;
     const buttonStyle = { width: 155, marginBottom: 10, marginTop: 10 };
     return (
-      <Modal style={{ width: 350, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
-        <Header subheader="Enter name and calories" content="Edit Your Exercise" />
+      <Modal
+        style={{ width: 350, textAlign: "center" }}
+        open={openModal}
+        onClose={this.handleClose}
+        size="mini"
+      >
+        <Header
+          subheader="Enter name and calories"
+          content="Edit Your Exercise"
+        />
         <Modal.Actions>
           <Form onSubmit={handleSubmit(this.onSubmit)}>
             <Field
               name="name"
               component={this.renderField}
-              label={{ basic: true, content: 'Name', className: 'createFood' }}
+              label={{ basic: true, content: "Name", className: "createFood" }}
               labelPosition="left"
               placeholder="Enter name..."
             />
@@ -91,13 +100,23 @@ class ManageFood extends Component {
             <Field
               name="calories"
               component={this.renderField}
-              label={{ basic: true, content: 'Calories', className: 'createFood' }}
+              label={{
+                basic: true,
+                content: "Calories",
+                className: "createFood"
+              }}
               labelPosition="left"
               placeholder="Enter calories..."
               maxLength="7"
             />
 
-            <Button style={buttonStyle} size="tiny" secondary content="Edit" floated="right" />
+            <Button
+              style={buttonStyle}
+              size="tiny"
+              secondary
+              content="Edit"
+              floated="right"
+            />
             <Button
               style={buttonStyle}
               size="tiny"
@@ -116,8 +135,8 @@ class ManageFood extends Component {
 
 const validate = values => {
   const errors = {};
-  const required = 'Required field';
-  const numbers = 'This field can only contain numbers';
+  const required = "Required field";
+  const numbers = "This field can only contain numbers";
 
   if (!values.name) {
     errors.name = required;
@@ -141,5 +160,5 @@ export default compose(
       calories: state.exercise.selectedExercise.calories
     }
   })),
-  reduxForm({ validate, form: 'manageExercise', enableReinitialize: true })
+  reduxForm({ validate, form: "manageExercise", enableReinitialize: true })
 )(ManageFood);

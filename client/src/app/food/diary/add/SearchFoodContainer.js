@@ -14,8 +14,8 @@ const mapStateToProps = state => {
     products: state.food.products,
     selectedProduct: state.food.selectedProduct,
     selectedMeal: state.food.selectedMeal,
-    selectedRecipe: state.recipe.selectedRecipe,
-    
+    selectedRecipe: state.food.selectedRecipe,
+
     loading: state.food.loading,
     errorMessage: state.food.errorMessage,
     searchMessage: state.food.searchMessage

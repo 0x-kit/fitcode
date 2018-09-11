@@ -1,39 +1,57 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import { reduxForm, Field, reset, formValueSelector } from 'redux-form';
-import { Header, Modal, Input, Statistic, Form, Button, Card } from 'semantic-ui-react';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { compose } from "recompose";
+import { reduxForm, Field, reset, formValueSelector } from "redux-form";
+import {
+  Header,
+  Modal,
+  Input,
+  Statistic,
+  Form,
+  Button,
+  Card
+} from "semantic-ui-react";
 
-import HomeUtils from 'app/food/HomeUtils';
+import HomeUtils from "app/food/HomeUtils";
+import _ from "lodash";
 
 class AddFood extends Component {
   handleClose = () => {
     this.props.handleModal(false);
-    this.props.dispatch(reset('addProduct'));
+    this.props.dispatch(reset("addProduct"));
   };
 
   onSubmit = values => {
-    const { selectedProduct, selectedMeal } = this.props;
+    const { selectedProduct, selectedMeal, selectedRecipe } = this.props;
 
     const newProduct = {
       product: selectedProduct._id,
       grams: values.serving
     };
 
+    if (!_.isEmpty(selectedMeal)) {
+      this.props.complexAddDiaryProduct(selectedMeal.mealId, newProduct);
+    } else if (!_.isEmpty(selectedRecipe)) {
+      this.props.complexAddRecipeProduct(selectedRecipe, newProduct);
+    }
+
     this.handleClose();
-    this.props.complexAddDiaryProduct(selectedMeal.mealId, newProduct);
   };
 
   renderMacros = (product, serving) => {
     const { calories, proteins, carbs, fats } = product;
-    const labels = ['Calories', 'Proteins', 'Carbs', 'Fats'];
+    const labels = ["Calories", "Proteins", "Carbs", "Fats"];
     const terms = [calories, proteins, carbs, fats];
 
     const renderStatistic = (label, term, serving, index) => (
       <Statistic
         key={index}
         value={label}
-        label={isNaN(HomeUtils.per(term, serving)) ? '' : HomeUtils.per(term, serving)}
+        label={
+          isNaN(HomeUtils.per(term, serving))
+            ? ""
+            : HomeUtils.per(term, serving)
+        }
       />
     );
     return (
@@ -77,7 +95,7 @@ class AddFood extends Component {
             {error}
           </Header>
         ) : (
-          ''
+          ""
         )}
       </Form.Field>
     );
@@ -86,25 +104,39 @@ class AddFood extends Component {
   render() {
     const { selectedProduct, serving, handleSubmit, openModal } = this.props;
     const buttonStyle = { marginBottom: 10, width: 272 };
-    const modalStyle = { width: 300, textAlign: 'center' };
+    const modalStyle = { width: 300, textAlign: "center" };
 
     return (
-      <Modal style={modalStyle} open={openModal} onClose={this.handleClose} size="mini">
+      <Modal
+        style={modalStyle}
+        open={openModal}
+        onClose={this.handleClose}
+        size="mini"
+      >
         <Header subheader={selectedProduct.name} content="Add Food" />
-        <Modal.Content>{this.renderMacros(selectedProduct, serving)}</Modal.Content>
+        <Modal.Content>
+          {this.renderMacros(selectedProduct, serving)}
+        </Modal.Content>
         <Modal.Actions>
           <Form onSubmit={handleSubmit(this.onSubmit)}>
             <Field
               name="serving"
               component={this.renderField}
-              label={{ basic: true, content: 'g' }}
+              label={{ basic: true, content: "g" }}
               labelPosition="right"
               placeholder="Enter weight..."
               type="text"
               maxLength="7"
             />
 
-            <Button style={buttonStyle} size="small" compact secondary content="Add" floated="right" />
+            <Button
+              style={buttonStyle}
+              size="small"
+              compact
+              secondary
+              content="Add"
+              floated="right"
+            />
           </Form>
         </Modal.Actions>
       </Modal>
@@ -114,8 +146,8 @@ class AddFood extends Component {
 
 const validate = values => {
   const errors = {};
-  const required = 'Required field';
-  const numbers = 'This field can only contain numbers';
+  const required = "Required field";
+  const numbers = "This field can only contain numbers";
 
   if (!values.serving) {
     errors.serving = required;
@@ -127,7 +159,7 @@ const validate = values => {
 
 // Selector needed in order to access the value of the 'serving' field of the addProduct form
 // This way we can update in real time the macros depending upon serving size
-const selector = formValueSelector('addDiaryProduct');
+const selector = formValueSelector("addDiaryProduct");
 
 export default compose(
   connect(state => ({
@@ -135,8 +167,8 @@ export default compose(
       serving: state.food.selectedGrams
     }
   })),
-  reduxForm({ validate, form: 'addDiaryProduct', enableReinitialize: true }),
+  reduxForm({ validate, form: "addDiaryProduct", enableReinitialize: true }),
   connect(state => ({
-    serving: selector(state, 'serving')
+    serving: selector(state, "serving")
   }))
 )(AddFood);

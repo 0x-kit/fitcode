@@ -65,7 +65,7 @@ class ManageMacros extends Component {
     const buttonStyle = { marginTop: '15px', marginBottom: '15px', width: '275px' };
     const { handleSubmit } = this.props;
     const { openModal } = this.props;
-    console.log(openModal);
+
     return (
       <Modal style={{ width: 300, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
         <Header subheader="Enter your diet requirements" content="Edit Your Macros" />

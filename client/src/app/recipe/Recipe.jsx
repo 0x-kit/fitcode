@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 import {
   Card,
   List,
@@ -10,25 +11,24 @@ import {
   Button,
   Transition
 } from "semantic-ui-react";
-import { Link } from "react-router-dom";
 
+import ManageRecipeFood from "app/recipe/ManageRecipe.jsx";
+import CreateRecipe from "app/recipe/CreateRecipe.jsx";
 import utils from "app/food/HomeUtils";
 
 class Recipe extends Component {
   state = { manageModal: false, createModal: false };
 
-  handleManageModal = flag => this.setState({ manageModal: flag });
-
-  handleCreateModal = flag => this.setState({ createModal: flag });
-
-  selectExercise = exercise => {
-    this.props.selectExercise(exercise);
+  selectProduct = (selectedProduct, recipeId) => {
+    const { product, grams } = selectedProduct;
+    this.props.selectProduct(product, grams);
+    this.props.selectRecipe(recipeId);
     this.handleManageModal(true);
   };
 
-  selectProduct = product => {
-    console.log("product");
-  };
+  handleManageModal = flag => this.setState({ manageModal: flag });
+
+  handleCreateModal = flag => this.setState({ createModal: flag });
 
   renderRecipe = recipe => {
     const { _id, name, products } = recipe;
@@ -37,7 +37,9 @@ class Recipe extends Component {
     return (
       <Card key={_id} fluid raised>
         <Card.Content header={name} />
-        <Card.Content>{this.renderProductList(products)}</Card.Content>
+        <Card.Content>
+          {this.renderProductList(products, this.selectProduct, _id)}
+        </Card.Content>
         <Card.Content extra>
           {this.renderSummary(macrosPerRecipe, name, _id, this.props.match)}
         </Card.Content>
@@ -45,7 +47,7 @@ class Recipe extends Component {
     );
   };
 
-  renderProductList = (productsArr = []) => {
+  renderProductList = (productsArr = [], selectProduct, recipeId) => {
     return (
       <Responsive as={List} minWidth={615} selection divided>
         {productsArr
@@ -66,7 +68,12 @@ class Recipe extends Component {
             const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
 
             return (
-              <List.Item key={_id}>
+              <List.Item
+                key={_id}
+                onClick={() => {
+                  selectProduct(product, recipeId);
+                }}
+              >
                 <List.Icon
                   name="food"
                   style={{ float: "left" }}
@@ -97,7 +104,7 @@ class Recipe extends Component {
     return <List.Content floated="right" description={header} style={style} />;
   };
   renderSummary = (macrosPerMeal, recipeName, recipeId, match) => {
-    const renderAddButton = (recipeName, recipeId) => {
+    const renderAddButton = recipeId => {
       const path = {
         pathname: `${match.url}/add/${recipeId}`
       };
@@ -112,7 +119,6 @@ class Recipe extends Component {
             size="small"
             secondary
             compact
-            primary
           />
           <Button
             content="Delete Recipe"
@@ -136,39 +142,54 @@ class Recipe extends Component {
     );
   };
 
+  renderMainCard = () => {
+    return (
+      <Card raised fluid>
+        <Card.Content textAlign="center">
+          <Header size="medium">Your Personal Recipes</Header>
+          <Button
+            secondary
+            onClick={() => this.handleCreateModal(true)}
+            size="small"
+            compact
+            primary
+            content="Create Recipe"
+          />
+        </Card.Content>
+      </Card>
+    );
+  };
+
   render() {
     // handleSubmit provided by reduxForm
     const { userRecipes, loading } = this.props;
-    const style = { paddingRight: "0.5em" };
-    const headerStyle = { marginTop: "0.5em" };
-
     const recipeArr = _.map(userRecipes);
 
     return (
       <Responsive as={Container}>
-        <Segment raised>
-          {!_.isEmpty(userRecipes) ? (
+        {!_.isEmpty(userRecipes) ? (
+          <Segment raised>
             <Card.Group centered>
-              <Header as="h3" style={headerStyle}>
-                Your recipes
-              </Header>
+              {this.renderMainCard()}
               {recipeArr.map(recipe => {
                 return this.renderRecipe(recipe);
               })}
             </Card.Group>
-          ) : (
-            <div />
-          )}
+          </Segment>
+        ) : (
+          <div />
+        )}
+        <ManageRecipeFood
+          openModal={this.state.manageModal}
+          handleModal={this.handleManageModal}
+          {...this.props}
+        />
 
-          {/* <ManageExercise
-            openModal={manageModal}
-            handleModal={this.handleManageModal}
-            selectedExercise={selectedExercise}
-            {...this.props}
-          />
-
-          <CreateExercise openModal={createModal} handleModal={this.handleCreateModal} {...this.props} /> */}
-        </Segment>
+        <CreateRecipe
+          openModal={this.state.createModal}
+          handleModal={this.handleCreateModal}
+          {...this.props}
+        />
       </Responsive>
     );
   }

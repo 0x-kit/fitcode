@@ -1,8 +1,18 @@
-import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form';
-import AddFood from 'app/food/diary/add/AddFood.jsx';
+import React, { Component } from "react";
+import { reduxForm, Field } from "redux-form";
+import AddFood from "app/food/diary/add/AddFood.jsx";
 
-import { Card, Input, List, Header, Responsive, Container, Segment, Form, Transition } from 'semantic-ui-react';
+import {
+  Card,
+  Input,
+  List,
+  Header,
+  Responsive,
+  Container,
+  Segment,
+  Form,
+  Transition
+} from "semantic-ui-react";
 
 class SearchFood extends Component {
   state = { modalOpen: false };
@@ -34,13 +44,20 @@ class SearchFood extends Component {
 
     return (
       <Form.Field>
-        <Input fluid size="medium" icon="search" type="text" placeholder="Search..." {...field.input} />
+        <Input
+          fluid
+          size="medium"
+          icon="search"
+          type="text"
+          placeholder="Search..."
+          {...field.input}
+        />
         {validateError ? (
           <Header as="label" color="red" size="tiny" textAlign="center">
             {error}
           </Header>
         ) : (
-          ''
+          ""
         )}
       </Form.Field>
     );
@@ -48,18 +65,33 @@ class SearchFood extends Component {
 
   renderProductList(products) {
     return (
-      <Transition.Group as={List} duration={700} animation="fade" divided relaxed selection>
+      <Transition.Group
+        as={List}
+        duration={700}
+        animation="fade"
+        divided
+        relaxed
+        selection
+      >
         {products.map(product => {
           const { _id, name, brand, calories, proteins, carbs, fats } = product;
-          const constantDescription = '100g';
+          const constantDescription = "100g";
           const header = `${calories} KCAL | ${proteins} P | ${carbs} C | ${fats} F`;
 
           return (
             <List.Item onClick={() => this.selectProduct(product)} key={_id}>
               <List.Content floated="right" content={constantDescription} />
-              <List.Content floated="right" verticalAlign="middle" description={header} />
+              <List.Content
+                floated="right"
+                verticalAlign="middle"
+                description={header}
+              />
               <List.Icon name="food" size="large" verticalAlign="middle" />
-              <List.Content header={{ content: name, as: 'a' }} description={brand} verticalAlign="middle" />
+              <List.Content
+                header={{ content: name, as: "a" }}
+                description={brand}
+                verticalAlign="middle"
+              />
             </List.Item>
           );
         })}
@@ -69,12 +101,19 @@ class SearchFood extends Component {
 
   render() {
     // handleSubmit provided by reduxForm
-    const { handleSubmit, products, selectedProduct, selectedMeal, searchMessage } = this.props;
+    const {
+      handleSubmit,
+      products,
+      selectedProduct,
+      selectedMeal,
+      selectedRecipe,
+      searchMessage
+    } = this.props;
     const { modalOpen } = this.state;
     const searchStyle = {
-      fontSize: '.82857143em',
+      fontSize: ".82857143em",
       fontWeight: 700,
-      color: '#db2828'
+      color: "#db2828"
     };
 
     return (
@@ -85,7 +124,9 @@ class SearchFood extends Component {
               <Header size="medium">
                 Search our food database by name or brand
                 <Header.Subheader>{selectedMeal.part}</Header.Subheader>
-                <Header.Subheader style={searchStyle}>{searchMessage}</Header.Subheader>
+                <Header.Subheader style={searchStyle}>
+                  {searchMessage}
+                </Header.Subheader>
               </Header>
             </Card.Content>
 
@@ -103,10 +144,12 @@ class SearchFood extends Component {
 
           <AddFood
             complexAddDiaryProduct={this.props.complexAddDiaryProduct}
+            complexAddRecipeProduct={this.props.complexAddRecipeProduct}
             openModal={modalOpen}
             handleModal={this.handleModal}
             selectedProduct={selectedProduct}
             selectedMeal={selectedMeal}
+            selectedRecipe={selectedRecipe}
           />
         </Segment>
       </Responsive>
@@ -116,7 +159,7 @@ class SearchFood extends Component {
 
 const validate = values => {
   const errors = {};
-  const required = 'Required field';
+  const required = "Required field";
 
   if (!values.term) {
     errors.term = required;
@@ -125,4 +168,4 @@ const validate = values => {
   return errors;
 };
 
-export default reduxForm({ validate, form: 'search' })(SearchFood);
+export default reduxForm({ validate, form: "search" })(SearchFood);

@@ -9,9 +9,12 @@ import Recipe from "app/recipe/Recipe.jsx";
 
 const mapStateToProps = state => {
   return {
-    userRecipes: state.recipe.userRecipes,
-    loading: state.recipe.loading,
-    errorMessage: state.recipe.errorMessage
+    userRecipes: state.food.userRecipes,
+    selectedProduct: state.food.selectedProduct,
+    selectedGrams: state.food.selectedGrams,
+    selectedRecipe: state.food.selectedRecipe,
+    loading: state.food.loading,
+    errorMessage: state.food.errorMessage
   };
 };
 

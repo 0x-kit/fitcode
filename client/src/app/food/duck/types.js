@@ -28,9 +28,9 @@ const ADD_DAY = "add_day";
 const SUBSTRACT_DAY = "substract_day";
 
 const FETCH_RECIPES = "fetch_recipes";
-const EDIT_RECIPE = "edit_recipe";
-const ADD_RECIPE = "add_recipe";
-const DELETE_RECIPE = "delete_recipe";
+const EDIT_RECIPE_PRODUCT = "edit_recipe_product";
+const ADD_RECIPE_PRODUCT = "add_recipe_product";
+const DELETE_RECIPE_PRODUCT = "delete_recipe_product";
 const SELECT_RECIPE = "select_recipe";
 
 export default {
@@ -62,8 +62,8 @@ export default {
   RESET_SEARCH_MESSAGE,
 
   FETCH_RECIPES,
-  EDIT_RECIPE,
-  ADD_RECIPE,
-  DELETE_RECIPE,
+  EDIT_RECIPE_PRODUCT,
+  ADD_RECIPE_PRODUCT,
+  DELETE_RECIPE_PRODUCT,
   SELECT_RECIPE
 };

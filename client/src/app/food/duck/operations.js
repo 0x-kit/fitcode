@@ -28,9 +28,9 @@ const {
   resetSearchMessage,
 
   fetchRecipes,
-  addRecipe,
-  editRecipe,
-  deleteRecipe,
+  addRecipeProduct,
+  editRecipeProduct,
+  deleteRecipeProduct,
   selectRecipe
 } = ActionCreators;
 
@@ -279,6 +279,66 @@ const complexAddPersonalProduct = newProduct => async dispatch => {
   }
 };
 
+const complexAddRecipeProduct = (recipeId, newProduct) => async dispatch => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.post(
+      `/api/recipe/${recipeId}/product`,
+      newProduct,
+      reqConfig
+    );
+
+    const { message } = response.data;
+
+    dispatch(addRecipeProduct(message));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
+const complexEditRecipeProduct = (recipeId, product) => async dispatch => {
+  try {
+    console.log(recipeId);
+    const token = localStorage.getItem("token");
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.put(
+      `/api/recipe/${recipeId}/product`,
+      product,
+      reqConfig
+    );
+    const { recipe, message } = response.data;
+    console.log(recipe);
+    dispatch(editRecipeProduct([recipe], message));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
+const complexDeleteRecipeProduct = (recipeId, product) => async dispatch => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const productId = product.product;
+
+    const response = await axios.delete(
+      `/api/recipe/${recipeId}/product/${productId}`,
+      reqConfig
+    );
+    const { recipe, message } = response.data;
+
+    dispatch(deleteRecipeProduct([recipe], message));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
 export default {
   complexFetchHome,
   complexGetUserProducts,
@@ -302,5 +362,8 @@ export default {
   resetSearchMessage,
 
   complexFetchRecipes,
+  complexAddRecipeProduct,
+  complexEditRecipeProduct,
+  complexDeleteRecipeProduct,
   selectRecipe
 };
