@@ -162,12 +162,10 @@ exports.setMacros = async (req, res) => {
         .status(404)
         .json({ message: "Not valid entry found for provided ID" });
     } else {
-      return res
-        .status(200)
-        .json({
-          message: "Macros sucessfully updated.",
-          macros: goals.goals.macros
-        });
+      return res.status(200).json({
+        message: "Macros sucessfully updated.",
+        macros: goals.goals.macros
+      });
     }
   } catch (err) {
     console.log(err);
@@ -224,12 +222,10 @@ exports.setGoalWeight = async (req, res) => {
         .status(404)
         .json({ message: "Not valid entry found for provided ID" });
     } else {
-      return res
-        .status(200)
-        .json({
-          message: "Goal Weight sucessfully updated.",
-          goalWeight: goals.goals
-        });
+      return res.status(200).json({
+        message: "Goal Weight sucessfully updated.",
+        goalWeight: goals.goals
+      });
     }
   } catch (err) {
     console.log(err);
@@ -244,19 +240,29 @@ exports.getRecentProducts = async (req, res) => {
     const user = await User.findById(userId);
 
     let productsArr = [];
+    let diaries;
 
     if (!user)
       return res
         .status(404)
         .json({ message: "Not valid entries found for provided ID" });
 
-    const diaries = await Diary.find({
-      user: userId,
-      products: { $exists: true, $not: { $size: 0 } }
-    })
-      .and({ part: part })
-      .select("-_id products.product")
-      .populate("product._id");
+    if (part === "All") {
+      diaries = await Diary.find({
+        user: userId,
+        products: { $exists: true, $not: { $size: 0 } }
+      })
+        .select("-_id products.product")
+        .populate("product._id");
+    } else {
+      diaries = await Diary.find({
+        user: userId,
+        products: { $exists: true, $not: { $size: 0 } }
+      })
+        .and({ part: part })
+        .select("-_id products.product")
+        .populate("product._id");
+    }
 
     diaries.map(({ products }) =>
       products.map(({ product }) =>
@@ -277,7 +283,8 @@ exports.getRecipes = async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    const docs = await Recipe.find({ user: userId }).select("_id user name products")
+    const docs = await Recipe.find({ user: userId })
+      .select("_id user name products")
       .populate("products.product");
 
     res.status(200).json(docs);

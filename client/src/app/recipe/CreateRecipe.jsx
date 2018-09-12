@@ -15,7 +15,7 @@ class CreateRecipe extends Component {
       name
     };
 
-    this.props.complexAddRecipe(newRecipe);
+    this.props.complexCreateRecipe(newRecipe);
     this.handleClose();
   };
 

@@ -190,6 +190,23 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         userRecipes: _.mapKeys(action.payload, "_id")
       };
 
+    case types.CREATE_RECIPE:
+      return {
+        ...state,
+        userRecipes: {
+          ...state.userRecipes,
+          ..._.mapKeys(action.payload.recipe, "_id")
+        },
+        message: action.payload.message
+      };
+
+    case types.DELETE_RECIPE:
+      return {
+        ...state,
+        userRecipes: _.omit(state.userRecipes, action.payload.recipe),
+        message: action.payload.message
+      };
+
     case types.SELECT_RECIPE:
       return {
         ...state,
@@ -213,6 +230,7 @@ const foodReducer = (state = INITIAL_STATE, action) => {
       };
 
     case types.DELETE_RECIPE_PRODUCT:
+      console.log(action.payload.recipe);
       return {
         ...state,
         userRecipes: {

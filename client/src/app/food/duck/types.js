@@ -28,6 +28,8 @@ const ADD_DAY = "add_day";
 const SUBSTRACT_DAY = "substract_day";
 
 const FETCH_RECIPES = "fetch_recipes";
+const CREATE_RECIPE = "create_recipe";
+const DELETE_RECIPE = "delete_recipe";
 const EDIT_RECIPE_PRODUCT = "edit_recipe_product";
 const ADD_RECIPE_PRODUCT = "add_recipe_product";
 const DELETE_RECIPE_PRODUCT = "delete_recipe_product";
@@ -62,6 +64,8 @@ export default {
   RESET_SEARCH_MESSAGE,
 
   FETCH_RECIPES,
+  CREATE_RECIPE,
+  DELETE_RECIPE,
   EDIT_RECIPE_PRODUCT,
   ADD_RECIPE_PRODUCT,
   DELETE_RECIPE_PRODUCT,

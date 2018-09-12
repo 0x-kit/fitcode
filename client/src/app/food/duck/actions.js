@@ -101,6 +101,16 @@ const deletePersonalProduct = (product, message) => ({
 
 const fetchRecipes = data => ({ type: types.FETCH_RECIPES, payload: data });
 
+const createRecipe = (recipe, message) => ({
+  type: types.CREATE_RECIPE,
+  payload: { recipe, message }
+});
+
+const deleteRecipe = (recipe, message) => ({
+  type: types.DELETE_RECIPE,
+  payload: { recipe, message }
+});
+
 const addRecipeProduct = message => ({
   type: types.ADD_RECIPE_PRODUCT,
   payload: message
@@ -150,6 +160,8 @@ export default {
   resetSearchMessage,
 
   fetchRecipes,
+  createRecipe,
+  deleteRecipe,
   addRecipeProduct,
   editRecipeProduct,
   deleteRecipeProduct,

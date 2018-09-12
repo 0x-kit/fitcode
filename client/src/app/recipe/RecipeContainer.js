@@ -29,7 +29,7 @@ export default compose(
   ),
   withAuth,
   lifecycle({
-    componentDidMount() {
+    componentWillMount() {
       this.props.complexFetchRecipes();
     }
   })

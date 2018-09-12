@@ -39,6 +39,7 @@ export default compose(
 
       if (_.isUndefined(meal)) {
         this.props.selectRecipe(recipe);
+        this.props.complexGetRecentProducts();
       } else {
         this.props.selectMeal(id, meal);
         this.props.complexGetRecentProducts(meal);

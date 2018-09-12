@@ -28,6 +28,8 @@ const {
   resetSearchMessage,
 
   fetchRecipes,
+  createRecipe,
+  deleteRecipe,
   addRecipeProduct,
   editRecipeProduct,
   deleteRecipeProduct,
@@ -194,7 +196,7 @@ const complexGetUserProducts = () => async dispatch => {
   }
 };
 
-const complexGetRecentProducts = part => async dispatch => {
+const complexGetRecentProducts = (part = "All") => async dispatch => {
   try {
     dispatch(loading(true));
     const token = localStorage.getItem("token");
@@ -301,7 +303,6 @@ const complexAddRecipeProduct = (recipeId, newProduct) => async dispatch => {
 
 const complexEditRecipeProduct = (recipeId, product) => async dispatch => {
   try {
-    console.log(recipeId);
     const token = localStorage.getItem("token");
 
     const reqConfig = { headers: { authorization: token } };
@@ -339,6 +340,37 @@ const complexDeleteRecipeProduct = (recipeId, product) => async dispatch => {
   }
 };
 
+const complexCreateRecipe = newRecipe => async dispatch => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.post(`/api/recipe/`, newRecipe, reqConfig);
+
+    const { recipe, message } = response.data;
+
+    dispatch(createRecipe([recipe], message));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
+const complexDeleteRecipe = recipeId => async dispatch => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.delete(`/api/recipe/${recipeId}`, reqConfig);
+    const { recipe, message } = response.data;
+
+    dispatch(deleteRecipe(recipe._id, message));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
 export default {
   complexFetchHome,
   complexGetUserProducts,
@@ -362,6 +394,8 @@ export default {
   resetSearchMessage,
 
   complexFetchRecipes,
+  complexCreateRecipe,
+  complexDeleteRecipe,
   complexAddRecipeProduct,
   complexEditRecipeProduct,
   complexDeleteRecipeProduct,

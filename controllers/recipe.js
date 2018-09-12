@@ -50,16 +50,17 @@ exports.createRecipe = async (req, res) => {
 exports.deleteRecipe = async (req, res) => {
   try {
     const recipeId = req.params.recipeId;
-    const recipe = await Recipe.findByIdAndRemove(recipeId);
+    const recipeDeleted = await Recipe.findByIdAndRemove(recipeId);
 
-    if (!recipe) {
+    if (!recipeDeleted) {
       return res
         .status(404)
         .json({ message: "Not valid entry found for provided ID" });
     } else {
-      return res
-        .status(200)
-        .json({ message: "Recipe successfully deleted.", recipe });
+      return res.status(200).json({
+        message: "Recipe successfully deleted.",
+        recipe: recipeDeleted
+      });
     }
   } catch (err) {
     res.status(500).json({ error: err });
