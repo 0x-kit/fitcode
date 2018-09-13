@@ -4,6 +4,7 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 const _ = require('lodash');
+const recipe = require('./recipe')
 
 const { Schema } = mongoose;
 
@@ -32,17 +33,28 @@ const DiarySchema = new Schema({
         required: [true, 'Grams are required.']
       }
     }
-  ]
+  ],
+  recipes: [
+    {
+      recipe: {
+        type: Schema.Types.ObjectId,
+        ref: 'recipe',
+        required: true,
+        _id: false
+      }
+    }
+  ],
 });
 
 /** Methods */
-DiarySchema.statics.createDiary = function(index, userId, date = moment()) {
+DiarySchema.statics.createDiary = function (index, userId, date = moment()) {
   const LABELS = ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Others'];
   return {
     user: userId,
     date: date,
     part: LABELS[index],
-    products: []
+    products: [],
+    recipes: []
   };
 };
 

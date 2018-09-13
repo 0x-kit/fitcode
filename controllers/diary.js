@@ -4,6 +4,21 @@ const User = require('../models/user');
 const _ = require('lodash');
 const mongoose = require('mongoose');
 
+exports.readDiary = async (req, res) => {
+  try {
+    const diaryId = req.params.diaryId;
+    const diary = await Diary.findById(diaryId).select('user products recipes');
+
+    if (!diary) {
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+    } else {
+      return res.status(200).json(diary);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
 exports.getDiaries = async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -21,8 +36,9 @@ exports.getDiaries = async (req, res) => {
     if (!user) return res.status(404).json({ message: 'Not valid entries found for provided ID' });
 
     const docs = await Diary.find({ user: userId, date: { $gte: startDate, $lte: endDate } })
-      .select(' products user date part')
-      .populate('products.product');
+      .select(' products recipes user date part')
+      .populate('products.product')
+      .populate('recipes.recipe');
 
     if (docs.length !== 0) return res.status(200).json(docs);
 
@@ -30,8 +46,9 @@ exports.getDiaries = async (req, res) => {
     await Diary.insertMany(diaries);
 
     const newDocs = await Diary.find({ user: userId, date: { $gte: startDate, $lte: endDate } })
-      .select(' products user date part')
-      .populate('products.product');
+      .select(' products recipes user date part')
+      .populate('products.product')
+      .populate('recipes.recipe');
 
     if (newDocs.length !== 0) return res.status(200).json(newDocs);
   } catch (err) {
@@ -44,7 +61,7 @@ exports.addProduct = async (req, res) => {
   try {
     const diaryId = req.params.diaryId;
     const newProduct = req.body;
-
+    console.log(newProduct)
     const diaryProducts = await Diary.findById(diaryId)
       .select('-_id products.product')
       .populate('product._id');
@@ -96,9 +113,10 @@ exports.deleteProduct = async (req, res) => {
         new: true
       }
     )
-      .select(' products _id user date name part')
+      .select(' products recipes _id user date name part')
       .populate({ path: 'user', select: 'name' })
-      .populate({ path: 'products.product' });
+      .populate({ path: 'products.product' })
+      .populate('recipes.recipe');
 
     if (!diaryUpdated) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
@@ -139,11 +157,74 @@ exports.editProduct = async (req, res) => {
 
     if (query.n === 1) {
       const diaryUpdated = await Diary.findById(diaryId)
-        .select(' products _id user date name part')
+        .select(' products recipes _id user date name part')
         .populate({ path: 'user', select: 'name' })
-        .populate({ path: 'products.product' });
+        .populate({ path: 'products.product' })
+        .populate('recipes.recipe');
 
       return res.status(200).json({ message: 'Product successfully updated.', diary: diaryUpdated });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(422).json({ error: err });
+  }
+};
+
+
+exports.addRecipe = async (req, res) => {
+  try {
+    const diaryId = req.params.diaryId;
+    const newRecipe = req.body;
+    
+    const diaryUpdated = await Diary.findByIdAndUpdate(
+      diaryId,
+      {
+        $push: { recipes: newRecipe }
+      },
+      {
+        new: true,
+        runValidators: true,
+        upsert: true
+      }
+    );
+
+    if (!diaryUpdated) {
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+    } else {
+      return res.status(200).json({ message: 'Recipe successfully added.', diary: diaryUpdated });
+    }
+  } catch (err) {
+    console.log(err);
+    console.log("error fatal")
+    res.status(422).json({ error: err });
+  }
+};
+
+exports.deleteRecipe = async (req, res) => {
+  try {
+    const diaryId = req.params.diaryId;
+    const recipeId = req.params.recipeId;
+
+    const diaryUpdated = await Diary.findByIdAndUpdate(
+      diaryId,
+      {
+        $pull: { recipes: { recipe: recipeId } }
+      },
+      {
+        runValidators: true,
+        upsert: true,
+        new: true
+      }
+    )
+      .select(' products recipes _id user date name part')
+      .populate({ path: 'user', select: 'name' })
+      .populate({ path: 'products.product' })
+      .populate('recipes.recipe');
+
+    if (!diaryUpdated) {
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+    } else {
+      return res.status(200).json({ message: 'Recipe successfully deleted.', diary: diaryUpdated });
     }
   } catch (err) {
     console.log(err);

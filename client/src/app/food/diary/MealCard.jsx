@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-
-import { Card, List, Button, Transition, Responsive } from "semantic-ui-react";
+import { Card, List, Button, Responsive } from "semantic-ui-react";
 import utils from "app/food/HomeUtils";
 import ManageDiaryFood from "app/food/diary/ManageDiary.jsx";
 import { Link } from "react-router-dom";
@@ -62,8 +61,8 @@ class MealCards extends Component {
             })}
           </Card.Group>
         ) : (
-          <div />
-        )}
+            <div />
+          )}
       </div>
     );
   }
@@ -214,22 +213,3 @@ const renderSummary = (macrosPerMeal, mealLabel, mealId, match) => {
   );
 };
 export default MealCards;
-
-{
-  /* <Responsive
-as={List.Item}
-minWidth={320}
-maxWidth={569}
-key={_id}
-onClick={() => {
-  selectProduct(product, mealId);
-}}
->
-<List.Icon name="food" style={{ float: 'left' }} size="large" verticalAlign="top" />
-
-<List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
-
-<List.Content content={`(${grams}g)`} floated="right" />
-<List.Content floated="right" description={header} />
-</Responsive> */
-}

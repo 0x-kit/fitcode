@@ -8,8 +8,7 @@ import {
   Responsive,
   Container,
   Segment,
-  Button,
-  Transition
+  Button
 } from "semantic-ui-react";
 
 import ManageRecipeFood from "app/recipe/ManageRecipe.jsx";
@@ -51,7 +50,7 @@ class Recipe extends Component {
 
   renderProductList = (productsArr = [], selectProduct, recipeId) => {
     return (
-      <Responsive as={List} minWidth={615} selection divided>
+      <Responsive as={List} selection divided>
         {productsArr
           .filter(product => product.product !== null)
           .map(product => {
@@ -199,110 +198,3 @@ class Recipe extends Component {
 }
 
 export default Recipe;
-
-let payload = {
-  recipe: {
-    products: [],
-    _id: "5b98da4e96f0b81e6d4e68c9",
-    user: "5b6e0b2e5949697d105c0a08",
-    name: "DADA",
-    __v: 0
-  },
-  message: "Recipe successfully deleted."
-};
-
-let recipes = {
-  "5b9624ea9fe6406566cb4da8": {
-    products: [
-      {
-        _id: "5b9624ea9fe6406566cb4da9",
-        product: {
-          _id: "5b6e055a4ea7837716f46cde",
-          name: "Tasty Plastic Car",
-          brand: "Cheese",
-          calories: 467,
-          carbs: 33,
-          proteins: 147,
-          fats: 74,
-          __v: 0,
-          user: null
-        },
-        grams: 53
-      },
-      {
-        _id: "5b97e1914c263f46ff431785",
-        product: {
-          _id: "5b6e055a4ea7837716f46ce7",
-          name: "Refined Cotton Shirt",
-          brand: "Pizza",
-          calories: 70,
-          carbs: 125,
-          proteins: 48,
-          fats: 78,
-          __v: 0,
-          user: "5b83f23ee6bd64016c330944"
-        },
-        grams: 43
-      },
-      {
-        _id: "5b98c064f5f9380e0ae7caa7",
-        product: {
-          _id: "5b6e055a4ea7837716f46ce2",
-          name: "Intelligent Concrete Ball",
-          brand: "Computer",
-          calories: 465,
-          carbs: 144,
-          proteins: 113,
-          fats: 57,
-          __v: 0
-        },
-        grams: 100
-      }
-    ],
-    _id: "5b9624ea9fe6406566cb4da8",
-    user: "5b6e0b2e5949697d105c0a08",
-    name: "Desayuno potenteX"
-  },
-  "5b963db21f4e7d77b104b0d2": {
-    products: [
-      {
-        _id: "5b97e27a4c263f46ff431797",
-        product: {
-          _id: "5b6e061e7775a677d4648f88",
-          name: "Small Fresh Shoes",
-          brand: "Pizza",
-          calories: 60,
-          carbs: 94,
-          proteins: 67,
-          fats: 53,
-          __v: 0
-        },
-        grams: 300
-      }
-    ],
-    _id: "5b963db21f4e7d77b104b0d2",
-    user: "5b6e0b2e5949697d105c0a08",
-    name: "Almuerzo ligero"
-  },
-  "5b98da4e96f0b81e6d4e68c9": {
-    _id: "5b98da4e96f0b81e6d4e68c9",
-    user: "5b6e0b2e5949697d105c0a08",
-    name: "DADA",
-    products: [],
-    __v: 0
-  }
-};
-let x = [
-  {
-    products: [],
-    _id: "5b98da4e96f0b81e6d4e68c9",
-    user: "5b6e0b2e5949697d105c0a08",
-    name: "DADA",
-    __v: 0
-  }
-];
-//console.log(_.mapKeys(x, "_id"));
-const toOmit = _.mapKeys(payload.recipe, "_id");
-console.log(toOmit);
-const prueba = _.omit(recipes, "5b98da4e96f0b81e6d4e68c9");
-console.log(prueba);

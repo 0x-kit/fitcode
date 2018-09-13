@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Menu, Responsive, Container, Tab } from 'semantic-ui-react';
-import _ from 'lodash';
 
 class MenuSecondary extends Component {
   constructor(props) {

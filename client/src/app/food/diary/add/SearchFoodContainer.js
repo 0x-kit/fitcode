@@ -12,6 +12,7 @@ import SearchFood from "app/food/diary/add/SearchFood.jsx";
 const mapStateToProps = state => {
   return {
     products: state.food.products,
+    userRecipes: state.food.userRecipes,
     selectedProduct: state.food.selectedProduct,
     selectedMeal: state.food.selectedMeal,
     selectedRecipe: state.food.selectedRecipe,
@@ -43,6 +44,7 @@ export default compose(
       } else {
         this.props.selectMeal(id, meal);
         this.props.complexGetRecentProducts(meal);
+        this.props.complexFetchRecipes();
       }
     },
     componentWillMount() {

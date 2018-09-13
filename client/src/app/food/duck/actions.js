@@ -69,6 +69,17 @@ const deleteDiaryProduct = (diary, message) => ({
   payload: { diary, message }
 });
 
+const addDiaryRecipe = message => ({
+  type: types.ADD_DIARY_RECIPE,
+  payload: message
+});
+
+const deleteDiaryRecipe = (recipe, message) => ({
+  type: types.DELETE_DIARY_RECIPE,
+  payload: { recipe, message }
+});
+
+
 const setDay = date => ({
   type: types.SET_DAY,
   payload: date
@@ -84,6 +95,7 @@ const substractDay = date => ({
   payload: date
 });
 
+
 const addPersonalProduct = (product, message) => ({
   type: types.ADD_PERSONAL_PRODUCT,
   payload: { product, message }
@@ -98,6 +110,8 @@ const deletePersonalProduct = (product, message) => ({
   type: types.DELETE_PERSONAL_PRODUCT,
   payload: { product, message }
 });
+
+
 
 const fetchRecipes = data => ({ type: types.FETCH_RECIPES, payload: data });
 
@@ -148,6 +162,8 @@ export default {
   addDiaryProduct,
   editDiaryProduct,
   deleteDiaryProduct,
+  addDiaryRecipe,
+  deleteDiaryRecipe,
 
   addDay,
   substractDay,

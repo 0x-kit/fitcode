@@ -13,9 +13,12 @@ const {
   searchProducts,
   selectProduct,
   selectMeal,
+
   addDiaryProduct,
   editDiaryProduct,
   deleteDiaryProduct,
+  addDiaryRecipe,
+  deleteDiaryRecipe,
 
   addDay,
   substractDay,
@@ -371,6 +374,45 @@ const complexDeleteRecipe = recipeId => async dispatch => {
   }
 };
 
+
+
+const complexAddDiaryRecipe = (mealId, newRecipe) => async dispatch => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.post(
+      `/api/diary/${mealId}/recipe`,
+      newRecipe,
+      reqConfig
+    );
+    const { message } = response.data;
+
+    dispatch(addDiaryRecipe(message));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
+const complexDeleteDiaryRecipe = (mealId, recipeId) => async dispatch => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.delete(
+      `/api/diary/${mealId}/recipe/${recipeId}`,
+      reqConfig
+    );
+    const { recipe, message } = response.data;
+
+    dispatch(deleteDiaryRecipe([recipe], message));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
 export default {
   complexFetchHome,
   complexGetUserProducts,
@@ -382,6 +424,8 @@ export default {
   complexAddDiaryProduct,
   complexEditDiaryProduct,
   complexDeleteDiaryProduct,
+  complexAddDiaryRecipe,
+  complexDeleteDiaryRecipe,
 
   complexAddDay,
   complexSubstractDay,

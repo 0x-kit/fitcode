@@ -19,6 +19,10 @@ const ADD_DIARY_PRODUCT = "add_diary_product";
 const EDIT_DIARY_PRODUCT = "edit_diary_product";
 const DELETE_DIARY_PRODUCT = "delete_diary_product";
 
+const ADD_DIARY_RECIPE = 'add_diary_recipe';
+const DELETE_DIARY_RECIPE = 'delete_diary_recipe';
+
+
 const SELECT_PRODUCT = "select_product";
 const SELECT_MEAL = "select_meal";
 const SELECT_GRAMS = "select_grams";
@@ -52,6 +56,9 @@ export default {
   ADD_DIARY_PRODUCT,
   EDIT_DIARY_PRODUCT,
   DELETE_DIARY_PRODUCT,
+
+  ADD_DIARY_RECIPE,
+  DELETE_DIARY_RECIPE,
 
   ADD_DAY,
   SUBSTRACT_DAY,

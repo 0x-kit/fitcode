@@ -6,12 +6,18 @@ const requireAuth = authController.requireAuth;
 
 router
 
+  .get('/:diaryId', DiaryController.readDiary)
+
   .get('/user/:userId', DiaryController.getDiaries)
 
   .post('/:diaryId/product', requireAuth, DiaryController.addProduct)
 
   .put('/:diaryId/product', requireAuth, DiaryController.editProduct)
 
-  .delete('/:diaryId/product/:productId', DiaryController.deleteProduct);
+  .delete('/:diaryId/product/:productId', requireAuth, DiaryController.deleteProduct)
+
+  .post('/:diaryId/recipe', DiaryController.addRecipe)
+
+  .delete('/:diaryId/recipe/:recipeId', DiaryController.deleteRecipe);
 
 module.exports = router;

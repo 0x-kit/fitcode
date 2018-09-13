@@ -6,7 +6,6 @@ body {
   margin-top: 50px;
 }
 
-/** Modal*/
 .prueba.ui.statistic > .value,
 .prueba.ui.statistics .statistic > .value {
   font-size: 0.8rem !important;
@@ -24,7 +23,7 @@ body {
 .editYF {
   width: 90px;
 }
-/** */
+
 .ui.basic.label.createFood {
   border: 1px solid rgba(34, 36, 38, 0.15);
   color: rgba(0, 0, 0, 0.87);
@@ -67,30 +66,14 @@ body {
   color: rgba(0, 0, 0, 0.6);
 }
 
-/* .errorProgress.ui.black.inverted.progress .bar {
-  background-color: #ec2b2be6 !important;
-  filter: contrast(85%);
-  font-size: 1.2rem !important;
-  margin-top: 0.5em;
-}
-
-.successProgress.ui.black.inverted.progress .bar {
-  background-color: #21ba45 !important;
-  filter: contrast(85%);
-  font-size: 1.2rem !important;
-  margin-top: 0.5em;
-} */
-/* 
-.ui.inverted.progress .bar > .progress {
-  margin-left: 5px;
-} */
-
 div.ui.info.message {
   font-size: 1em;
 }
+
 div.ui.info.message .header {
   color: #262636;
 }
+
 div.ui.info.message {
   position: relative;
   min-height: 1em;
@@ -114,3 +97,18 @@ div.ui.info.message {
   margin-top: 0.5em;
 }
 
+a.item.backwardRoute {
+  justify-content: left !important;
+}
+
+a.item.forwardRoute {
+  justify-content: right !important;
+}
+
+i.chevron.circle.left.big.link.icon {
+ margin: 0 0 0 0.5em
+}
+
+i.chevron.circle.right.big.link.icon {
+  margin: 0 0.67em 0 0
+}

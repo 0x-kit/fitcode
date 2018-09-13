@@ -87,7 +87,7 @@ class Date extends Component {
         {!loading ? (
           <div>
             <Menu widths="3" style={{ height: '1.1em', border: '0', boxShadow: 'none' }}>
-              <Menu.Item as={Link} to={backwardRoute} onClick={() => this.changeDay(substract, 'substract')}>
+              <Menu.Item as={Link} to={backwardRoute} onClick={() => this.changeDay(substract, 'substract')} className="backwardRoute">
                 <Icon size="big" link name="chevron circle left" />
               </Menu.Item>
 
@@ -97,7 +97,7 @@ class Date extends Component {
                 onClick={() => this.hadleDateOpen()}
               />
 
-              <Menu.Item as={Link} to={forwardRoute} onClick={() => this.changeDay(add, 'add')}>
+              <Menu.Item as={Link} to={forwardRoute} onClick={() => this.changeDay(add, 'add')} className="forwardRoute">
                 <Icon size="big" link name="chevron circle right" />
               </Menu.Item>
             </Menu>

@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { reduxForm, Field } from "redux-form";
 import AddFood from "app/food/diary/add/AddFood.jsx";
+import AddRecipe from "app/food/diary/add/AddRecipe.jsx";
+
+import utils from "app/food/HomeUtils";
+import _ from 'lodash';
 
 import {
   Card,
@@ -15,15 +19,25 @@ import {
 } from "semantic-ui-react";
 
 class SearchFood extends Component {
-  state = { modalOpen: false };
+  state = { modalOpenProduct: false, modalOpenRecipe:false };
 
-  handleModal = flag => {
-    this.setState({ modalOpen: flag });
+  handleModalProduct = flag => {
+    this.setState({ modalOpenProduct: flag });
   };
+
+  handleModalRecipe = flag => {
+    this.setState({ modalOpenRecipe: flag });
+  };
+
 
   selectProduct = product => {
     this.props.selectProduct(product, 100);
-    this.handleModal(true);
+    this.handleModalProduct(true);
+  };
+
+  selectRecipe = recipe => {
+    this.props.selectRecipe(recipe);
+    this.handleModalRecipe(true);
   };
 
   onSubmit = values => {
@@ -57,8 +71,8 @@ class SearchFood extends Component {
             {error}
           </Header>
         ) : (
-          ""
-        )}
+            ""
+          )}
       </Form.Field>
     );
   };
@@ -99,22 +113,60 @@ class SearchFood extends Component {
     );
   }
 
+  renderRecipeList(recipes) {
+    return (
+      <Transition.Group
+        as={List}
+        duration={700}
+        animation="fade"
+        divided
+        relaxed
+        selection
+      >
+        {recipes.map(recipe => {
+          const { _id, name } = recipe;
+          const macrosPerRecipe = utils.macrosPerMeal(recipe);
+          const { calories, proteins, carbs, fats } = macrosPerRecipe;
+          const header = `${calories} KCAL | ${proteins} P | ${carbs} C | ${fats} F`;
+
+          return (
+            <List.Item key={_id} onClick={() => this.selectRecipe(recipe)}>
+              <List.Content
+                floated="right"
+                verticalAlign="middle"
+                description={header}
+              />
+              <List.Icon name="food" size="large" verticalAlign="middle" />
+              <List.Content
+                header={{ content: name, as: "a" }}
+                verticalAlign="middle"
+              />
+            </List.Item>
+          );
+        })}
+      </Transition.Group>
+    );
+  }
+
   render() {
     // handleSubmit provided by reduxForm
     const {
       handleSubmit,
       products,
+      userRecipes,
       selectedProduct,
       selectedMeal,
       selectedRecipe,
       searchMessage
     } = this.props;
-    const { modalOpen } = this.state;
+    const { modalOpenProduct, modalOpenRecipe } = this.state;
     const searchStyle = {
       fontSize: ".82857143em",
       fontWeight: 700,
       color: "#db2828"
     };
+
+    const recipeArr = _.map(userRecipes).reverse();
 
     return (
       <Responsive as={Container}>
@@ -138,16 +190,32 @@ class SearchFood extends Component {
           </Card>
           {products.length !== 0 && (
             <Card raised fluid>
+            <Card.Content extra textAlign="center">Food</Card.Content>
               <Card.Content>{this.renderProductList(products)}</Card.Content>
+            </Card>
+          )}
+
+          {recipeArr.length !== 0 && (
+            <Card raised fluid>
+             <Card.Content extra textAlign="center">Recipes</Card.Content>
+              <Card.Content>{this.renderRecipeList(recipeArr)}</Card.Content>
             </Card>
           )}
 
           <AddFood
             complexAddDiaryProduct={this.props.complexAddDiaryProduct}
             complexAddRecipeProduct={this.props.complexAddRecipeProduct}
-            openModal={modalOpen}
-            handleModal={this.handleModal}
+            openModal={modalOpenProduct}
+            handleModal={this.handleModalProduct}
             selectedProduct={selectedProduct}
+            selectedMeal={selectedMeal}
+            selectedRecipe={selectedRecipe}
+          />
+
+          <AddRecipe
+            complexAddDiaryRecipe={this.props.complexAddDiaryRecipe}
+            openModal={modalOpenRecipe}
+            handleModal={this.handleModalRecipe}
             selectedMeal={selectedMeal}
             selectedRecipe={selectedRecipe}
           />
