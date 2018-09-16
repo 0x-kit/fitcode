@@ -1,22 +1,33 @@
-import React, { Component } from "react";
-import { Card, List, Button, Responsive } from "semantic-ui-react";
-import utils from "app/food/HomeUtils";
-import ManageDiaryFood from "app/food/diary/ManageDiary.jsx";
-import { Link } from "react-router-dom";
-import _ from "lodash";
+import React, { Component } from 'react';
+import { Card, List, Button, Responsive } from 'semantic-ui-react';
+import utils from 'app/food/HomeUtils';
+import ManageDiaryFood from 'app/food/diary/ManageDiary.jsx';
+import DeleteRecipe from 'app/food/diary/add/ManageRecipe.jsx';
+import { Link } from 'react-router-dom';
+import _ from 'lodash';
 
 class MealCards extends Component {
-  state = { modalOpen: false };
+  state = { modalOpenProduct: false, modalOpenRecipe: false };
 
   selectProduct = (selectedProduct, mealId) => {
     const { product, grams } = selectedProduct;
     this.props.selectProduct(product, grams);
     this.props.selectMeal(mealId);
-    this.handleModal(true);
+    this.handleModalProduct(true);
   };
 
-  handleModal = flag => {
-    this.setState({ modalOpen: flag });
+  selectRecipe = (recipe, mealId) => {
+    this.props.selectRecipe(recipe);
+    this.props.selectMeal(mealId);
+    this.handleModalRecipe(true);
+  };
+
+  handleModalProduct = flag => {
+    this.setState({ modalOpenProduct: flag });
+  };
+
+  handleModalRecipe = flag => {
+    this.setState({ modalOpenRecipe: flag });
   };
 
   findMeal = (mealsArr, part) => {
@@ -25,35 +36,42 @@ class MealCards extends Component {
 
   renderMeal = (mealsArr, part) => {
     const meal = this.findMeal(mealsArr, part);
-    const { _id, products } = meal;
+    const { _id, products, recipes } = meal;
     const macrosPerMeal = utils.macrosPerMeal(meal);
 
     return (
       <Card key={_id} fluid raised>
         <Card.Content header={part} />
-        {!_.isEmpty(products) && (
-          <Card.Content>
-            {renderProductList(products, this.selectProduct, _id)}
-            {renderProductList2(products, this.selectProduct, _id)}
-          </Card.Content>
-        )}
-        <Card.Content extra>
-          {renderSummary(macrosPerMeal, part, _id, this.props.match)}
-        </Card.Content>
+        {!_.isEmpty(recipes) && <Card.Content>{renderRecipeList(recipes, this.selectRecipe, _id)}</Card.Content>}
+
+        {!_.isEmpty(products) && <Card.Content>{renderProductList(products, this.selectProduct, _id)}</Card.Content>}
+
+        <Card.Content extra>{renderSummary(macrosPerMeal, part, _id, this.props.match)}</Card.Content>
       </Card>
     );
   };
 
   render() {
     const { mealsData } = this.props;
-    const labels = ["Breakfast", "Lunch", "Snacks", "Dinner", "Others"];
+    const labels = ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Others'];
+
     return (
       <div>
         <ManageDiaryFood
-          openModal={this.state.modalOpen}
-          handleModal={this.handleModal}
+          openModal={this.state.modalOpenProduct}
+          handleModal={this.handleModalProduct}
           {...this.props}
         />
+
+        <DeleteRecipe
+          complexDeleteDiaryRecipe={this.props.complexDeleteDiaryRecipe}
+          openModal={this.state.modalOpenRecipe}
+          handleModal={this.handleModalRecipe}
+          selectedMeal={this.props.selectedMeal}
+          selectedRecipe={this.props.selectedRecipe}
+          deleteRecipe={true}
+        />
+
         {!_.isEmpty(mealsData) ? (
           <Card.Group>
             {labels.map(label => {
@@ -61,29 +79,49 @@ class MealCards extends Component {
             })}
           </Card.Group>
         ) : (
-            <div />
-          )}
+          <div />
+        )}
       </div>
     );
   }
 }
+const renderRecipeList = (recipesArr = [], selectRecipe, mealId) => {
+  return (
+    <Responsive as={List} selection divided>
+      {recipesArr.filter(recipe => recipe.recipe !== null).map(recipe => {
+        const { _id, name } = recipe.recipe;
+        const macrosPerRecipe = utils.macrosPerMeal(recipe.recipe);
 
+        const { calories, proteins, carbs, fats } = macrosPerRecipe;
+        const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+
+        return (
+          <List.Item
+            key={recipe._id}
+            onClick={() => {
+              selectRecipe(recipe.recipe, mealId);
+            }}
+          >
+            <List.Icon name="food" style={{ float: 'left' }} size="large" verticalAlign="top" />
+
+            <List.Content floated="left" header={{ content: name, as: 'a' }} />
+            <List.Content floated="right" description={header} />
+          </List.Item>
+        );
+      })}
+    </Responsive>
+  );
+};
 const renderProductList = (productsArr = [], selectProduct, mealId) => {
   return (
-    <Responsive as={List} minWidth={615} selection divided>
+    <Responsive as={List} selection divided>
       {productsArr.filter(product => product.product !== null).map(product => {
         const {
           _id,
           product: { name, brand }
         } = product;
 
-        const {
-          calories,
-          proteins,
-          carbs,
-          fats,
-          grams
-        } = utils.macrosPerProduct(product);
+        const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
         const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
 
         return (
@@ -93,18 +131,9 @@ const renderProductList = (productsArr = [], selectProduct, mealId) => {
               selectProduct(product, mealId);
             }}
           >
-            <List.Icon
-              name="food"
-              style={{ float: "left" }}
-              size="large"
-              verticalAlign="top"
-            />
+            <List.Icon name="food" style={{ float: 'left' }} size="large" verticalAlign="top" />
 
-            <List.Content
-              floated="left"
-              header={{ content: name, as: "a" }}
-              description={brand}
-            />
+            <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
 
             <List.Content content={`(${grams}g)`} floated="right" />
             <List.Content floated="right" description={header} />
@@ -115,62 +144,18 @@ const renderProductList = (productsArr = [], selectProduct, mealId) => {
   );
 };
 
-const renderProductList2 = (productsArr = [], selectProduct, mealId) => {
-  return (
-    <Responsive as={List} minWidth={320} maxWidth={614} selection divided>
-      {productsArr.filter(product => product.product !== null).map(product => {
-        const {
-          _id,
-          product: { name, brand }
-        } = product;
-
-        const {
-          calories,
-          proteins,
-          carbs,
-          fats,
-          grams
-        } = utils.macrosPerProduct(product);
-        const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
-
-        return (
-          <List.Item
-            key={_id}
-            onClick={() => {
-              selectProduct(product, mealId);
-            }}
-          >
-            <List.Icon
-              name="food"
-              style={{ float: "left" }}
-              size="large"
-              verticalAlign="top"
-            />
-
-            <List.Content
-              floated="left"
-              header={{ content: name, as: "a" }}
-              description={brand}
-            />
-
-            <List.Content content={`(${grams}g)`} floated="right" />
-            <List.Content
-              floated="left"
-              description={header}
-              className="mobContent"
-            />
-          </List.Item>
-        );
-      })}
-    </Responsive>
-  );
-};
-
 const renderSummary = (macrosPerMeal, mealLabel, mealId, match) => {
   const renderMacrosPerMeal = macrosPerMeal => {
+    let header;
     const { calories, proteins, carbs, fats } = macrosPerMeal;
-    const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
-    const style = { paddingRight: "0.5em" };
+
+    if ((calories && proteins && carbs && fats) === 0) {
+      header = '';
+    } else {
+      header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+    }
+
+    const style = { paddingRight: '0.5em' };
 
     return <List.Content floated="right" description={header} style={style} />;
   };
@@ -207,7 +192,7 @@ const renderSummary = (macrosPerMeal, mealLabel, mealId, match) => {
     <List>
       <List.Item>
         {renderAddButton(mealLabel, mealId)}
-        {!_.isEmpty(macrosPerMeal) ? renderMacrosPerMeal(macrosPerMeal) : ""}
+        {!_.isEmpty(macrosPerMeal) ? renderMacrosPerMeal(macrosPerMeal) : ''}
       </List.Item>
     </List>
   );

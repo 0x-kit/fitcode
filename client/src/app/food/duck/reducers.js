@@ -1,6 +1,6 @@
-import types from "./types";
-import moment from "moment";
-import _ from "lodash";
+import types from './types';
+import moment from 'moment';
+import _ from 'lodash';
 
 const INITIAL_STATE = {
   meals: {},
@@ -17,9 +17,9 @@ const INITIAL_STATE = {
   selectedRecipe: {},
 
   loading: true,
-  errorMessage: "",
-  searchMessage: "",
-  message: "",
+  errorMessage: '',
+  searchMessage: '',
+  message: '',
 
   date: moment()
 };
@@ -36,7 +36,7 @@ const foodReducer = (state = INITIAL_STATE, action) => {
     case types.SET_MEALS:
       return {
         ...state,
-        meals: _.mapKeys(action.payload, "_id")
+        meals: _.mapKeys(action.payload, '_id')
       };
 
     case types.SET_MACROS:
@@ -72,14 +72,14 @@ const foodReducer = (state = INITIAL_STATE, action) => {
     case types.EDIT_DIARY_PRODUCT:
       return {
         ...state,
-        meals: { ...state.meals, ..._.mapKeys(action.payload.diary, "_id") },
+        meals: { ...state.meals, ..._.mapKeys(action.payload.diary, '_id') },
         message: action.payload.message
       };
 
     case types.DELETE_DIARY_PRODUCT:
       return {
         ...state,
-        meals: { ...state.meals, ..._.mapKeys(action.payload.diary, "_id") },
+        meals: { ...state.meals, ..._.mapKeys(action.payload.diary, '_id') },
         message: action.payload.message
       };
 
@@ -101,7 +101,7 @@ const foodReducer = (state = INITIAL_STATE, action) => {
     case types.USER_PRODUCTS:
       return {
         ...state,
-        userProducts: _.mapKeys(action.payload, "_id")
+        userProducts: _.mapKeys(action.payload, '_id')
       };
 
     case types.RECENT_PRODUCTS:
@@ -111,10 +111,7 @@ const foodReducer = (state = INITIAL_STATE, action) => {
       };
 
     case types.SEARCH_PRODUCTS:
-      const products =
-        action.payload.products.length !== 0
-          ? action.payload.products
-          : state.products;
+      const products = action.payload.products.length !== 0 ? action.payload.products : state.products;
 
       return {
         ...state,
@@ -148,7 +145,7 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         ...state,
         userProducts: {
           ...state.userProducts,
-          ..._.mapKeys(action.payload.product, "_id")
+          ..._.mapKeys(action.payload.product, '_id')
         },
         message: action.payload.message
       };
@@ -165,7 +162,7 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         ...state,
         userProducts: {
           ...state.userProducts,
-          ..._.mapKeys(action.payload.product, "_id")
+          ..._.mapKeys(action.payload.product, '_id')
         },
         message: action.payload.message
       };
@@ -187,7 +184,7 @@ const foodReducer = (state = INITIAL_STATE, action) => {
     case types.FETCH_RECIPES:
       return {
         ...state,
-        userRecipes: _.mapKeys(action.payload, "_id")
+        userRecipes: _.mapKeys(action.payload, '_id')
       };
 
     case types.CREATE_RECIPE:
@@ -195,7 +192,7 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         ...state,
         userRecipes: {
           ...state.userRecipes,
-          ..._.mapKeys(action.payload.recipe, "_id")
+          ..._.mapKeys(action.payload.recipe, '_id')
         },
         message: action.payload.message
       };
@@ -224,19 +221,31 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         ...state,
         userRecipes: {
           ...state.userRecipes,
-          ..._.mapKeys(action.payload.recipe, "_id")
+          ..._.mapKeys(action.payload.recipe, '_id')
         },
         message: action.payload.message
       };
 
     case types.DELETE_RECIPE_PRODUCT:
-      console.log(action.payload.recipe);
       return {
         ...state,
         userRecipes: {
           ...state.userRecipes,
-          ..._.mapKeys(action.payload.recipe, "_id")
+          ..._.mapKeys(action.payload.recipe, '_id')
         },
+        message: action.payload.message
+      };
+
+    case types.ADD_DIARY_RECIPE:
+      return {
+        ...state,
+        message: action.payload
+      };
+
+    case types.DELETE_DIARY_RECIPE:
+      return {
+        ...state,
+        meals: { ...state.meals, ..._.mapKeys(action.payload.diary, '_id') },
         message: action.payload.message
       };
 

@@ -284,8 +284,9 @@ exports.getRecipes = async (req, res) => {
     const userId = req.params.userId;
 
     const docs = await Recipe.find({ user: userId })
-      .select("_id user name products")
-      .populate("products.product");
+      .select("_id user name products recipes")
+      .populate("products.product")
+      .populate('recipes.recipe');
 
     res.status(200).json(docs);
   } catch (err) {

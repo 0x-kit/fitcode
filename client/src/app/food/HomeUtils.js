@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 class HomeInfo {
   static macrosPerProduct(product) {
@@ -27,7 +27,12 @@ class HomeInfo {
       proArr = [],
       carbArr = [],
       fatArr = [],
-      macrosPerMeal = {};
+      macrosPerMeal = {
+        calories: 0,
+        proteins: 0,
+        carbs: 0,
+        fats: 0
+      };
     var flag;
 
     if (meal.products !== undefined && !_.isEmpty(meal.products)) {
@@ -63,6 +68,18 @@ class HomeInfo {
         carbs: carbArr.reduce(reducer),
         fats: fatArr.reduce(reducer)
       };
+    }
+
+    if (meal.recipes !== undefined && !_.isEmpty(meal.recipes)) {
+      meal.recipes.forEach(({ recipe }) => {
+        if (!_.isNull(recipe)) {
+          const macrosFromRecipe = this.macrosPerRecipe(recipe);
+          macrosPerMeal.calories += macrosFromRecipe.calories;
+          macrosPerMeal.proteins += macrosFromRecipe.proteins;
+          macrosPerMeal.carbs += macrosFromRecipe.carbs;
+          macrosPerMeal.fats += macrosFromRecipe.fats;
+        }
+      });
     }
 
     return macrosPerMeal;
@@ -112,7 +129,7 @@ class HomeInfo {
   };
 
   static macrosPerRecipe(recipe) {
-    console.log(recipe);
+    //console.log(recipe);
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
     let calArr = [],

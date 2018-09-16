@@ -1,4 +1,4 @@
-import types from "./types";
+import types from './types';
 
 const loading = flag => ({
   type: types.LOADING,
@@ -39,7 +39,7 @@ const resetMessage = message => ({
   payload: message
 });
 
-const resetSearchMessage = (message = "") => ({
+const resetSearchMessage = (message = '') => ({
   type: types.RESET_SEARCH_MESSAGE,
   payload: message
 });
@@ -74,11 +74,10 @@ const addDiaryRecipe = message => ({
   payload: message
 });
 
-const deleteDiaryRecipe = (recipe, message) => ({
+const deleteDiaryRecipe = (diary, message) => ({
   type: types.DELETE_DIARY_RECIPE,
-  payload: { recipe, message }
+  payload: { diary, message }
 });
-
 
 const setDay = date => ({
   type: types.SET_DAY,
@@ -95,7 +94,6 @@ const substractDay = date => ({
   payload: date
 });
 
-
 const addPersonalProduct = (product, message) => ({
   type: types.ADD_PERSONAL_PRODUCT,
   payload: { product, message }
@@ -110,8 +108,6 @@ const deletePersonalProduct = (product, message) => ({
   type: types.DELETE_PERSONAL_PRODUCT,
   payload: { product, message }
 });
-
-
 
 const fetchRecipes = data => ({ type: types.FETCH_RECIPES, payload: data });
 

@@ -17,6 +17,7 @@ const mapStateToProps = state => {
     exerciseCals: state.food.exerciseCals,
 
     selectedProduct: state.food.selectedProduct,
+    selectedRecipe: state.food.selectedRecipe,
     selectedMeal: state.food.selectedMeal,
     selectedGrams: state.food.selectedGrams,
 

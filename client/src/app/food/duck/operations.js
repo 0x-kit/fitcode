@@ -1,5 +1,5 @@
-import ActionCreators from "./actions";
-import axios from "axios";
+import ActionCreators from './actions';
+import axios from 'axios';
 // import _ from 'lodash';
 
 const {
@@ -41,25 +41,19 @@ const {
 
 const complexFetchHome = date => async dispatch => {
   try {
-    const fDate = date.format("YYYY-MM-DD");
+    const fDate = date.format('YYYY-MM-DD');
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem('userId');
 
     const reqConfig = { headers: { authorization: token } };
 
     const goals = await axios.get(`/api/user/${userId}/goals`, reqConfig);
 
-    const meals = await axios.get(
-      `/api/diary/user/${userId}?date=${fDate}`,
-      reqConfig
-    );
+    const meals = await axios.get(`/api/diary/user/${userId}?date=${fDate}`, reqConfig);
 
-    const exercises = await axios.get(
-      `/api/user/${userId}/exercise`,
-      reqConfig
-    );
+    const exercises = await axios.get(`/api/user/${userId}/exercise`, reqConfig);
 
     dispatch(setDay(date));
 
@@ -77,9 +71,9 @@ const complexFetchHome = date => async dispatch => {
 
 const complexFetchRecipes = () => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem('userId');
 
     const reqConfig = { headers: { authorization: token } };
 
@@ -95,13 +89,10 @@ const complexFetchRecipes = () => async dispatch => {
 
 const complexSearchProducts = term => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.get(
-      `/api/product/search?like=${term}`,
-      reqConfig
-    );
+    const response = await axios.get(`/api/product/search?like=${term}`, reqConfig);
     const { products, message } = response.data;
 
     dispatch(searchProducts(products, message));
@@ -112,15 +103,11 @@ const complexSearchProducts = term => async dispatch => {
 
 const complexAddDiaryProduct = (mealId, diaryProduct) => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.post(
-      `/api/diary/${mealId}/product`,
-      diaryProduct,
-      reqConfig
-    );
+    const response = await axios.post(`/api/diary/${mealId}/product`, diaryProduct, reqConfig);
     const { message } = response.data;
 
     dispatch(addDiaryProduct(message));
@@ -131,15 +118,11 @@ const complexAddDiaryProduct = (mealId, diaryProduct) => async dispatch => {
 
 const complexEditDiaryProduct = (mealId, product) => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.put(
-      `/api/diary/${mealId}/product`,
-      product,
-      reqConfig
-    );
+    const response = await axios.put(`/api/diary/${mealId}/product`, product, reqConfig);
     const { diary, message } = response.data;
 
     dispatch(editDiaryProduct([diary], message));
@@ -150,16 +133,13 @@ const complexEditDiaryProduct = (mealId, product) => async dispatch => {
 
 const complexDeleteDiaryProduct = (mealId, product) => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
     const productId = product.product;
 
-    const response = await axios.delete(
-      `/api/diary/${mealId}/product/${productId}`,
-      reqConfig
-    );
+    const response = await axios.delete(`/api/diary/${mealId}/product/${productId}`, reqConfig);
     const { diary, message } = response.data;
 
     dispatch(deleteDiaryProduct([diary], message));
@@ -170,8 +150,7 @@ const complexDeleteDiaryProduct = (mealId, product) => async dispatch => {
 
 const complexAddDay = date => async dispatch => dispatch(addDay(date));
 
-const complexSubstractDay = date => async dispatch =>
-  dispatch(substractDay(date));
+const complexSubstractDay = date => async dispatch => dispatch(substractDay(date));
 
 const complexSetDay = date => async dispatch => {
   dispatch(loading(true));
@@ -183,9 +162,9 @@ const complexSetDay = date => async dispatch => {
 
 const complexGetUserProducts = () => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem('userId');
 
     const reqConfig = { headers: { authorization: token } };
 
@@ -199,19 +178,16 @@ const complexGetUserProducts = () => async dispatch => {
   }
 };
 
-const complexGetRecentProducts = (part = "All") => async dispatch => {
+const complexGetRecentProducts = (part = 'All') => async dispatch => {
   try {
     dispatch(loading(true));
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem('userId');
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.get(
-      `/api/user/${userId}/products?part=${part}`,
-      reqConfig
-    );
+    const response = await axios.get(`/api/user/${userId}/products?part=${part}`, reqConfig);
 
     dispatch(getRecentProducts(response.data));
     dispatch(loading(false));
@@ -220,22 +196,15 @@ const complexGetRecentProducts = (part = "All") => async dispatch => {
   }
 };
 
-const complexEditPersonalProduct = (
-  productId,
-  updatedProduct
-) => async dispatch => {
+const complexEditPersonalProduct = (productId, updatedProduct) => async dispatch => {
   try {
     dispatch(loading(true));
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.put(
-      `/api/product/${productId}`,
-      updatedProduct,
-      reqConfig
-    );
+    const response = await axios.put(`/api/product/${productId}`, updatedProduct, reqConfig);
     const { product, message } = response.data;
 
     dispatch(editPersonalProduct([product], message));
@@ -250,7 +219,7 @@ const complexDeletePersonalProduct = productId => async dispatch => {
   try {
     dispatch(loading(true));
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
@@ -269,11 +238,11 @@ const complexAddPersonalProduct = newProduct => async dispatch => {
   try {
     dispatch(loading(true));
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.post("/api/product/", newProduct, reqConfig);
+    const response = await axios.post('/api/product/', newProduct, reqConfig);
     const { product, message } = response.data;
 
     dispatch(addPersonalProduct([product], message));
@@ -286,15 +255,11 @@ const complexAddPersonalProduct = newProduct => async dispatch => {
 
 const complexAddRecipeProduct = (recipeId, newProduct) => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.post(
-      `/api/recipe/${recipeId}/product`,
-      newProduct,
-      reqConfig
-    );
+    const response = await axios.post(`/api/recipe/${recipeId}/product`, newProduct, reqConfig);
 
     const { message } = response.data;
 
@@ -306,15 +271,11 @@ const complexAddRecipeProduct = (recipeId, newProduct) => async dispatch => {
 
 const complexEditRecipeProduct = (recipeId, product) => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.put(
-      `/api/recipe/${recipeId}/product`,
-      product,
-      reqConfig
-    );
+    const response = await axios.put(`/api/recipe/${recipeId}/product`, product, reqConfig);
     const { recipe, message } = response.data;
     console.log(recipe);
     dispatch(editRecipeProduct([recipe], message));
@@ -325,16 +286,13 @@ const complexEditRecipeProduct = (recipeId, product) => async dispatch => {
 
 const complexDeleteRecipeProduct = (recipeId, product) => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
     const productId = product.product;
 
-    const response = await axios.delete(
-      `/api/recipe/${recipeId}/product/${productId}`,
-      reqConfig
-    );
+    const response = await axios.delete(`/api/recipe/${recipeId}/product/${productId}`, reqConfig);
     const { recipe, message } = response.data;
 
     dispatch(deleteRecipeProduct([recipe], message));
@@ -345,7 +303,7 @@ const complexDeleteRecipeProduct = (recipeId, product) => async dispatch => {
 
 const complexCreateRecipe = newRecipe => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
@@ -361,7 +319,7 @@ const complexCreateRecipe = newRecipe => async dispatch => {
 
 const complexDeleteRecipe = recipeId => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
@@ -374,19 +332,13 @@ const complexDeleteRecipe = recipeId => async dispatch => {
   }
 };
 
-
-
 const complexAddDiaryRecipe = (mealId, newRecipe) => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.post(
-      `/api/diary/${mealId}/recipe`,
-      newRecipe,
-      reqConfig
-    );
+    const response = await axios.post(`/api/diary/${mealId}/recipe`, newRecipe, reqConfig);
     const { message } = response.data;
 
     dispatch(addDiaryRecipe(message));
@@ -395,19 +347,19 @@ const complexAddDiaryRecipe = (mealId, newRecipe) => async dispatch => {
   }
 };
 
-const complexDeleteDiaryRecipe = (mealId, recipeId) => async dispatch => {
+const complexDeleteDiaryRecipe = (mealId, newRecipe) => async dispatch => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.delete(
-      `/api/diary/${mealId}/recipe/${recipeId}`,
-      reqConfig
-    );
-    const { recipe, message } = response.data;
+    const recipeId = newRecipe.recipe;
 
-    dispatch(deleteDiaryRecipe([recipe], message));
+    const response = await axios.delete(`/api/diary/${mealId}/recipe/${recipeId}`, reqConfig);
+
+    const { diary, message } = response.data;
+
+    dispatch(deleteDiaryRecipe([diary], message));
   } catch (error) {
     dispatch(fetchError(error.message));
   }

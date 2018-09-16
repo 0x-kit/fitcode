@@ -37,8 +37,13 @@ exports.getDiaries = async (req, res) => {
 
     const docs = await Diary.find({ user: userId, date: { $gte: startDate, $lte: endDate } })
       .select(' products recipes user date part')
-      .populate('products.product')
-      .populate('recipes.recipe');
+      .populate({ path: 'products.product' })
+      .populate({
+        path: 'recipes.recipe',
+        populate: {
+          path: 'products.product'
+        }
+      });
 
     if (docs.length !== 0) return res.status(200).json(docs);
 
@@ -47,8 +52,13 @@ exports.getDiaries = async (req, res) => {
 
     const newDocs = await Diary.find({ user: userId, date: { $gte: startDate, $lte: endDate } })
       .select(' products recipes user date part')
-      .populate('products.product')
-      .populate('recipes.recipe');
+      .populate({ path: 'products.product' })
+      .populate({
+        path: 'recipes.recipe',
+        populate: {
+          path: 'products.product'
+        }
+      });
 
     if (newDocs.length !== 0) return res.status(200).json(newDocs);
   } catch (err) {
@@ -61,7 +71,7 @@ exports.addProduct = async (req, res) => {
   try {
     const diaryId = req.params.diaryId;
     const newProduct = req.body;
-    console.log(newProduct)
+    console.log(newProduct);
     const diaryProducts = await Diary.findById(diaryId)
       .select('-_id products.product')
       .populate('product._id');
@@ -113,10 +123,9 @@ exports.deleteProduct = async (req, res) => {
         new: true
       }
     )
-      .select(' products recipes _id user date name part')
+      .select(' products _id user date name part')
       .populate({ path: 'user', select: 'name' })
       .populate({ path: 'products.product' })
-      .populate('recipes.recipe');
 
     if (!diaryUpdated) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
@@ -170,12 +179,11 @@ exports.editProduct = async (req, res) => {
   }
 };
 
-
 exports.addRecipe = async (req, res) => {
   try {
     const diaryId = req.params.diaryId;
     const newRecipe = req.body;
-    
+
     const diaryUpdated = await Diary.findByIdAndUpdate(
       diaryId,
       {
@@ -195,7 +203,7 @@ exports.addRecipe = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    console.log("error fatal")
+    console.log('error fatal');
     res.status(422).json({ error: err });
   }
 };
@@ -219,7 +227,12 @@ exports.deleteRecipe = async (req, res) => {
       .select(' products recipes _id user date name part')
       .populate({ path: 'user', select: 'name' })
       .populate({ path: 'products.product' })
-      .populate('recipes.recipe');
+      .populate({
+        path: 'recipes.recipe',
+        populate: {
+          path: 'products.product'
+        }
+      });
 
     if (!diaryUpdated) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
