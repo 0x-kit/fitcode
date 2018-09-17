@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { reduxForm, Field, formValueSelector, reset } from 'redux-form';
-import { Header, Modal, Input, Statistic, Form, Button, Card } from 'semantic-ui-react';
+import { Header, Modal, Input, Statistic, Form, Button, Card, Label } from 'semantic-ui-react';
 
 import utils from 'app/food/HomeUtils';
 
@@ -78,20 +78,22 @@ class ManageDiary extends Component {
       <Form.Field>
         <Input
           fluid
-          label={label}
           labelPosition={labelPosition}
           placeholder={placeholder}
           type={type}
           maxLength={maxLength}
           {...field.input}
-        />
+        >
+          <input style={{ textAlign: 'center', width: 70 }} />
+          <Label basic>{label.content}</Label>
+        </Input>
         {validateError ? (
           <Header as="label" color="red" size="tiny" textAlign="center">
             {error}
           </Header>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </Form.Field>
     );
   };

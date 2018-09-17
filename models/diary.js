@@ -4,7 +4,6 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 const _ = require('lodash');
-const recipe = require('./recipe')
 
 const { Schema } = mongoose;
 
@@ -41,6 +40,10 @@ const DiarySchema = new Schema({
         ref: 'recipe',
         required: true,
         _id: false
+      },
+      serving: {
+        type: Number,
+        default: 1
       }
     }
   ],

@@ -136,8 +136,13 @@ const deleteRecipeProduct = (recipe, message) => ({
   payload: { recipe, message }
 });
 
-const selectRecipe = data => ({
+const selectRecipe = (recipe, serving = 1) => ({
   type: types.SELECT_RECIPE,
+  payload: { recipe, serving }
+});
+
+const resetRecipes = (data = {}) => ({
+  type: types.RESET_RECIPES,
   payload: data
 });
 
@@ -177,5 +182,6 @@ export default {
   addRecipeProduct,
   editRecipeProduct,
   deleteRecipeProduct,
-  selectRecipe
+  selectRecipe,
+  resetRecipes
 };

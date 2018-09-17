@@ -38,6 +38,7 @@ const EDIT_RECIPE_PRODUCT = "edit_recipe_product";
 const ADD_RECIPE_PRODUCT = "add_recipe_product";
 const DELETE_RECIPE_PRODUCT = "delete_recipe_product";
 const SELECT_RECIPE = "select_recipe";
+const RESET_RECIPES = 'reset_recipes'
 
 export default {
   LOADING,
@@ -76,5 +77,6 @@ export default {
   EDIT_RECIPE_PRODUCT,
   ADD_RECIPE_PRODUCT,
   DELETE_RECIPE_PRODUCT,
-  SELECT_RECIPE
+  SELECT_RECIPE,
+  RESET_RECIPES
 };

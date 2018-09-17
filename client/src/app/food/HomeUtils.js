@@ -71,13 +71,14 @@ class HomeInfo {
     }
 
     if (meal.recipes !== undefined && !_.isEmpty(meal.recipes)) {
-      meal.recipes.forEach(({ recipe }) => {
+      meal.recipes.forEach((obj) => {
+        const { recipe, serving } = obj
         if (!_.isNull(recipe)) {
           const macrosFromRecipe = this.macrosPerRecipe(recipe);
-          macrosPerMeal.calories += macrosFromRecipe.calories;
-          macrosPerMeal.proteins += macrosFromRecipe.proteins;
-          macrosPerMeal.carbs += macrosFromRecipe.carbs;
-          macrosPerMeal.fats += macrosFromRecipe.fats;
+          macrosPerMeal.calories += macrosFromRecipe.calories * serving;
+          macrosPerMeal.proteins += macrosFromRecipe.proteins * serving;
+          macrosPerMeal.carbs += macrosFromRecipe.carbs * serving;
+          macrosPerMeal.fats += macrosFromRecipe.fats * serving;
         }
       });
     }

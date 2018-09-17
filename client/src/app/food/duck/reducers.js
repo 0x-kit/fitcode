@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   selectedMeal: {},
   selectedGrams: {},
   selectedRecipe: {},
+  selectedServingSize: {},
 
   loading: true,
   errorMessage: '',
@@ -207,7 +208,8 @@ const foodReducer = (state = INITIAL_STATE, action) => {
     case types.SELECT_RECIPE:
       return {
         ...state,
-        selectedRecipe: action.payload
+        selectedRecipe: action.payload.recipe,
+        selectedServingSize: action.payload.serving
       };
 
     case types.ADD_RECIPE_PRODUCT:
@@ -247,6 +249,12 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         ...state,
         meals: { ...state.meals, ..._.mapKeys(action.payload.diary, '_id') },
         message: action.payload.message
+      };
+
+    case types.RESET_RECIPES:
+      return {
+        ...state,
+        userRecipes: action.payload
       };
 
     default:

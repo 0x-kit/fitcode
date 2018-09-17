@@ -17,7 +17,7 @@ class MealCards extends Component {
   };
 
   selectRecipe = (recipe, mealId) => {
-    this.props.selectRecipe(recipe);
+    this.props.selectRecipe(recipe.recipe, recipe.serving);
     this.props.selectMeal(mealId);
     this.handleModalRecipe(true);
   };
@@ -54,7 +54,7 @@ class MealCards extends Component {
   render() {
     const { mealsData } = this.props;
     const labels = ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Others'];
-
+    //console.log(this.props.selectedRecipe)
     return (
       <div>
         <ManageDiaryFood
@@ -79,8 +79,8 @@ class MealCards extends Component {
             })}
           </Card.Group>
         ) : (
-          <div />
-        )}
+            <div />
+          )}
       </div>
     );
   }
@@ -89,22 +89,24 @@ const renderRecipeList = (recipesArr = [], selectRecipe, mealId) => {
   return (
     <Responsive as={List} selection divided>
       {recipesArr.filter(recipe => recipe.recipe !== null).map(recipe => {
+        const { serving } = recipe
         const { _id, name } = recipe.recipe;
         const macrosPerRecipe = utils.macrosPerMeal(recipe.recipe);
 
         const { calories, proteins, carbs, fats } = macrosPerRecipe;
-        const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+        const header = `${calories * serving} CAL | ${proteins * serving} P | ${carbs * serving} C | ${fats * serving} F`;
 
         return (
           <List.Item
             key={recipe._id}
             onClick={() => {
-              selectRecipe(recipe.recipe, mealId);
+              selectRecipe(recipe, mealId);
             }}
           >
             <List.Icon name="food" style={{ float: 'left' }} size="large" verticalAlign="top" />
 
             <List.Content floated="left" header={{ content: name, as: 'a' }} />
+            <List.Content content={`(${serving})`} floated="right" />
             <List.Content floated="right" description={header} />
           </List.Item>
         );
@@ -178,7 +180,6 @@ const renderSummary = (macrosPerMeal, mealLabel, mealId, match) => {
           content="Add Food"
           as={Link}
           to={path}
-          // onClick={() => selectMeal({ mealId, mealLabel })}
           size="small"
           secondary
           compact

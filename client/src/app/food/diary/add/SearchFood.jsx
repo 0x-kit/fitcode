@@ -53,15 +53,15 @@ class SearchFood extends Component {
             {error}
           </Header>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </Form.Field>
     );
   };
 
   renderProductList(products) {
     return (
-      <Transition.Group as={List} duration={700} animation="fade" divided relaxed selection>
+      <Transition.Group as={List} duration={200} animation="fade" divided relaxed selection>
         {products.map(product => {
           const { _id, name, brand, calories, proteins, carbs, fats } = product;
           const constantDescription = '100g';
@@ -82,7 +82,7 @@ class SearchFood extends Component {
 
   renderRecipeList(recipes) {
     return (
-      <Transition.Group as={List} duration={700} animation="fade" divided relaxed selection>
+      <Transition.Group as={List} duration={200} animation="fade" divided relaxed selection>
         {recipes.map(recipe => {
           const { _id, name } = recipe;
           const macrosPerRecipe = utils.macrosPerMeal(recipe);
@@ -110,7 +110,8 @@ class SearchFood extends Component {
       selectedProduct,
       selectedMeal,
       selectedRecipe,
-      searchMessage
+      searchMessage,
+      loading
     } = this.props;
     const { modalOpenProduct, modalOpenRecipe } = this.state;
     const searchStyle = {
@@ -120,7 +121,6 @@ class SearchFood extends Component {
     };
 
     const recipeArr = _.map(userRecipes).reverse();
-
     return (
       <Responsive as={Container}>
         <Segment padded>
@@ -139,6 +139,7 @@ class SearchFood extends Component {
               </Form>
             </Card.Content>
           </Card>
+
           {products.length !== 0 && (
             <Card raised fluid>
               <Card.Content extra textAlign="center">

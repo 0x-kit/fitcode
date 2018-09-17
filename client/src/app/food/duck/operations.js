@@ -36,7 +36,8 @@ const {
   addRecipeProduct,
   editRecipeProduct,
   deleteRecipeProduct,
-  selectRecipe
+  selectRecipe,
+  resetRecipes
 } = ActionCreators;
 
 const complexFetchHome = date => async dispatch => {
@@ -395,5 +396,6 @@ export default {
   complexAddRecipeProduct,
   complexEditRecipeProduct,
   complexDeleteRecipeProduct,
-  selectRecipe
+  selectRecipe,
+  resetRecipes
 };

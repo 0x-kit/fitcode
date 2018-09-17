@@ -21,7 +21,9 @@ router
   // .get("/user/:userId", RecipeController.getUserRecipes)
 
   .post("/:recipeId/product", requireAuth, RecipeController.addProduct)
+  
   .put("/:recipeId/product", requireAuth, RecipeController.editProduct)
+
   .delete("/:recipeId/product/:productId", RecipeController.deleteProduct);
 
 module.exports = router;

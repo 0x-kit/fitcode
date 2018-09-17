@@ -16,6 +16,7 @@ const mapStateToProps = state => {
     selectedProduct: state.food.selectedProduct,
     selectedMeal: state.food.selectedMeal,
     selectedRecipe: state.food.selectedRecipe,
+    selectedServingSize: state.food.selectedServingSize,
 
     loading: state.food.loading,
     errorMessage: state.food.errorMessage,
@@ -39,6 +40,7 @@ export default compose(
       const { recipe } = this.props.match.params;
 
       if (_.isUndefined(meal)) {
+        this.props.resetRecipes();
         this.props.selectRecipe(recipe);
         this.props.complexGetRecentProducts();
       } else {

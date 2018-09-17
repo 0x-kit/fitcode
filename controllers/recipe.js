@@ -47,10 +47,16 @@ exports.createRecipe = async (req, res) => {
   }
 };
 
+
 exports.deleteRecipe = async (req, res) => {
   try {
     const recipeId = req.params.recipeId;
-    const recipeDeleted = await Recipe.findByIdAndRemove(recipeId);
+    const newProps = { user: null };
+  
+    const recipeDeleted = await Recipe.findByIdAndUpdate(recipeId, newProps, {
+      new: true,
+      runValidators: true
+    });
 
     if (!recipeDeleted) {
       return res
@@ -63,6 +69,7 @@ exports.deleteRecipe = async (req, res) => {
       });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err });
   }
 };

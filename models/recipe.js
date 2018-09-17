@@ -5,7 +5,6 @@ const RecipeSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "user",
-    required: true
   },
   name: {
     type: String,
