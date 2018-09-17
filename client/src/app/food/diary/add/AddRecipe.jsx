@@ -8,17 +8,10 @@ import _ from 'lodash';
 
 import utils from 'app/food/HomeUtils';
 
-class ManageRecipes extends Component {
-  state = { deleteRecipe: false };
-
-  handleDelete = flag => {
-    this.setState({ deleteRecipe: flag });
-  };
-
+class AddRecipe extends Component {
   handleClose = () => {
-    this.handleDelete(false);
     this.props.handleModal(false);
-    this.props.dispatch(reset('manageRecipes'));
+    this.props.dispatch(reset('addRecipe'));
   };
 
   onSubmit = values => {
@@ -30,12 +23,7 @@ class ManageRecipes extends Component {
       serving
     };
 
-    if (this.state.deleteRecipe === false) {
-      this.props.complexEditDiaryRecipe(selectedMeal.mealId, newRecipe);
-    } else {
-      this.props.complexDeleteDiaryRecipe(selectedMeal.mealId, newRecipe);
-    }
-
+    this.props.complexAddDiaryRecipe(selectedMeal.mealId, newRecipe);
     this.handleClose();
   };
 
@@ -99,14 +87,14 @@ class ManageRecipes extends Component {
 
   render() {
     const { selectedRecipe, openModal, handleSubmit, serving } = this.props;
-
     const macrosPerRecipe = utils.macrosPerMeal(selectedRecipe);
-    const buttonStyle = { width: 130, marginBottom: 10, marginTop: 10 };
+
+    const buttonStyle = { width: 272, marginBottom: 10, marginTop: 10 };
     const modalStyle = { width: 300, textAlign: 'center' };
 
     return (
       <Modal style={modalStyle} open={openModal} onClose={this.handleClose} size="mini">
-        <Header subheader={selectedRecipe.name} content={'Edit Recipe'} />
+        <Header subheader={selectedRecipe.name} content={'Add Recipe'} />
         <Modal.Content>{this.renderMacros(macrosPerRecipe, serving)}</Modal.Content>
         <Modal.Actions>
           <Form onSubmit={handleSubmit(this.onSubmit)}>
@@ -119,16 +107,7 @@ class ManageRecipes extends Component {
               type="text"
               maxLength="7"
             />
-            <Button style={buttonStyle} size="tiny" compact secondary content="Edit" floated="right" />
-            <Button
-              style={buttonStyle}
-              size="tiny"
-              content="Delete"
-              floated="left"
-              onClick={() => {
-                this.handleDelete(true);
-              }}
-            />
+            <Button style={buttonStyle} size="small" compact secondary content="Add" floated="right" />
           </Form>
         </Modal.Actions>
       </Modal>
@@ -151,7 +130,7 @@ const validate = values => {
 
 // Selector needed in order to access the value of the 'serving' field of the addProduct form
 // This way we can update in real time the macros depending upon serving size
-const selector = formValueSelector('manageRecipes');
+const selector = formValueSelector('addRecipeToDiary');
 
 export default compose(
   connect(state => ({
@@ -159,8 +138,8 @@ export default compose(
       serving: state.food.selectedServingSize
     }
   })),
-  reduxForm({ validate, form: 'manageRecipes', enableReinitialize: true }),
+  reduxForm({ validate, form: 'addRecipeToDiary', enableReinitialize: true }),
   connect(state => ({
     serving: selector(state, 'serving')
   }))
-)(ManageRecipes);
+)(AddRecipe);

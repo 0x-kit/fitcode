@@ -18,6 +18,8 @@ router
 
   .post('/:diaryId/recipe', DiaryController.addRecipe)
 
+  .put('/:diaryId/recipe', requireAuth, DiaryController.editRecipe)
+
   .delete('/:diaryId/recipe/:recipeId', DiaryController.deleteRecipe);
 
 module.exports = router;

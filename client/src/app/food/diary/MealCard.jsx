@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, List, Button, Responsive } from 'semantic-ui-react';
 import utils from 'app/food/HomeUtils';
 import ManageDiaryFood from 'app/food/diary/ManageDiary.jsx';
-import DeleteRecipe from 'app/food/diary/add/ManageRecipe.jsx';
+import ManageRecipe from 'app/food/diary/add/ManageRecipe.jsx';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
@@ -63,13 +63,13 @@ class MealCards extends Component {
           {...this.props}
         />
 
-        <DeleteRecipe
+        <ManageRecipe
           complexDeleteDiaryRecipe={this.props.complexDeleteDiaryRecipe}
+          complexEditDiaryRecipe={this.props.complexEditDiaryRecipe}
           openModal={this.state.modalOpenRecipe}
           handleModal={this.handleModalRecipe}
           selectedMeal={this.props.selectedMeal}
           selectedRecipe={this.props.selectedRecipe}
-          deleteRecipe={true}
         />
 
         {!_.isEmpty(mealsData) ? (
@@ -79,8 +79,8 @@ class MealCards extends Component {
             })}
           </Card.Group>
         ) : (
-            <div />
-          )}
+          <div />
+        )}
       </div>
     );
   }
@@ -89,12 +89,13 @@ const renderRecipeList = (recipesArr = [], selectRecipe, mealId) => {
   return (
     <Responsive as={List} selection divided>
       {recipesArr.filter(recipe => recipe.recipe !== null).map(recipe => {
-        const { serving } = recipe
-        const { _id, name } = recipe.recipe;
-        const macrosPerRecipe = utils.macrosPerMeal(recipe.recipe);
+        const { serving } = recipe;
+        const { name } = recipe.recipe;
+        const macrosPerRecipe = utils.macrosPerRecipe(recipe.recipe);
 
         const { calories, proteins, carbs, fats } = macrosPerRecipe;
-        const header = `${calories * serving} CAL | ${proteins * serving} P | ${carbs * serving} C | ${fats * serving} F`;
+        const header = `${calories * serving} CAL | ${proteins * serving} P | ${carbs * serving} C | ${fats *
+          serving} F`;
 
         return (
           <List.Item
@@ -176,15 +177,7 @@ const renderSummary = (macrosPerMeal, mealLabel, mealId, match) => {
 
     return (
       <List.Content floated="left">
-        <Button
-          content="Add Food"
-          as={Link}
-          to={path}
-          size="small"
-          secondary
-          compact
-          primary
-        />
+        <Button content="Add Food" as={Link} to={path} size="small" secondary compact primary />
       </List.Content>
     );
   };

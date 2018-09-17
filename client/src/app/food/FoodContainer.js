@@ -20,7 +20,6 @@ const mapStateToProps = state => {
     selectedRecipe: state.food.selectedRecipe,
     selectedMeal: state.food.selectedMeal,
     selectedGrams: state.food.selectedGrams,
-    selectedServingSize: state.food.selectedServingSize,
 
     date: state.food.date,
     errorMessage: state.food.errorMessage,

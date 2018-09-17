@@ -71,14 +71,14 @@ class HomeInfo {
     }
 
     if (meal.recipes !== undefined && !_.isEmpty(meal.recipes)) {
-      meal.recipes.forEach((obj) => {
-        const { recipe, serving } = obj
+      meal.recipes.forEach(obj => {
+        const { recipe } = obj;
         if (!_.isNull(recipe)) {
-          const macrosFromRecipe = this.macrosPerRecipe(recipe);
-          macrosPerMeal.calories += macrosFromRecipe.calories * serving;
-          macrosPerMeal.proteins += macrosFromRecipe.proteins * serving;
-          macrosPerMeal.carbs += macrosFromRecipe.carbs * serving;
-          macrosPerMeal.fats += macrosFromRecipe.fats * serving;
+          const macrosFromRecipe = this.macrosPerRecipe(recipe, obj.serving);
+          macrosPerMeal.calories += macrosFromRecipe.calories;
+          macrosPerMeal.proteins += macrosFromRecipe.proteins;
+          macrosPerMeal.carbs += macrosFromRecipe.carbs;
+          macrosPerMeal.fats += macrosFromRecipe.fats;
         }
       });
     }
@@ -129,8 +129,7 @@ class HomeInfo {
     return Math.round((num * amount) / 100);
   };
 
-  static macrosPerRecipe(recipe) {
-    //console.log(recipe);
+  static macrosPerRecipe(recipe, serving = 1) {
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
     let calArr = [],
@@ -168,10 +167,10 @@ class HomeInfo {
 
       macrosPerRecipe = {
         name: recipe.name,
-        calories: calArr.reduce(reducer),
-        proteins: proArr.reduce(reducer),
-        carbs: carbArr.reduce(reducer),
-        fats: fatArr.reduce(reducer)
+        calories: calArr.reduce(reducer) * _.parseInt(serving),
+        proteins: proArr.reduce(reducer) * _.parseInt(serving),
+        carbs: carbArr.reduce(reducer) * _.parseInt(serving),
+        fats: fatArr.reduce(reducer) * _.parseInt(serving)
       };
     }
 

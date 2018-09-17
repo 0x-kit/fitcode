@@ -18,6 +18,7 @@ const {
   editDiaryProduct,
   deleteDiaryProduct,
   addDiaryRecipe,
+  editDiaryRecipe,
   deleteDiaryRecipe,
 
   addDay,
@@ -278,7 +279,6 @@ const complexEditRecipeProduct = (recipeId, product) => async dispatch => {
 
     const response = await axios.put(`/api/recipe/${recipeId}/product`, product, reqConfig);
     const { recipe, message } = response.data;
-    console.log(recipe);
     dispatch(editRecipeProduct([recipe], message));
   } catch (error) {
     dispatch(fetchError(error.message));
@@ -348,6 +348,21 @@ const complexAddDiaryRecipe = (mealId, newRecipe) => async dispatch => {
   }
 };
 
+const complexEditDiaryRecipe = (mealId, newRecipe) => async dispatch => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const response = await axios.put(`/api/diary/${mealId}/recipe`, newRecipe, reqConfig);
+    const { diary, message } = response.data;
+
+    dispatch(editDiaryRecipe([diary], message));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
 const complexDeleteDiaryRecipe = (mealId, newRecipe) => async dispatch => {
   try {
     const token = localStorage.getItem('token');
@@ -378,6 +393,7 @@ export default {
   complexEditDiaryProduct,
   complexDeleteDiaryProduct,
   complexAddDiaryRecipe,
+  complexEditDiaryRecipe,
   complexDeleteDiaryRecipe,
 
   complexAddDay,

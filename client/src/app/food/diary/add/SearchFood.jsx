@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import AddFood from 'app/food/diary/add/AddFood.jsx';
-import AddRecipe from 'app/food/diary/add/ManageRecipe.jsx';
-
+import AddRecipe from 'app/food/diary/add/AddRecipe.jsx';
 import utils from 'app/food/HomeUtils';
 import _ from 'lodash';
 
@@ -53,8 +52,8 @@ class SearchFood extends Component {
             {error}
           </Header>
         ) : (
-            ''
-          )}
+          ''
+        )}
       </Form.Field>
     );
   };
@@ -110,8 +109,7 @@ class SearchFood extends Component {
       selectedProduct,
       selectedMeal,
       selectedRecipe,
-      searchMessage,
-      loading
+      searchMessage
     } = this.props;
     const { modalOpenProduct, modalOpenRecipe } = this.state;
     const searchStyle = {
@@ -119,7 +117,7 @@ class SearchFood extends Component {
       fontWeight: 700,
       color: '#db2828'
     };
-
+    //if (!loading) console.log(selectedMeal);
     const recipeArr = _.map(userRecipes).reverse();
     return (
       <Responsive as={Container}>
@@ -174,7 +172,6 @@ class SearchFood extends Component {
             handleModal={this.handleModalRecipe}
             selectedMeal={selectedMeal}
             selectedRecipe={selectedRecipe}
-            deleteRecipe={false}
           />
         </Segment>
       </Responsive>

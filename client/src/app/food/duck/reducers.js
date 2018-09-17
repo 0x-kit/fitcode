@@ -251,6 +251,13 @@ const foodReducer = (state = INITIAL_STATE, action) => {
         message: action.payload.message
       };
 
+    case types.EDIT_DIARY_RECIPE:
+      return {
+        ...state,
+        meals: { ...state.meals, ..._.mapKeys(action.payload.diary, '_id') },
+        message: action.payload.message
+      };
+
     case types.RESET_RECIPES:
       return {
         ...state,

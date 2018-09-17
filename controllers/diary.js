@@ -71,7 +71,7 @@ exports.addProduct = async (req, res) => {
   try {
     const diaryId = req.params.diaryId;
     const newProduct = req.body;
-    console.log(newProduct);
+
     const diaryProducts = await Diary.findById(diaryId)
       .select('-_id products.product')
       .populate('product._id');
@@ -125,7 +125,7 @@ exports.deleteProduct = async (req, res) => {
     )
       .select(' products _id user date name part')
       .populate({ path: 'user', select: 'name' })
-      .populate({ path: 'products.product' })
+      .populate({ path: 'products.product' });
 
     if (!diaryUpdated) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
@@ -204,6 +204,52 @@ exports.addRecipe = async (req, res) => {
   } catch (err) {
     console.log(err);
     console.log('error fatal');
+    res.status(422).json({ error: err });
+  }
+};
+
+exports.editRecipe = async (req, res) => {
+  try {
+    const diaryId = req.params.diaryId;
+    const recipeUpdated = req.body;
+
+    const diary = await Diary.findById(diaryId);
+
+    if (!diary) {
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+    }
+
+    const query = await Diary.update(
+      {
+        _id: diaryId,
+        'recipes.recipe': recipeUpdated.recipe
+      },
+      {
+        $set: { 'recipes.$.serving': recipeUpdated.serving }
+      },
+      {
+        new: true,
+        runValidators: true,
+        upsert: true
+      }
+    );
+
+    if (query.n === 1) {
+      const diaryUpdated = await Diary.findById(diaryId)
+        .select(' products recipes _id user date name part')
+        .populate({ path: 'user', select: 'name' })
+        .populate({ path: 'products.product' })
+        .populate({
+          path: 'recipes.recipe',
+          populate: {
+            path: 'products.product'
+          }
+        });
+
+      return res.status(200).json({ message: 'Recipe successfully updated.', diary: diaryUpdated });
+    }
+  } catch (err) {
+    console.log(err);
     res.status(422).json({ error: err });
   }
 };

@@ -1,23 +1,22 @@
 // import React, { Component } from 'react';
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { compose, lifecycle } from "recompose";
-import { homeOperations } from "app/food/duck";
-import _ from "lodash";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { compose, lifecycle } from 'recompose';
+import { homeOperations } from 'app/food/duck';
+import _ from 'lodash';
 
-import withAuth from "app/common/withAuth";
+import withAuth from 'app/common/withAuth';
 
-import SearchFood from "app/food/diary/add/SearchFood.jsx";
+import SearchFood from 'app/food/diary/add/SearchFood.jsx';
 
 const mapStateToProps = state => {
+  console.log(state.food.selectedServing);
   return {
     products: state.food.products,
     userRecipes: state.food.userRecipes,
     selectedProduct: state.food.selectedProduct,
     selectedMeal: state.food.selectedMeal,
     selectedRecipe: state.food.selectedRecipe,
-    selectedServingSize: state.food.selectedServingSize,
-
     loading: state.food.loading,
     errorMessage: state.food.errorMessage,
     searchMessage: state.food.searchMessage

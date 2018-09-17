@@ -74,6 +74,11 @@ const addDiaryRecipe = message => ({
   payload: message
 });
 
+const editDiaryRecipe = (diary, message) => ({
+  type: types.EDIT_DIARY_RECIPE,
+  payload: { diary, message }
+});
+
 const deleteDiaryRecipe = (diary, message) => ({
   type: types.DELETE_DIARY_RECIPE,
   payload: { diary, message }
@@ -164,6 +169,7 @@ export default {
   editDiaryProduct,
   deleteDiaryProduct,
   addDiaryRecipe,
+  editDiaryRecipe,
   deleteDiaryRecipe,
 
   addDay,
