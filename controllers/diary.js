@@ -123,9 +123,15 @@ exports.deleteProduct = async (req, res) => {
         new: true
       }
     )
-      .select(' products _id user date name part')
+      .select(' products recipes _id user date name part')
       .populate({ path: 'user', select: 'name' })
-      .populate({ path: 'products.product' });
+      .populate({ path: 'products.product' })
+      .populate({
+        path: 'recipes.recipe',
+        populate: {
+          path: 'products.product'
+        }
+      });
 
     if (!diaryUpdated) {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
@@ -169,7 +175,12 @@ exports.editProduct = async (req, res) => {
         .select(' products recipes _id user date name part')
         .populate({ path: 'user', select: 'name' })
         .populate({ path: 'products.product' })
-        .populate('recipes.recipe');
+        .populate({
+          path: 'recipes.recipe',
+          populate: {
+            path: 'products.product'
+          }
+        });
 
       return res.status(200).json({ message: 'Product successfully updated.', diary: diaryUpdated });
     }
@@ -183,6 +194,18 @@ exports.addRecipe = async (req, res) => {
   try {
     const diaryId = req.params.diaryId;
     const newRecipe = req.body;
+
+    const diaryRecipes = await Diary.findById(diaryId)
+      .select('-_id recipes.recipe')
+      .populate('recipe._id');
+
+    const recipeId = mongoose.Types.ObjectId(newRecipe.recipe);
+    const recipeArr = diaryRecipes.recipes;
+    const alreadyExists = _.find(recipeArr, { recipe: recipeId });
+
+    if (!_.isUndefined(alreadyExists)) {
+      return res.status(200).json({ message: 'Recipe is already added. Just edit qty.' });
+    }
 
     const diaryUpdated = await Diary.findByIdAndUpdate(
       diaryId,

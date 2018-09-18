@@ -62,9 +62,9 @@ class CreateExercise extends Component {
 
   render() {
     const { handleSubmit, openModal } = this.props;
-    const buttonStyle = { marginBottom: 10, width: 322 };
+    const buttonStyle = { marginBottom: 10, width: 270};
     return (
-      <Modal style={{ width: 350, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
+      <Modal style={{ width: 300, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
         <Header subheader="Enter name and calories" content="Add Your Exercise" />
         <Modal.Actions>
           <Form onSubmit={handleSubmit(this.onSubmit)}>
@@ -85,7 +85,7 @@ class CreateExercise extends Component {
               maxLength="7"
             />
 
-            <Button style={buttonStyle} size="small" secondary content="Add" />
+            <Button style={buttonStyle} secondary content="Add" />
           </Form>
         </Modal.Actions>
       </Modal>

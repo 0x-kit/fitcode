@@ -261,7 +261,8 @@ const foodReducer = (state = INITIAL_STATE, action) => {
     case types.RESET_RECIPES:
       return {
         ...state,
-        userRecipes: action.payload
+        userRecipes: action.payload,
+        selectedMeal: {}
       };
 
     default:

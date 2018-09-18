@@ -10,7 +10,6 @@ import withAuth from 'app/common/withAuth';
 import SearchFood from 'app/food/diary/add/SearchFood.jsx';
 
 const mapStateToProps = state => {
-  console.log(state.food.selectedServing);
   return {
     products: state.food.products,
     userRecipes: state.food.userRecipes,
@@ -37,12 +36,14 @@ export default compose(
     componentDidMount() {
       const { id, meal } = this.props.match.params;
       const { recipe } = this.props.match.params;
-
-      if (_.isUndefined(meal)) {
+      //console.log(this.props.match)
+      if (!_.isUndefined(recipe) && !_.isEmpty(recipe)) {
+        //console.log("SearchFood - Recipe")
         this.props.resetRecipes();
         this.props.selectRecipe(recipe);
         this.props.complexGetRecentProducts();
       } else {
+        //console.log("SearchFood - Meal")
         this.props.selectMeal(id, meal);
         this.props.complexGetRecentProducts(meal);
         this.props.complexFetchRecipes();

@@ -5,7 +5,7 @@ import AddRecipe from 'app/food/diary/add/AddRecipe.jsx';
 import utils from 'app/food/HomeUtils';
 import _ from 'lodash';
 
-import { Card, Input, List, Header, Responsive, Container, Segment, Form, Transition } from 'semantic-ui-react';
+import { Card, Input, List, Header, Responsive, Container, Segment, Form } from 'semantic-ui-react';
 
 class SearchFood extends Component {
   state = { modalOpenProduct: false, modalOpenRecipe: false };
@@ -52,15 +52,15 @@ class SearchFood extends Component {
             {error}
           </Header>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </Form.Field>
     );
   };
 
   renderProductList(products) {
     return (
-      <Transition.Group as={List} duration={200} animation="fade" divided relaxed selection>
+      <List divided relaxed selection>
         {products.map(product => {
           const { _id, name, brand, calories, proteins, carbs, fats } = product;
           const constantDescription = '100g';
@@ -75,13 +75,13 @@ class SearchFood extends Component {
             </List.Item>
           );
         })}
-      </Transition.Group>
+      </List>
     );
   }
 
   renderRecipeList(recipes) {
     return (
-      <Transition.Group as={List} duration={200} animation="fade" divided relaxed selection>
+      <List as={List} divided relaxed selection>
         {recipes.map(recipe => {
           const { _id, name } = recipe;
           const macrosPerRecipe = utils.macrosPerMeal(recipe);
@@ -91,12 +91,12 @@ class SearchFood extends Component {
           return (
             <List.Item key={_id} onClick={() => this.selectRecipe(recipe)}>
               <List.Content floated="right" verticalAlign="middle" description={header} />
-              <List.Icon name="food" size="large" verticalAlign="middle" />
+              <List.Icon name="book" size="large" verticalAlign="middle" />
               <List.Content header={{ content: name, as: 'a' }} verticalAlign="middle" />
             </List.Item>
           );
         })}
-      </Transition.Group>
+      </List>
     );
   }
 
@@ -109,7 +109,7 @@ class SearchFood extends Component {
       selectedProduct,
       selectedMeal,
       selectedRecipe,
-      searchMessage
+      searchMessage,
     } = this.props;
     const { modalOpenProduct, modalOpenRecipe } = this.state;
     const searchStyle = {
@@ -117,11 +117,11 @@ class SearchFood extends Component {
       fontWeight: 700,
       color: '#db2828'
     };
-    //if (!loading) console.log(selectedMeal);
     const recipeArr = _.map(userRecipes).reverse();
     return (
       <Responsive as={Container}>
         <Segment padded>
+        
           <Card raised fluid>
             <Card.Content textAlign="center">
               <Header size="medium">

@@ -39,46 +39,72 @@ class Exercise extends Component {
     );
   }
 
+  renderMainCard = () => {
+    return (
+      <Card raised fluid>
+        <Card.Content textAlign="center">
+          <Header size="medium">Today's Exercises</Header>
+          <Button
+            content="Create Exercise"
+            secondary
+            onClick={() => this.handleCreateModal(true)}
+            size="small"
+            compact
+            primary
+          />
+        </Card.Content>
+      </Card>
+    );
+  };
+
+  renderSummary = (totalCalories) => {
+    const header = totalCalories !== 0 ? totalCalories + ' KCAL' : '';
+    const style = { paddingRight: '0.5em' };
+    return (
+      <List>
+        <List.Item>
+          <List.Content floated="right" header={header} style={style} />
+
+        </List.Item>
+      </List>
+    )
+  }
+
+  renderContent = (userExercises) => {
+    return (
+      <Card raised fluid>
+        <Card.Content>{this.renderExerciseList(userExercises)}</Card.Content>
+      </Card>
+    )
+  }
+
+
   render() {
     // handleSubmit provided by reduxForm
     const { selectedExercise, userExercises, exerciseCals } = this.props;
     const { manageModal, createModal } = this.state;
-    const totalCalories = exerciseCals.calories;
-    const header = totalCalories !== 0 ? totalCalories + ' KCAL' : '';
-    const style = { paddingRight: '0.5em' };
+
+
+
     return (
       <Responsive as={Container}>
         <Segment padded>
-          <Card raised fluid>
-            <Card.Content textAlign="center">
-              <Header size="medium">Today's Exercises</Header>
-            </Card.Content>
-            <Card.Content>{this.renderExerciseList(userExercises)}</Card.Content>
-            <Card.Content extra>
-              <List>
-                <List.Item>
-                  <List.Content floated="right" header={header} style={style} />
-                  <Button
-                    content="Create Exercise"
-                    secondary
-                    onClick={() => this.handleCreateModal(true)}
-                    size="small"
-                    compact
-                    primary
-                  />
-                </List.Item>
-              </List>
-            </Card.Content>
-          </Card>
+          <Card.Group centered>
+            {this.renderMainCard()}
 
-          <ManageExercise
-            openModal={manageModal}
-            handleModal={this.handleManageModal}
-            selectedExercise={selectedExercise}
-            {...this.props}
-          />
+            {!_.isEmpty(userExercises) &&
+              this.renderContent(userExercises)
+            }
 
-          <CreateExercise openModal={createModal} handleModal={this.handleCreateModal} {...this.props} />
+            <ManageExercise
+              openModal={manageModal}
+              handleModal={this.handleManageModal}
+              selectedExercise={selectedExercise}
+              {...this.props}
+            />
+
+            <CreateExercise openModal={createModal} handleModal={this.handleCreateModal} {...this.props} />
+          </Card.Group>
         </Segment>
       </Responsive>
     );

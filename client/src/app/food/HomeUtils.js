@@ -130,6 +130,7 @@ class HomeInfo {
   };
 
   static macrosPerRecipe(recipe, serving = 1) {
+    //console.log(recipe, serving)
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
     let calArr = [],
@@ -172,6 +173,7 @@ class HomeInfo {
         carbs: carbArr.reduce(reducer) * _.parseInt(serving),
         fats: fatArr.reduce(reducer) * _.parseInt(serving)
       };
+      //console.log(macrosPerRecipe)
     }
 
     return macrosPerRecipe;

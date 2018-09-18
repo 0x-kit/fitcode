@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu, Container, Icon } from 'semantic-ui-react';
+import { Menu, Container, Icon, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 class MainMenu extends Component {
@@ -21,6 +21,11 @@ class MainMenu extends Component {
           </Menu.Item>
           {authenticated && (
             <Menu.Menu position="right">
+              <Menu.Item>
+                <Label size="large" circular color="black">
+                  User Info
+              </Label>
+              </Menu.Item>
               {/* <Menu.Item>User Info</Menu.Item> */}
               <Menu.Item
                 position="right"
@@ -34,6 +39,7 @@ class MainMenu extends Component {
                   <Icon color="green" name="power off" />
                 </h2>
               </Menu.Item>
+
             </Menu.Menu>
           )}
         </Container>
