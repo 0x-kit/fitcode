@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const moment = require("moment");
-
+const _ = require('lodash');
 const User = require("../models/user");
 const Exercise = require("../models/exercise");
 const Diary = require("../models/diary");
@@ -175,8 +175,58 @@ exports.setMacros = async (req, res) => {
 
 exports.setCurrentWeight = async (req, res) => {
   try {
+    let alreadyExists;
     const userId = req.params.userId;
     const currentWeight = req.body;
+    const currentDate = moment()
+      .startOf("day")
+      .format("YYYY-MM-DD");
+
+    const user = await User.findById(userId).select("goals");
+
+    if (!user) {
+      return res.status(404).json({ message: 'Not valid entry found for provided ID' });
+    }
+
+    if (currentWeight.date === currentDate) {
+      const weightsArr = user.goals.currentWeight;
+
+      weightsArr.forEach(obj => {
+        if (!_.isUndefined(obj.date)) {
+          if (moment(obj.date).startOf("day")
+            .format("YYYY-MM-DD") === currentDate) {
+            alreadyExists = obj
+          }
+        }
+      });
+
+      if (!_.isUndefined(alreadyExists)) {
+        const query = await User.update(
+          {
+            _id: userId,
+            'goals.currentWeight._id': alreadyExists._id
+          },
+          {
+            $set: { 'goals.currentWeight.$': currentWeight }
+          },
+          {
+            new: true,
+            runValidators: true,
+            upsert: true
+          }
+        );
+
+        if (query.n === 1) {
+          const goals = await User.findById(userId).select("goals.currentWeight");
+          const currentWeight = goals.goals;
+
+          return res
+            .status(200)
+            .json({ message: "Current Weight sucessfully updated.", currentWeight });
+        }
+      }
+
+    }
 
     const goals = await User.findByIdAndUpdate(
       userId,
@@ -294,3 +344,47 @@ exports.getRecipes = async (req, res) => {
     res.status(500).json({ error: err });
   }
 };
+
+exports.getPrueba = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const currentDate = moment()
+      .startOf("day")
+      .format("YYYY-MM-DD");
+
+    let alreadyExists;
+    const userGoals = await User.findById(userId).select("goals");
+    const weightsArr = userGoals.goals.currentWeight
+
+    weightsArr.forEach(obj => {
+      if (!_.isUndefined(obj.date)) {
+        if (moment(obj.date).startOf("day")
+          .format("YYYY-MM-DD") === currentDate) {
+          alreadyExists = obj
+        }
+      }
+    });
+
+    console.log(alreadyExists)
+    // if (!_.isUndefined(alreadyExists)) {
+    //   return res.status(200).json({ message: 'Recipe is already added. Just edit qty.' });
+    // }
+
+
+    if (!userGoals) {
+      return res
+        .status(404)
+        .json({ message: "Not valid entry found for provided ID" });
+    } else {
+      return res.status(200).json(
+        weightsArr
+      );
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+
+

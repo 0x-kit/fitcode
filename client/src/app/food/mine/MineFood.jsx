@@ -64,19 +64,18 @@ class MineFood extends Component {
 
   renderMainCard = () => {
     return (
-      <Card raised fluid>
-        <Card.Content textAlign="center">
+      <Segment basic style={{ marginBottom: '0px' }}>
+        <Card.Content style={{ textAlign: 'center' }}>
           <Header size="medium">Your Personal Foods</Header>
           <Button
             secondary
             onClick={() => this.handleCreateModal(true)}
-            size="small"
             compact
             primary
             content="Create Food"
           />
         </Card.Content>
-      </Card>
+      </Segment>
     );
   };
 

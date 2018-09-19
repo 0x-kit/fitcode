@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Segment, Container, Statistic, Card, Grid, Button } from 'semantic-ui-react';
+import { Segment, Container, Statistic, Card, Grid, Button, Header } from 'semantic-ui-react';
 import ManageMacros from 'app/goals/ManageMacros.jsx';
 
 class Macros extends Component {
@@ -10,31 +10,52 @@ class Macros extends Component {
     this.setState({ modalOpen: flag });
   };
 
+  renderMacros = macros => {
+    const cardStyle = { padding: 15 };
+    return (
+      <Card fluid raised style={cardStyle}>
+        {macrosGrid(macros)}
+      </Card>
+    )
+  }
+
+  renderMainCard = () => {
+    return (
+      <Segment basic style={{ marginBottom: '0px' }}>
+        <Card.Content style={{ textAlign: 'center' }}>
+          {/* <Header size="medium">Your Diet</Header> */}
+          <Button onClick={() => this.handleModal(true)} content="Diet Settings" secondary />
+        </Card.Content>
+      </Segment>
+    );
+  };
+
   render() {
-    const cardStyle = { padding: 15, marginBottom: '2.5em' };
-    const buttonStyle = { marginTop: '15px', width: '275px' };
-    const { loading } = this.props;
+
+    const { loading, macros } = this.props;
+
     return (
       <Container>
-        {!loading ? (
-          <Segment padded="very">
-            <Card.Group centered>
-              <Card fluid raised style={cardStyle}>
-                {macrosGrid(this.props.macros)}
-              </Card>
 
-              <Button onClick={() => this.handleModal(true)} content="Update" secondary style={buttonStyle} />
-            </Card.Group>
+        <Segment padded>
+          <Card.Group centered>
+            {this.renderMainCard()}
 
-            <ManageMacros
-              complexEditMacros={this.props.complexEditMacros}
-              openModal={this.state.modalOpen}
-              handleModal={this.handleModal}
-            />
-          </Segment>
-        ) : (
-          <div />
-        )}
+            {!loading && !_.isEmpty(macros) ? (
+              this.renderMacros(macros)
+            ) : (
+                <div />
+              )}
+
+          </Card.Group>
+
+          <ManageMacros
+            complexEditMacros={this.props.complexEditMacros}
+            openModal={this.state.modalOpen}
+            handleModal={this.handleModal}
+          />
+        </Segment>
+
       </Container>
     );
   }
@@ -47,7 +68,7 @@ const macrosGrid = macros => {
 
   const renderStatistic = (label, value, index) => (
     <Grid.Column computer={4} tablet={4} mobile={8} key={index}>
-      <Statistic value={value} label={label} size="tiny" />
+      <Statistic value={value} label={label} size="tiny" style={{ marginBottom: '15px', marginTop: '15px' }} />
     </Grid.Column>
   );
   return (
@@ -59,12 +80,12 @@ const macrosGrid = macros => {
           })}
         </Grid.Row>
       ) : (
-        <Grid.Row>
-          <Grid.Column computer={16}>
-            <Statistic label="Enter macros" size="tiny" />
-          </Grid.Column>
-        </Grid.Row>
-      )}
+          <Grid.Row>
+            <Grid.Column computer={16}>
+              <Statistic label="Enter macros" size="tiny" />
+            </Grid.Column>
+          </Grid.Row>
+        )}
     </Grid>
   );
 };

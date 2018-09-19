@@ -41,19 +41,18 @@ class Exercise extends Component {
 
   renderMainCard = () => {
     return (
-      <Card raised fluid>
-        <Card.Content textAlign="center">
+      <Segment basic style={{ marginBottom: '0px' }}>
+      <Card.Content style={{ textAlign: 'center' }}>
           <Header size="medium">Today's Exercises</Header>
           <Button
             content="Create Exercise"
             secondary
             onClick={() => this.handleCreateModal(true)}
-            size="small"
             compact
             primary
           />
         </Card.Content>
-      </Card>
+      </Segment>
     );
   };
 
@@ -64,7 +63,6 @@ class Exercise extends Component {
       <List>
         <List.Item>
           <List.Content floated="right" header={header} style={style} />
-
         </List.Item>
       </List>
     )
@@ -81,10 +79,8 @@ class Exercise extends Component {
 
   render() {
     // handleSubmit provided by reduxForm
-    const { selectedExercise, userExercises, exerciseCals } = this.props;
+    const { selectedExercise, userExercises } = this.props;
     const { manageModal, createModal } = this.state;
-
-
 
     return (
       <Responsive as={Container}>

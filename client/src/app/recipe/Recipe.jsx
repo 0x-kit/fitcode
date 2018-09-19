@@ -144,8 +144,8 @@ class Recipe extends Component {
 
   renderMainCard = () => {
     return (
-      <Card raised fluid>
-        <Card.Content textAlign="center">
+      <Segment basic style={{ marginBottom: '0px' }}>
+        <Card.Content style={{ textAlign: 'center' }}>
           <Header size="medium">Your Personal Recipes</Header>
           <Button
             secondary
@@ -156,7 +156,7 @@ class Recipe extends Component {
             content="Create Recipe"
           />
         </Card.Content>
-      </Card>
+      </Segment>
     );
   };
 
@@ -179,8 +179,8 @@ class Recipe extends Component {
             </Card.Group>
           </Segment>
         ) : (
-          <div />
-        )}
+            <div />
+          )}
         <ManageRecipeFood
           openModal={this.state.manageModal}
           handleModal={this.handleManageModal}

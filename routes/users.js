@@ -12,6 +12,9 @@ router
 
   .delete('/:userId', UsersController.deleteUser)
 
+  .get('/:userId/prueba', UsersController.getPrueba)
+
+
   /** Basic crud */
 
   .get('/:userId/products', UsersController.getRecentProducts)

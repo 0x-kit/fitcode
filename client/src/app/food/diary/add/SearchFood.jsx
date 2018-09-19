@@ -110,6 +110,7 @@ class SearchFood extends Component {
       selectedMeal,
       selectedRecipe,
       searchMessage,
+      loading
     } = this.props;
     const { modalOpenProduct, modalOpenRecipe } = this.state;
     const searchStyle = {
@@ -121,7 +122,7 @@ class SearchFood extends Component {
     return (
       <Responsive as={Container}>
         <Segment padded>
-        
+
           <Card raised fluid>
             <Card.Content textAlign="center">
               <Header size="medium">
@@ -138,23 +139,31 @@ class SearchFood extends Component {
             </Card.Content>
           </Card>
 
-          {products.length !== 0 && (
-            <Card raised fluid>
-              <Card.Content extra textAlign="center">
-                Food
-              </Card.Content>
-              <Card.Content>{this.renderProductList(products)}</Card.Content>
-            </Card>
-          )}
+          {!loading ? (
+            products.length !== 0 && (
+              <Card raised fluid>
+                <Card.Content extra textAlign="center">
+                  Food
+                      </Card.Content>
+                <Card.Content>{this.renderProductList(products)}</Card.Content>
+              </Card>
+            )
+          ) : (
+              <div />
+            )}
 
-          {recipeArr.length !== 0 && (
-            <Card raised fluid>
-              <Card.Content extra textAlign="center">
-                Recipes
-              </Card.Content>
-              <Card.Content>{this.renderRecipeList(recipeArr)}</Card.Content>
-            </Card>
-          )}
+          {!loading ? (
+            recipeArr.length !== 0 && (
+              <Card raised fluid>
+                <Card.Content extra textAlign="center">
+                  Recipes
+                    </Card.Content>
+                <Card.Content>{this.renderRecipeList(recipeArr)}</Card.Content>
+              </Card>
+            )
+          ) : (
+              <div />
+            )}
 
           <AddFood
             complexAddDiaryProduct={this.props.complexAddDiaryProduct}

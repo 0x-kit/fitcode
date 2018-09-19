@@ -33,51 +33,67 @@ class Weight extends Component {
       </Transition.Group>
     );
   }
+
+  renderMainCard = () => {
+    return (
+      <Segment basic style={{ marginBottom: '0px' }}>
+        <Card.Content style={{ textAlign: 'center' }}>
+          <Button onClick={() => this.handleModal(true)} content="Weight Settings" secondary />
+        </Card.Content>
+      </Segment>
+    );
+  };
+
+  renderWeights = (currentWeight, goalWeight) => {
+    const cardStyle = { padding: 15 };
+    return (
+      <Card.Group itemsPerRow="2">
+        <Card fluid raised style={cardStyle}>
+          {weightGrid(goalWeight, 'Goal')}
+        </Card>
+        <Card fluid raised style={cardStyle}>
+          {weightGrid(currentWeight, 'Current')}
+        </Card>
+      </Card.Group>
+    )
+  }
+
   render() {
     const { currentWeight, goalWeight, weightHistory, loading } = this.props;
-
-    const buttonStyle = { marginTop: '15px', width: '275px' };
-    const cardGroupStyle = { marginBottom: '2.5em' };
-    const cardStyle = { padding: 15 };
-
     return (
       <Container>
-        {!loading ? (
-          <Segment padded="very">
-            <Card.Group itemsPerRow="2" style={cardGroupStyle}>
-              <Card fluid raised style={cardStyle}>
-                {weightGrid(currentWeight.weight, 'Current')}
-              </Card>
 
-              <Card fluid raised style={cardStyle}>
-                {weightGrid(goalWeight.weight, 'Goal')}
-              </Card>
-            </Card.Group>
-            <Card.Group centered>
-              <Button onClick={() => this.handleModal(true)} content="Update" secondary style={buttonStyle} />
-            </Card.Group>
+        <Segment padded>
 
-            <ManageWeight
-              goalWeight={this.props.goalWeight}
-              currentWeight={this.props.currentWeight}
-              complexEnterGoalWeight={this.props.complexEnterGoalWeight}
-              complexEnterCurrentWeight={this.props.complexEnterCurrentWeight}
-              openModal={this.state.modalOpen}
-              handleModal={this.handleModal}
-            />
+          <Card.Group centered>
+            {this.renderMainCard()}
+          </Card.Group>
 
-            {weightHistory.length !== 0 && (
+          {!loading && !_.isEmpty(currentWeight) && !_.isEmpty(goalWeight) ? (
+            this.renderWeights(currentWeight.weight, goalWeight.weight)
+          ) : (
+              <div />
+            )}
+
+          <ManageWeight
+            goalWeight={this.props.goalWeight}
+            currentWeight={this.props.currentWeight}
+            complexEnterGoalWeight={this.props.complexEnterGoalWeight}
+            complexEnterCurrentWeight={this.props.complexEnterCurrentWeight}
+            openModal={this.state.modalOpen}
+            handleModal={this.handleModal}
+          />
+
+          {/* {weightHistory.length !== 0 && (
               <Card fluid raised>
                 <Card.Content>
                   <Card.Header>Weight History</Card.Header>
                 </Card.Content>
                 <Card.Content>{this.renderWeightList(weightHistory)}</Card.Content>
               </Card>
-            )}
-          </Segment>
-        ) : (
-          <div />
-        )}
+            )} */}
+        </Segment>
+
       </Container>
     );
   }
