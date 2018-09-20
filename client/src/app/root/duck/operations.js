@@ -1,16 +1,21 @@
 import ActionCreators from './actions';
 import axios from 'axios';
 
-const { authError, signup, signin, socialSignin, signout, selectMainTab, selectSecondaryTab } = ActionCreators;
+const { authError, signup, signin, signout, selectMainTab, selectSecondaryTab } = ActionCreators;
 
 const complexSignUp = (formProps, redirect) => async dispatch => {
   try {
     const response = await axios.post('api/auth/signup', formProps);
+    const { token, user } = response.data
 
-    dispatch(signup(response.data.token));
+    const reqConfig = { headers: { authorization: token } };
+    const userInfo = await axios.get(`api/user/${user}`, reqConfig);
 
-    localStorage.setItem('token', response.data.token);
-    localStorage.setItem('userId', response.data.user);
+    dispatch(signup(token, userInfo.data));
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('userId', user);
+    localStorage.setItem('userInfo', userInfo.data.name);
 
     redirect();
   } catch (err) {
@@ -21,11 +26,16 @@ const complexSignUp = (formProps, redirect) => async dispatch => {
 const complexSignin = (formProps, redirect) => async dispatch => {
   try {
     const response = await axios.post('api/auth/signin', formProps);
+    const { token, user } = response.data
 
-    dispatch(signin(response.data.token));
-    //  persist auth state
-    localStorage.setItem('token', response.data.token);
-    localStorage.setItem('userId', response.data.user);
+    const reqConfig = { headers: { authorization: token } };
+    const userInfo = await axios.get(`api/user/${user}`, reqConfig);
+
+    dispatch(signin(token, userInfo.data.name));
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('userId', user);
+    localStorage.setItem('userInfo', userInfo.data.name);
 
     redirect();
   } catch (err) {
@@ -34,17 +44,25 @@ const complexSignin = (formProps, redirect) => async dispatch => {
 };
 
 const complexSocialSignin = (token, userId, redirect) => async dispatch => {
-  dispatch(socialSignin(token));
-  //  persist auth state
-  localStorage.setItem('token', token);
-  localStorage.setItem('userId', userId);
+  try {
+    const reqConfig = { headers: { authorization: token } };
+    const userInfo = await axios.get(`api/user/${userId}`, reqConfig);
 
-  redirect();
+    dispatch(signin(token, userInfo.data));
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('userId', userId);
+    localStorage.setItem('userInfo', userInfo.data.name);
+    redirect();
+  } catch (err) {
+    dispatch(authError(err.response.data.message));
+  }
 };
 
 const complexSignout = redirect => async dispatch => {
   localStorage.removeItem('token');
   localStorage.removeItem('userId');
+  localStorage.removeItem('userInfo');
 
   dispatch(authError(''));
   dispatch(signout());

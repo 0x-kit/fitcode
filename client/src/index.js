@@ -16,6 +16,7 @@ import MineFoodContainer from 'app/food/mine/MineFoodContainer';
 
 import MacrosContainer from 'app/goals/MacrosContainer';
 import WeightContainer from 'app/goals/WeightContainer';
+import HistoryContainer from 'app/goals/HistoryContainer';
 import ExerciseContainer from 'app/exercise/ExerciseContainer';
 import RecipeContainer from 'app/recipe/RecipeContainer';
 import NotFound from 'app/common/NotFound';
@@ -25,6 +26,7 @@ const store = createStore(
   {
     auth: {
       authenticated: localStorage.getItem('token'),
+      userInfo: localStorage.getItem('userInfo'),
       mainTab: 'food',
       secondaryTab: 'diary',
       activeIndex: 0
@@ -45,8 +47,9 @@ ReactDOM.render(
           <Route path="/food/recipes" exact component={RecipeContainer} />
           <Route path="/goals/diet" exact component={MacrosContainer} />
           <Route path="/goals/weight" exact component={WeightContainer} />
+          <Route path="/goals/history" exact component={HistoryContainer} />
           <Route path="/exercise" exact component={ExerciseContainer} />
-  
+
           <Route path="/" exact component={Root} />
           <Route component={NotFound} />
         </Switch>

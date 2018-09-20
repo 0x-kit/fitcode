@@ -59,7 +59,7 @@ class Weight extends Component {
   }
 
   render() {
-    const { currentWeight, goalWeight, weightHistory, loading } = this.props;
+    const { currentWeight, goalWeight, loading } = this.props;
     return (
       <Container>
 

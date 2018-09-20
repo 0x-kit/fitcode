@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Segment, Container, Statistic, Card, Grid, Button, Header } from 'semantic-ui-react';
+import { Segment, Container, Statistic, Card, Grid, Button } from 'semantic-ui-react';
 import ManageMacros from 'app/goals/ManageMacros.jsx';
 
 class Macros extends Component {

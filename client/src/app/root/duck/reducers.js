@@ -3,6 +3,7 @@ import types from './types';
 const INITIAL_STATE = {
   authenticated: '',
   errorMessage: '',
+  userInfo: '',
   mainTab: 'food',
   secondaryTab: 'diary',
   activeIndex: 0
@@ -13,7 +14,7 @@ const TABS = ['food', 'exercise', 'goals'];
 const authReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.AUTH_USER:
-      return { ...state, authenticated: action.payload };
+      return { ...state, authenticated: action.payload.token, userInfo: action.payload.userInfo };
     case types.AUTH_ERROR:
       return { ...state, errorMessage: action.payload };
     case types.MAIN_TAB:

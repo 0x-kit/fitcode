@@ -1,6 +1,6 @@
 import React from 'react';
 import SecondaryMenuContainer from 'app/common/menu/SecondaryMenuContainer';
-import MainMenuContainer from 'app/common/menu/MainMenuContainer';
+import MainMenuContainer from 'app/common/menu/MainMenuContainer.js';
 import { Container } from 'semantic-ui-react';
 
 import 'app/common/styles/index.css';

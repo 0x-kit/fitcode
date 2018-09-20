@@ -4,11 +4,9 @@ const authError = error => ({ type: types.AUTH_ERROR, payload: error });
 
 const signup = token => ({ type: types.AUTH_USER, payload: token });
 
-const signin = token => ({ type: types.AUTH_USER, payload: token });
+const signin = (token, userInfo) => ({ type: types.AUTH_USER, payload: { token, userInfo } });
 
-const socialSignin = token => ({ type: types.AUTH_USER, payload: token });
-
-const signout = () => ({ type: types.AUTH_USER, payload: '' });
+const signout = (token = '', userInfo = '') => ({ type: types.AUTH_USER, payload: { token, userInfo } });
 
 const selectMainTab = tab => ({ type: types.MAIN_TAB, payload: tab });
 
@@ -18,7 +16,6 @@ export default {
   authError,
   signup,
   signin,
-  socialSignin,
   signout,
   selectMainTab,
   selectSecondaryTab
