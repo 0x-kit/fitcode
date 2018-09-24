@@ -7,6 +7,7 @@ import { Button, Form, Segment, Header, Input } from 'semantic-ui-react';
 class Signup extends Component {
   onSubmit = values => {
     this.props.complexSignUp(values, () => {
+      console.log('callback');
       this.props.history.push('/food/diary');
     });
   };

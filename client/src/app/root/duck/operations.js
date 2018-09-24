@@ -6,12 +6,12 @@ const { authError, signup, signin, signout, selectMainTab, selectSecondaryTab } 
 const complexSignUp = (formProps, redirect) => async dispatch => {
   try {
     const response = await axios.post('api/auth/signup', formProps);
-    const { token, user } = response.data
+    const { token, user } = response.data;
 
     const reqConfig = { headers: { authorization: token } };
     const userInfo = await axios.get(`api/user/${user}`, reqConfig);
 
-    dispatch(signup(token, userInfo.data));
+    dispatch(signup(token, userInfo.data.name));
 
     localStorage.setItem('token', token);
     localStorage.setItem('userId', user);
@@ -26,7 +26,7 @@ const complexSignUp = (formProps, redirect) => async dispatch => {
 const complexSignin = (formProps, redirect) => async dispatch => {
   try {
     const response = await axios.post('api/auth/signin', formProps);
-    const { token, user } = response.data
+    const { token, user } = response.data;
 
     const reqConfig = { headers: { authorization: token } };
     const userInfo = await axios.get(`api/user/${user}`, reqConfig);
@@ -48,11 +48,12 @@ const complexSocialSignin = (token, userId, redirect) => async dispatch => {
     const reqConfig = { headers: { authorization: token } };
     const userInfo = await axios.get(`api/user/${userId}`, reqConfig);
 
-    dispatch(signin(token, userInfo.data));
+    dispatch(signin(token, userInfo.data.name));
 
     localStorage.setItem('token', token);
     localStorage.setItem('userId', userId);
     localStorage.setItem('userInfo', userInfo.data.name);
+
     redirect();
   } catch (err) {
     dispatch(authError(err.response.data.message));

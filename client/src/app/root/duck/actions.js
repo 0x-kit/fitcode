@@ -2,7 +2,7 @@ import types from './types';
 
 const authError = error => ({ type: types.AUTH_ERROR, payload: error });
 
-const signup = token => ({ type: types.AUTH_USER, payload: token });
+const signup = (token, userInfo) => ({ type: types.AUTH_USER, payload: { token, userInfo } });
 
 const signin = (token, userInfo) => ({ type: types.AUTH_USER, payload: { token, userInfo } });
 
