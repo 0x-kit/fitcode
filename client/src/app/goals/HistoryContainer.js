@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { compose, lifecycle } from 'recompose';
+import { compose } from 'recompose';
 import { goalsOperations } from 'app/goals/duck';
 
 import withAuth from 'app/common/withAuth';
@@ -10,6 +10,7 @@ const mapStateToProps = state => {
     return {
         macros: state.goals.macros,
         loading: state.goals.loading,
+        date: state.food.date,
         errorMessage: state.goals.errorMessage
     };
 };
