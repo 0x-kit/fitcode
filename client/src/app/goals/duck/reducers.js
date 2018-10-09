@@ -4,6 +4,7 @@ import moment from 'moment';
 
 const INITIAL_STATE = {
   macros: {},
+  history: {},
   weightHistory: [],
 
   goalWeight: {},
@@ -43,6 +44,13 @@ const goalsReducer = (state = INITIAL_STATE, action) => {
         goalWeight: goalWeight,
         currentWeight: !_.isEmpty(currentWeight) ? currentWeight.slice(-1)[0] : emptyWeight,
         weightHistory: currentWeight.reverse()
+      };
+
+    case types.FETCH_HISTORY:
+      return {
+        ...state,
+        history: _.mapKeys(action.payload, '_id'),
+        errorMessage: action.payload
       };
 
     case types.FETCH_GOALS_ERROR:

@@ -345,41 +345,56 @@ exports.getRecipes = async (req, res) => {
   }
 };
 
-exports.getPrueba = async (req, res) => {
+exports.getHistory = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const currentDate = moment()
-      .startOf("day")
-      .format("YYYY-MM-DD");
+    const user = await User.findById(userId);
 
-    let alreadyExists;
-    const userGoals = await User.findById(userId).select("goals");
-    const weightsArr = userGoals.goals.currentWeight
+    const from = req.query.from;
+    const to = req.query.to;
 
-    weightsArr.forEach(obj => {
-      if (!_.isUndefined(obj.date)) {
-        if (moment(obj.date).startOf("day")
-          .format("YYYY-MM-DD") === currentDate) {
-          alreadyExists = obj
+
+    const fromDate = moment(from)
+      .format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+
+    const toDate = moment(to)
+      .format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+
+
+    if (!user) return res.status(404).json({ message: 'Not valid entries found for provided ID' });
+
+    const docs = await Diary.find({ user: userId, date: { $gte: fromDate, $lte: toDate } })
+      .select(' products recipes user date part')
+      .populate({ path: 'products.product' })
+      .populate({
+        path: 'recipes.recipe',
+        populate: {
+          path: 'products.product'
         }
+      });
+
+    const result = _.filter(docs, function (diary) {
+      if ((diary.products.length > 0) || (diary.recipes.length > 0)) {
+        return diary;
       }
-    });
-
-    console.log(alreadyExists)
-    // if (!_.isUndefined(alreadyExists)) {
-    //   return res.status(200).json({ message: 'Recipe is already added. Just edit qty.' });
-    // }
+    })
 
 
-    if (!userGoals) {
-      return res
-        .status(404)
-        .json({ message: "Not valid entry found for provided ID" });
-    } else {
-      return res.status(200).json(
-        weightsArr
-      );
-    }
+    const fromDate2 = moment("2018-08-25T00:00:00.000Z").format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+    const toDate2 = moment("2018-08-28T00:00:00.000Z").format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+
+    const goals = await User.findById(userId).select("goals");
+    const unfilteredWeights = goals.goals.currentWeight;
+    
+    const filteredWeights = _.filter(goals.goals.currentWeight, function (weight) {
+      if (moment(weight.date).isBetween(fromDate2, toDate2, null, '[]')) {
+        console.log("is in between")
+        return weight;
+      }
+    })
+
+    if (docs.length !== 0) return res.status(200).json(filteredWeights);
+
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err });

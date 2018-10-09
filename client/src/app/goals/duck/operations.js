@@ -1,7 +1,7 @@
 import ActionCreators from './actions';
 import axios from 'axios';
 
-const { loading, fetchGoals, fetchError, editMacros, setCurrentWeight, setGoalWeight, resetMessage } = ActionCreators;
+const { loading, fetchGoals, fetchHistory, fetchError, editMacros, setCurrentWeight, setGoalWeight, resetMessage } = ActionCreators;
 
 const complexFetchGoals = () => async dispatch => {
   try {
@@ -14,6 +14,24 @@ const complexFetchGoals = () => async dispatch => {
     const goals = await axios.get(`/api/user/${userId}/goals`, reqConfig);
 
     dispatch(fetchGoals(goals.data));
+
+    dispatch(loading(false));
+  } catch (error) {
+    dispatch(fetchError(error.message));
+  }
+};
+
+const complexFetchHistory = (fromDate, toDate) => async dispatch => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const userId = localStorage.getItem('userId');
+
+    const reqConfig = { headers: { authorization: token } };
+
+    const history = await axios.get(`/api/user/${userId}/history?from=${fromDate}&to=${toDate}`, reqConfig);
+
+    dispatch(fetchHistory(history.data));
 
     dispatch(loading(false));
   } catch (error) {
@@ -85,6 +103,7 @@ const complexEnterGoalWeight = newGoalWeight => async dispatch => {
 
 export default {
   complexFetchGoals,
+  complexFetchHistory,
   complexEditMacros,
   complexEnterCurrentWeight,
   complexEnterGoalWeight,

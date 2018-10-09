@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 class HomeInfo {
   static macrosPerProduct(product) {
@@ -178,6 +179,25 @@ class HomeInfo {
 
     return macrosPerRecipe;
   }
+
+  static history(meals) {
+    let calArr = [];
+
+    meals.forEach((meal) => {
+      calArr[moment(meal.date).format('YYYY-MM-DD')] = 0;
+    });
+
+    meals.forEach((meal) => {
+      calArr[moment(meal.date).format('YYYY-MM-DD')] += this.macrosPerMeal(meal).calories;
+    });
+
+    return calArr;
+  }
 }
 
+
+
 export default HomeInfo;
+// let index = moment(prueba['5bbcb092a6d30a103c42a282'].date).format('YYYY-MM-DD')
+// arr[index] = 14;
+// console.log(_.map(prueba))

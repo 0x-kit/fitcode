@@ -12,7 +12,6 @@ router
 
   .delete('/:userId', UsersController.deleteUser)
 
-  .get('/:userId/prueba', UsersController.getPrueba)
 
 
   /** Basic crud */
@@ -24,6 +23,8 @@ router
   .get('/:userId/exercise', UsersController.getExercises)
 
   .get('/:userId/recipe', UsersController.getRecipes)
+
+  .get('/:userId/history', UsersController.getHistory)
 
   .put('/:userId/macros', UsersController.setMacros)
 

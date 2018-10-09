@@ -11,6 +11,8 @@ const fetchError = error => ({ type: types.FETCH_GOALS_ERROR, payload: error });
 
 const fetchGoals = data => ({ type: types.FETCH_GOALS, payload: data });
 
+const fetchHistory = data => ({ type: types.FETCH_HISTORY, payload: data });
+
 const editMacros = (macros, message) => ({
   type: types.EDIT_MACROS,
   payload: { macros, message }
@@ -27,6 +29,7 @@ const setGoalWeight = (goalWeight, message) => ({
 
 export default {
   fetchGoals,
+  fetchHistory,
   fetchError,
   editMacros,
   setCurrentWeight,
