@@ -29,9 +29,10 @@ const complexFetchHistory = (fromDate, toDate) => async dispatch => {
 
     const reqConfig = { headers: { authorization: token } };
 
-    const history = await axios.get(`/api/user/${userId}/history?from=${fromDate}&to=${toDate}`, reqConfig);
+    const response = await axios.get(`/api/user/${userId}/history?from=${fromDate}&to=${toDate}`, reqConfig);
 
-    dispatch(fetchHistory(history.data));
+    const { diaries, weights } = response.data;
+    dispatch(fetchHistory(diaries, weights));
 
     dispatch(loading(false));
   } catch (error) {

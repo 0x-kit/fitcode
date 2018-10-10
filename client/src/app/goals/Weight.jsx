@@ -83,15 +83,6 @@ class Weight extends Component {
             openModal={this.state.modalOpen}
             handleModal={this.handleModal}
           />
-
-          {/* {weightHistory.length !== 0 && (
-              <Card fluid raised>
-                <Card.Content>
-                  <Card.Header>Weight History</Card.Header>
-                </Card.Content>
-                <Card.Content>{this.renderWeightList(weightHistory)}</Card.Content>
-              </Card>
-            )} */}
         </Segment>
 
       </Container>

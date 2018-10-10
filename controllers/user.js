@@ -373,27 +373,23 @@ exports.getHistory = async (req, res) => {
         }
       });
 
-    const result = _.filter(docs, function (diary) {
+    const diaries = _.filter(docs, function (diary) {
       if ((diary.products.length > 0) || (diary.recipes.length > 0)) {
         return diary;
       }
     })
 
 
-    const fromDate2 = moment("2018-08-25T00:00:00.000Z").format('YYYY-MM-DDTHH:mm:ss.SSSZ');
-    const toDate2 = moment("2018-08-28T00:00:00.000Z").format('YYYY-MM-DDTHH:mm:ss.SSSZ');
-
     const goals = await User.findById(userId).select("goals");
     const unfilteredWeights = goals.goals.currentWeight;
-    
-    const filteredWeights = _.filter(goals.goals.currentWeight, function (weight) {
-      if (moment(weight.date).isBetween(fromDate2, toDate2, null, '[]')) {
-        console.log("is in between")
+
+    const weights = _.filter(unfilteredWeights, function (weight) {
+      if (moment(weight.date).isBetween(fromDate, toDate, null, '[]')) {
         return weight;
       }
     })
 
-    if (docs.length !== 0) return res.status(200).json(filteredWeights);
+    if (docs.length !== 0) return res.status(200).json({ diaries, weights });
 
   } catch (err) {
     console.log(err);

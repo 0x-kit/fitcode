@@ -180,8 +180,10 @@ class HomeInfo {
     return macrosPerRecipe;
   }
 
-  static history(meals) {
+  static history(meals, weights) {
     let calArr = [];
+    let weightsArr = [];
+
 
     meals.forEach((meal) => {
       calArr[moment(meal.date).format('YYYY-MM-DD')] = 0;
@@ -191,7 +193,15 @@ class HomeInfo {
       calArr[moment(meal.date).format('YYYY-MM-DD')] += this.macrosPerMeal(meal).calories;
     });
 
-    return calArr;
+    weights.forEach((weight) => {
+      weightsArr[moment(weight.date).format('YYYY-MM-DD')] = 0;
+    });
+
+    weights.forEach((weight) => {
+      weightsArr[moment(weight.date).format('YYYY-MM-DD')] = weight.weight;
+    });
+
+    return { calArr, weightsArr };
   }
 }
 

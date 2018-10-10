@@ -4,8 +4,8 @@ import moment from 'moment';
 
 const INITIAL_STATE = {
   macros: {},
-  history: {},
-  weightHistory: [],
+  diariesHistory: [],
+  weightsHistory: [],
 
   goalWeight: {},
   currentWeight: {},
@@ -43,13 +43,13 @@ const goalsReducer = (state = INITIAL_STATE, action) => {
         macros: macros,
         goalWeight: goalWeight,
         currentWeight: !_.isEmpty(currentWeight) ? currentWeight.slice(-1)[0] : emptyWeight,
-        weightHistory: currentWeight.reverse()
       };
 
     case types.FETCH_HISTORY:
       return {
         ...state,
-        history: _.mapKeys(action.payload, '_id'),
+        diariesHistory: action.payload.diaries,
+        weightsHistory: action.payload.weights,
         errorMessage: action.payload
       };
 
@@ -70,7 +70,6 @@ const goalsReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentWeight: action.payload.currentWeight.currentWeight.slice(-1)[0],
-        weightHistory: action.payload.currentWeight.currentWeight.reverse(),
         message: action.payload.message
       };
 

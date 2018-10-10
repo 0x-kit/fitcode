@@ -32,10 +32,10 @@ class AddFood extends Component {
 
 
     if (!_.isEmpty(selectedMeal)) {
-      console.log(selectedMeal)
+
       this.props.complexAddDiaryProduct(selectedMeal.mealId, newProduct);
     } else if (!_.isEmpty(selectedRecipe)) {
-      console.log(selectedRecipe)
+
       this.props.complexAddRecipeProduct(selectedRecipe, newProduct);
     }
 
