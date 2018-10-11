@@ -31,6 +31,7 @@ const complexFetchHistory = (fromDate, toDate) => async dispatch => {
 
     const response = await axios.get(`/api/user/${userId}/history?from=${fromDate}&to=${toDate}`, reqConfig);
 
+    
     const { diaries, weights } = response.data;
     dispatch(fetchHistory(diaries, weights));
 

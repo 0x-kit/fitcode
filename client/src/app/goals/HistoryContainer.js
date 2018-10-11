@@ -11,8 +11,8 @@ const mapStateToProps = state => {
         macros: state.goals.macros,
         loading: state.goals.loading,
         date: state.food.date,
-        diariesHistory: state.goals.diariesHistory,
-        weightsHistory: state.goals.weightsHistory,
+        diaries: state.goals.diaries,
+        weights: state.goals.weights,
         errorMessage: state.goals.errorMessage
     };
 };

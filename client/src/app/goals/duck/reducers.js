@@ -4,8 +4,8 @@ import moment from 'moment';
 
 const INITIAL_STATE = {
   macros: {},
-  diariesHistory: [],
-  weightsHistory: [],
+  diaries: [],
+  weights: [],
 
   goalWeight: {},
   currentWeight: {},
@@ -48,8 +48,8 @@ const goalsReducer = (state = INITIAL_STATE, action) => {
     case types.FETCH_HISTORY:
       return {
         ...state,
-        diariesHistory: action.payload.diaries,
-        weightsHistory: action.payload.weights,
+        diaries: action.payload.diaries,
+        weights: action.payload.weights,
         errorMessage: action.payload
       };
 

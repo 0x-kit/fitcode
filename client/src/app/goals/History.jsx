@@ -19,8 +19,7 @@ class History extends Component {
             dateFromOpen: false,
             dateToOpen: false,
             from: {},
-            to: {},
-            now: moment().format('YYYY-MM-DD')
+            to: {}
 
         };
     }
@@ -34,42 +33,29 @@ class History extends Component {
             <DatetimePicker
                 color="black"
                 onChange={(value) => { this.setState({ from: value }); this.hadleDateFromOpen() }}
-                value={moment(this.state.now)}
+                moment={this.props.date}
                 time={false}
             />
         )
     }
 
     renderToDate = () => {
-        return (
+        return (    
             <DatetimePicker
                 color="black"
                 onChange={(value) => { this.setState({ to: value }); this.hadleDateToOpen() }}
-                value={moment(this.state.now)}
+                moment={this.props.date}
                 time={false}
             />
         )
     }
 
-
     fetchHistory = () => {
-
-
         this.props.complexFetchHistory(this.state.from.format('YYYY-MM-DD'), this.state.to.format('YYYY-MM-DD'));
-        this.renderHistory()
-
     }
-    enumerateDaysBetweenDates = (startDate, endDate) => {
-        let now = startDate, datesLabels = [];
 
-        while (now.isSameOrBefore(endDate)) {
-            datesLabels.push(now.format('YYYY-MM-DD'));
-            now.add(1, 'days');
-        }
-        return datesLabels;
-    };
+    renderHistory = (labels, calories, weights) => {
 
-    renderHistory = (dateLabels, caloriesArr, weightsArr) => {
         return (
 
             <Card raised fluid>
@@ -82,7 +68,7 @@ class History extends Component {
 
                     <Legend layout='horizontal' align='left' />
 
-                    <XAxis categories={dateLabels} />
+                    <XAxis categories={labels} />
 
 
                     <YAxis min={0} labels={{
@@ -90,14 +76,14 @@ class History extends Component {
                     }}
                     >
                         <YAxis.Title style={{ color: "#fb8c00" }}>Calories</YAxis.Title>
-                        <ColumnSeries name="Calories" data={[1000, 1100, 1050, 1222, 1560]} color="#fb8c00" />
+                        <ColumnSeries name="Calories" data={calories} color="#fb8c00" />
                     </YAxis>
 
                     <YAxis opposite={true} labels={{
                         format: '{value} kg',
                     }}>
                         <YAxis.Title style={{ color: "#434348" }}>Weight</YAxis.Title>
-                        <SplineSeries name="Weight" data={[60, 61, 61.2, 63, 64]} color="#434348" />
+                        <SplineSeries name="Weight" data={weights} color="#434348" />
                     </YAxis>
 
                 </HighchartsChart>
@@ -107,11 +93,19 @@ class History extends Component {
 
     render() {
         const { dateFromOpen, dateToOpen, from, to } = this.state;
-        const { weightsHistory, diariesHistory } = this.props;
-        // //this.props.complexFetchHistory(from.format('YYYY-MM-DD'), to.format('YYYY-MM-DD'))
-        // if (!_.isEmpty(weightsHistory) && !_.isEmpty(diariesHistory)) {
-        //     console.log(utils.history(diariesHistory, weightsHistory))
-        // }
+        const { diaries, weights } = this.props;
+        let caloriesHistory, weightsHistory, dateLabels;
+
+        if (!_.isEmpty(diaries) && !_.isEmpty(weights)) {
+            const datesObj = utils.enumerateDaysBetweenDates(this.state.from.clone(), this.state.to.clone());
+            caloriesHistory = utils.caloriesHistory(datesObj, diaries);
+            weightsHistory = utils.weightsHistory(datesObj, weights)
+            dateLabels = utils.datesArr(datesObj);
+            console.log("dates",dateLabels)
+            console.log("calories",caloriesHistory)
+            console.log("weights",weightsHistory)
+        }
+
         return (
             <Container>
                 <Segment padded>
@@ -135,7 +129,8 @@ class History extends Component {
 
                     {dateFromOpen && this.renderFromDate()}
                     {dateToOpen && this.renderToDate()}
-                    {this.renderHistory()}
+                    {caloriesHistory && weightsHistory && dateLabels && this.renderHistory(dateLabels, caloriesHistory, weightsHistory)}
+
 
                 </Segment>
             </Container >
@@ -168,3 +163,4 @@ export default withHighcharts(History, Highcharts);
 
 //const result = utils.historyForWeights(_.mapKeys(prueba, "_id"))
 //onsole.log(_.mapKeys(prueba, "_id"))
+

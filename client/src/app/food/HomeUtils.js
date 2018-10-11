@@ -180,28 +180,58 @@ class HomeInfo {
     return macrosPerRecipe;
   }
 
-  static history(meals, weights) {
-    let calArr = [];
-    let weightsArr = [];
 
+  static enumerateDaysBetweenDates = (startDate, endDate) => {
+    let now = startDate, datesLabels = {};
+
+    while (now.isSameOrBefore(endDate)) {
+      datesLabels[now.format('YYYY-MM-DD')] = 0;
+      now.add(1, 'days');
+    }
+    return datesLabels;
+  };
+
+  static datesArr = (datesObj) => {
+    let dates = Object.assign({}, datesObj);
+    let datesArr = [];
+
+    for (var key in dates) {
+      datesArr.push(key);
+    }
+    return datesArr;
+  }
+
+  static caloriesHistory(dateObj, meals) {
+
+    let dates = Object.assign({}, dateObj);
+
+    let caloriesHistory = [];
 
     meals.forEach((meal) => {
-      calArr[moment(meal.date).format('YYYY-MM-DD')] = 0;
+      dates[moment(meal.date).format('YYYY-MM-DD')] += this.macrosPerMeal(meal).calories;
     });
 
-    meals.forEach((meal) => {
-      calArr[moment(meal.date).format('YYYY-MM-DD')] += this.macrosPerMeal(meal).calories;
-    });
+    for (var key in dates) {
+      caloriesHistory.push(dates[key]);
+    }
+    return caloriesHistory;
+  }
+
+  static weightsHistory(dateObj, weights) {
+    let dates = Object.assign({}, dateObj);
+
+    let weightHistory = [];
 
     weights.forEach((weight) => {
-      weightsArr[moment(weight.date).format('YYYY-MM-DD')] = 0;
+      if (dates.hasOwnProperty(moment(weight.date).format('YYYY-MM-DD')))
+        dates[moment(weight.date).format('YYYY-MM-DD')] = weight.weight;
     });
 
-    weights.forEach((weight) => {
-      weightsArr[moment(weight.date).format('YYYY-MM-DD')] = weight.weight;
-    });
+    for (var key in dates) {
+      weightHistory.push(dates[key]);
+    }
 
-    return { calArr, weightsArr };
+    return weightHistory;
   }
 }
 
