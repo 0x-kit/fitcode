@@ -27,6 +27,16 @@ const setGoalWeight = (goalWeight, message) => ({
   payload: { goalWeight, message }
 });
 
+const setFromDate = date => ({
+  type: types.SET_FROMDATE,
+  payload: date
+});
+
+const setToDate = date => ({
+  type: types.SET_TODATE,
+  payload: date
+});
+
 export default {
   fetchGoals,
   fetchHistory,
@@ -34,6 +44,8 @@ export default {
   editMacros,
   setCurrentWeight,
   setGoalWeight,
+  setFromDate,
+  setToDate,
   loading,
   resetMessage
 };

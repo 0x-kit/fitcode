@@ -3,6 +3,8 @@ import _ from 'lodash';
 import moment from 'moment';
 
 const INITIAL_STATE = {
+  fromDate: moment().subtract(5, 'days'),
+  toDate: moment(),
   macros: {},
   diaries: [],
   weights: [],
@@ -42,7 +44,7 @@ const goalsReducer = (state = INITIAL_STATE, action) => {
         ...state,
         macros: macros,
         goalWeight: goalWeight,
-        currentWeight: !_.isEmpty(currentWeight) ? currentWeight.slice(-1)[0] : emptyWeight,
+        currentWeight: !_.isEmpty(currentWeight) ? currentWeight.slice(-1)[0] : emptyWeight
       };
 
     case types.FETCH_HISTORY:
@@ -81,6 +83,18 @@ const goalsReducer = (state = INITIAL_STATE, action) => {
         ...state,
         goalWeight: newGoalWeight,
         message: action.payload.message
+      };
+
+    case types.SET_FROMDATE:
+      return {
+        ...state,
+        fromDate: action.payload
+      };
+
+    case types.SET_TODATE:
+      return {
+        ...state,
+        toDate: action.payload
       };
 
     default:
