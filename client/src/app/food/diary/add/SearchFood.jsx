@@ -68,10 +68,10 @@ class SearchFood extends Component {
 
           return (
             <List.Item onClick={() => this.selectProduct(product)} key={_id}>
-              <List.Content floated="right" content={constantDescription} />
-              <List.Content floated="right" verticalAlign="middle" description={header} />
-              <List.Icon name="food" size="large" verticalAlign="middle" />
-              <List.Content header={{ content: name, as: 'a' }} description={brand} verticalAlign="middle" />
+              <List.Icon name="food" style={{ float: 'left' }} size="large" verticalAlign="top" />
+              <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
+              {/* <List.Content floated="right" content={constantDescription} /> */}
+              <List.Content floated="right" className="afk" description={header} />
             </List.Item>
           );
         })}
@@ -90,9 +90,9 @@ class SearchFood extends Component {
 
           return (
             <List.Item key={_id} onClick={() => this.selectRecipe(recipe)}>
-              <List.Content floated="right" verticalAlign="middle" description={header} />
-              <List.Icon name="book" size="large" verticalAlign="middle" />
-              <List.Content header={{ content: name, as: 'a' }} verticalAlign="middle" />
+              <List.Icon name="book" style={{ float: 'left' }} size="large" verticalAlign="middle" />
+              <List.Content header={{ content: name, as: 'a' }} floated="left" />
+              <List.Content  floated="right" verticalAlign="middle" description={header} />
             </List.Item>
           );
         })}

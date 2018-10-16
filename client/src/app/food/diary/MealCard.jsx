@@ -76,8 +76,9 @@ class MealCards extends Component {
           >
             <List.Icon name="book" style={{ float: 'left' }} size="large" verticalAlign="top" />
 
-            <List.Content floated="left" header={{ content: name, as: 'a' }} />
-            <List.Content content={`(x${serving})`} floated="right" />
+            <List.Content floated="left" header={{ content: name, as: 'a' }} description={'Recipe'} />
+
+            <List.Content content={`(x${serving})`} style={{ float: 'right', marginLeft: '5px' }} />
             <List.Content floated="right" description={header} />
           </List.Item>
         );
@@ -95,7 +96,7 @@ class MealCards extends Component {
         } = product;
 
         const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
-        const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+        const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F `;
 
         return (
           <List.Item
@@ -108,7 +109,7 @@ class MealCards extends Component {
 
             <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
 
-            <List.Content content={`(${grams}g)`} floated="right" />
+            <List.Content content={`(${grams}g)`} style={{ float: 'right', marginLeft: '5px' }} />
             <List.Content floated="right" description={header} />
           </List.Item>
         );
@@ -127,9 +128,9 @@ class MealCards extends Component {
         header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
       }
 
-      const style = { paddingRight: '0.5em' };
+      const style = { paddingTop: '0.5em', float: "right" };
 
-      return <List.Content floated="right" description={header} style={style} />;
+      return <List.Content description={header} style={style} verticalAlign="middle" />;
     };
 
     const renderAddButton = (mealLabel, mealId) => {

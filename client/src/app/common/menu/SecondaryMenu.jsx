@@ -96,7 +96,7 @@ class MenuSecondary extends Component {
     const menuStyle = { pointing: true, size: 'huge', borderless: true, widths: 3 };
     const { authenticated, activeIndex, date } = this.props;
     return (
-      <div style={{ marginTop: 75 }}>
+      <div className="SecMenu" style={{ marginTop: 5 }}>
         {authenticated && (
           <Responsive as={Container}>
             <Tab activeIndex={activeIndex} menu={menuStyle} panes={this.renderPanes(date)} />

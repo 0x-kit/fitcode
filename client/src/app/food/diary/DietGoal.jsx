@@ -21,8 +21,8 @@ class DietGoal extends Component {
               : renderMacros(macros, remainingMacros)}
           </div>
         ) : (
-          <div />
-        )}
+            <div />
+          )}
       </Card>
     );
   }
@@ -80,7 +80,7 @@ const renderMacros = (goalMacros, remainingMacros) => {
 
   return (
     <Segment basic padded>
-      <Grid textAlign="center">
+      <Grid textAlign="center" stackable>
         <Grid.Row>
           {renderColumn('Proteins', proteins, rProteins)}
           {renderColumn('Carbs', carbs, rCarbs)}
