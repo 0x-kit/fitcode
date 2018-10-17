@@ -1,11 +1,20 @@
-import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form';
-import AddFood from 'app/food/diary/add/AddFood.jsx';
-import AddRecipe from 'app/food/diary/add/AddRecipe.jsx';
-import utils from 'app/food/HomeUtils';
-import _ from 'lodash';
+import React, { Component } from "react";
+import { reduxForm, Field } from "redux-form";
+import AddFood from "app/food/diary/add/AddFood.jsx";
+import AddRecipe from "app/food/diary/add/AddRecipe.jsx";
+import utils from "app/food/HomeUtils";
+import _ from "lodash";
 
-import { Card, Input, List, Header, Responsive, Container, Segment, Form } from 'semantic-ui-react';
+import {
+  Card,
+  Input,
+  List,
+  Header,
+  Responsive,
+  Container,
+  Segment,
+  Form
+} from "semantic-ui-react";
 
 class SearchFood extends Component {
   state = { modalOpenProduct: false, modalOpenRecipe: false };
@@ -46,14 +55,21 @@ class SearchFood extends Component {
 
     return (
       <Form.Field>
-        <Input fluid size="medium" icon="search" type="text" placeholder="Search..." {...field.input} />
+        <Input
+          fluid
+          size="medium"
+          icon="search"
+          type="text"
+          placeholder="Search..."
+          {...field.input}
+        />
         {validateError ? (
           <Header as="label" color="red" size="tiny" textAlign="center">
             {error}
           </Header>
         ) : (
-            ''
-          )}
+          ""
+        )}
       </Form.Field>
     );
   };
@@ -67,8 +83,17 @@ class SearchFood extends Component {
 
           return (
             <List.Item onClick={() => this.selectProduct(product)} key={_id}>
-              <List.Icon name="food" style={{ float: 'left' }} size="large" verticalAlign="top" />
-              <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
+              <List.Icon
+                name="food"
+                style={{ float: "left ", marginTop: "5px" }}
+                size="large"
+                verticalAlign="top"
+              />
+              <List.Content
+                floated="left"
+                header={{ content: name, as: "a" }}
+                description={brand}
+              />
               <List.Content floated="right" description={header} />
             </List.Item>
           );
@@ -88,9 +113,21 @@ class SearchFood extends Component {
 
           return (
             <List.Item key={_id} onClick={() => this.selectRecipe(recipe)}>
-              <List.Icon name="book" style={{ float: 'left' }} size="large" verticalAlign="middle" />
-              <List.Content header={{ content: name, as: 'a' }} floated="left" />
-              <List.Content floated="right" verticalAlign="middle" description={header} />
+              <List.Icon
+                name="book"
+                style={{ float: "left" }}
+                size="large"
+                verticalAlign="middle"
+              />
+              <List.Content
+                header={{ content: name, as: "a" }}
+                floated="left"
+              />
+              <List.Content
+                floated="right"
+                verticalAlign="middle"
+                description={header}
+              />
             </List.Item>
           );
         })}
@@ -112,21 +149,22 @@ class SearchFood extends Component {
     } = this.props;
     const { modalOpenProduct, modalOpenRecipe } = this.state;
     const searchStyle = {
-      fontSize: '.82857143em',
+      fontSize: ".82857143em",
       fontWeight: 700,
-      color: '#db2828'
+      color: "#db2828"
     };
     const recipeArr = _.map(userRecipes).reverse();
     return (
       <Responsive as={Container}>
         <Segment padded>
-
           <Card raised fluid>
             <Card.Content textAlign="center">
               <Header size="medium">
                 Search our food database by name or brand
                 <Header.Subheader>{selectedMeal.part}</Header.Subheader>
-                <Header.Subheader style={searchStyle}>{searchMessage}</Header.Subheader>
+                <Header.Subheader style={searchStyle}>
+                  {searchMessage}
+                </Header.Subheader>
               </Header>
             </Card.Content>
 
@@ -142,26 +180,26 @@ class SearchFood extends Component {
               <Card raised fluid>
                 <Card.Content extra textAlign="center">
                   Food
-                      </Card.Content>
+                </Card.Content>
                 <Card.Content>{this.renderProductList(products)}</Card.Content>
               </Card>
             )
           ) : (
-              <div />
-            )}
+            <div />
+          )}
 
           {!loading ? (
             recipeArr.length !== 0 && (
               <Card raised fluid>
                 <Card.Content extra textAlign="center">
                   Recipes
-                    </Card.Content>
+                </Card.Content>
                 <Card.Content>{this.renderRecipeList(recipeArr)}</Card.Content>
               </Card>
             )
           ) : (
-              <div />
-            )}
+            <div />
+          )}
 
           <AddFood
             complexAddDiaryProduct={this.props.complexAddDiaryProduct}
@@ -188,7 +226,7 @@ class SearchFood extends Component {
 
 const validate = values => {
   const errors = {};
-  const required = 'Required field';
+  const required = "Required field";
 
   if (!values.term) {
     errors.term = required;
@@ -197,4 +235,4 @@ const validate = values => {
   return errors;
 };
 
-export default reduxForm({ validate, form: 'search' })(SearchFood);
+export default reduxForm({ validate, form: "search" })(SearchFood);

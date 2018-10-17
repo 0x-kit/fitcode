@@ -57,7 +57,7 @@ body {
 }
 
 .label.weightLabel {
-  width: 11.0em;
+  width: 11em;
   text-align: center;
 }
 
@@ -82,13 +82,17 @@ div.ui.info.message {
   padding: 1em 1.5em;
   line-height: 1.4285em;
   color: rgba(0, 0, 0, 0.87);
-  -webkit-transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease, -webkit-box-shadow 0.1s ease;
-  transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease, -webkit-box-shadow 0.1s ease;
-  transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease, box-shadow 0.1s ease;
-  transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease, box-shadow 0.1s ease,
+  -webkit-transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease,
     -webkit-box-shadow 0.1s ease;
+  transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease,
+    -webkit-box-shadow 0.1s ease;
+  transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease,
+    box-shadow 0.1s ease;
+  transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease,
+    box-shadow 0.1s ease, -webkit-box-shadow 0.1s ease;
   border-radius: 0.28571429rem;
-  -webkit-box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.22) inset, 0 0 0 0 transparent;
+  -webkit-box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.22) inset,
+    0 0 0 0 transparent;
   box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.22) inset, 0 0 0 0 transparent;
 }
 
@@ -97,38 +101,27 @@ div.ui.info.message {
   margin-top: 0.5em;
 }
 
-a.item.backwardRoute {
+/* a.item.backwardRoute {
   justify-content: left !important;
-}
-
+} */
+/* 
 a.item.forwardRoute {
-  justify-content: right !important;
-}
+  justify-content: center !important;
+} */
 
-i.chevron.circle.left.big.link.icon {
+/* i.chevron.circle.left.big.link.icon {
  margin: 0 0 0 0.67em
-}
+} */
 
-i.chevron.circle.right.big.link.icon {
+/* i.chevron.circle.right.big.link.icon {
   margin: 0 0.67em 0 0
-}
-
-
+} */
 
 @media only screen and (max-width: 500px) {
-  .ui.list .list > .item [class*="right floated"], .ui.list > .item [class*="right floated"]{
+  .ui.list .list > .item [class*="right floated"],
+  .ui.list > .item [class*="right floated"] {
     float: left !important;
     margin: 0 0 0 2.35em !important;
-    margin-left:25px
+    margin-left: 25px;
   }
 }
-
-
-
-
-
-
-
-
-
-
