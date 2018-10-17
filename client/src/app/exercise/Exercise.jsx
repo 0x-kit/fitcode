@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ManageExercise from 'app/exercise/ManageExercise.jsx';
 import CreateExercise from 'app/exercise/CreateExercise.jsx';
 import _ from 'lodash';
-import { Card, List, Header, Responsive, Container, Segment, Button, Transition } from 'semantic-ui-react';
+import { Card, List, Header, Responsive, Container, Segment, Button } from 'semantic-ui-react';
 
 class Exercise extends Component {
   state = { manageModal: false, createModal: false };
@@ -20,29 +20,26 @@ class Exercise extends Component {
     const exerciseArr = _.map(exercises);
 
     return (
-      <Transition.Group as={List} duration={700} animation="fade" divided relaxed selection>
+      <List divided relaxed selection>
         {exerciseArr.map(exercise => {
           const { _id, name, calories } = exercise;
           return (
             <List.Item onClick={() => this.selectExercise(exercise)} key={_id}>
-              <List.Content floated="right" verticalAlign="middle" description={`${calories} KCAL`} />
+              <List.Icon name="heartbeat" style={{ float: 'left' }} size="large" verticalAlign="top" />
 
-              <List.Icon name="heartbeat" size="large" verticalAlign="middle" />
-
-              <List.Content verticalAlign="middle">
-                <List.Header as="a">{name}</List.Header>
-              </List.Content>
+              <List.Content floated="left" header={{ content: name, as: 'a' }} />
+              <List.Content content={`${calories} KCAL`} style={{ float: 'right', marginLeft: '5px' }} />
             </List.Item>
           );
         })}
-      </Transition.Group>
+      </List>
     );
   }
 
   renderMainCard = () => {
     return (
       <Segment basic style={{ marginBottom: '0px' }}>
-      <Card.Content style={{ textAlign: 'center' }}>
+        <Card.Content style={{ textAlign: 'center' }}>
           <Header size="medium">Today's Exercises</Header>
           <Button
             content="Create Exercise"

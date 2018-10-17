@@ -8,10 +8,12 @@ import 'semantic-ui-css/semantic.min.css';
 
 export default ({ children }) => {
   return (
-    <Container>
+    <div>
       <MainMenuContainer />
-      <SecondaryMenuContainer />
-      {children}
-    </Container>
+      <Container>
+        <SecondaryMenuContainer />
+        {children}
+      </Container>
+    </div>
   );
 };

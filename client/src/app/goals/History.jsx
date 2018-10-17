@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Container, Menu, Card, Button, Dimmer, Loader } from 'semantic-ui-react';
+import { Segment, Container, Menu, Card, Dimmer, Loader } from 'semantic-ui-react';
 import Highcharts from 'highcharts';
 import moment from 'moment';
 import DatetimePicker from 'react-semantic-datetime';
@@ -15,7 +15,6 @@ import {
   SplineSeries,
   Tooltip
 } from 'react-jsx-highcharts';
-import _ from 'lodash';
 import utils from 'app/food/HomeUtils';
 
 class History extends Component {
@@ -132,8 +131,8 @@ class History extends Component {
               <Loader>Loading</Loader>
             </Dimmer>
           ) : (
-            this.renderHistory(diaries, weights)
-          )}
+              this.renderHistory(diaries, weights)
+            )}
         </Segment>
       </Container>
     );

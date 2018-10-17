@@ -63,15 +63,13 @@ class SearchFood extends Component {
       <List divided relaxed selection>
         {products.map(product => {
           const { _id, name, brand, calories, proteins, carbs, fats } = product;
-          const constantDescription = '100g';
           const header = `${calories} KCAL | ${proteins} P | ${carbs} C | ${fats} F`;
 
           return (
             <List.Item onClick={() => this.selectProduct(product)} key={_id}>
               <List.Icon name="food" style={{ float: 'left' }} size="large" verticalAlign="top" />
               <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
-              {/* <List.Content floated="right" content={constantDescription} /> */}
-              <List.Content floated="right" className="afk" description={header} />
+              <List.Content floated="right" description={header} />
             </List.Item>
           );
         })}
@@ -92,7 +90,7 @@ class SearchFood extends Component {
             <List.Item key={_id} onClick={() => this.selectRecipe(recipe)}>
               <List.Icon name="book" style={{ float: 'left' }} size="large" verticalAlign="middle" />
               <List.Content header={{ content: name, as: 'a' }} floated="left" />
-              <List.Content  floated="right" verticalAlign="middle" description={header} />
+              <List.Content floated="right" verticalAlign="middle" description={header} />
             </List.Item>
           );
         })}

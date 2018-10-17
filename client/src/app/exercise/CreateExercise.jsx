@@ -5,7 +5,7 @@ import moment from 'moment';
 class CreateExercise extends Component {
   handleClose = () => {
     this.props.handleModal(false);
-    this.props.dispatch(reset('createFood'));
+    this.props.dispatch(reset('createExercise'));
   };
 
   onSubmit = values => {
@@ -54,15 +54,15 @@ class CreateExercise extends Component {
             {error}
           </Header>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </Form.Field>
     );
   };
 
   render() {
     const { handleSubmit, openModal } = this.props;
-    const buttonStyle = { marginBottom: 10, width: 270};
+    const buttonStyle = { marginBottom: 10, width: 270 };
     return (
       <Modal style={{ width: 300, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
         <Header subheader="Enter name and calories" content="Add Your Exercise" />

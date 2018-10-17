@@ -35,14 +35,26 @@ class MealCards extends Component {
   };
 
   renderMeal = (mealsArr, part) => {
+    let macros;
     const meal = this.findMeal(mealsArr, part);
     const { _id, products, recipes } = meal;
     const macrosPerMeal = utils.macrosPerMeal(meal);
 
+    const { calories, proteins, carbs, fats } = macrosPerMeal;
+
+    if ((calories && proteins && carbs && fats) === 0) {
+      macros = ""
+    } else {
+      macros = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+    }
+
     return (
       <Card key={_id} fluid raised>
 
-        <Card.Content header={part} />
+        <Card.Content>
+          <Card.Header style={{ display: 'inline' }}>{part}</Card.Header>
+          <Card.Meta style={{ float: 'right', lineHeight: '1.8585em' }}>{macros}</Card.Meta>
+        </Card.Content>
 
         <Card.Content>
           {this.renderList(products, recipes, _id)}
@@ -51,7 +63,7 @@ class MealCards extends Component {
         <Card.Content extra>
           {this.renderSummary(macrosPerMeal, part, _id, this.props.match)}
         </Card.Content>
-      </Card>
+      </Card >
     );
   };
 
@@ -105,7 +117,7 @@ class MealCards extends Component {
               this.selectProduct(product, mealId);
             }}
           >
-            <List.Icon name="food" style={{ float: 'left' }} size="large" verticalAlign="top" />
+            <List.Icon name="food" style={{ float: 'left', marginTop: '5px' }} size="large" verticalAlign="top" />
 
             <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
 
@@ -156,7 +168,7 @@ class MealCards extends Component {
       <List>
         <List.Item>
           {renderAddButton(mealLabel, mealId)}
-          {!_.isEmpty(macrosPerMeal) ? renderMacrosPerMeal(macrosPerMeal) : ''}
+          {/* {!_.isEmpty(macrosPerMeal) ? renderMacrosPerMeal(macrosPerMeal) : ''} */}
         </List.Item>
       </List>
     );

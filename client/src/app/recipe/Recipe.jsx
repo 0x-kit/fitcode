@@ -8,7 +8,8 @@ import {
   Responsive,
   Container,
   Segment,
-  Button
+  Button,
+  CardContent
 } from "semantic-ui-react";
 
 import ManageRecipeFood from "app/recipe/ManageRecipe.jsx";
@@ -30,12 +31,25 @@ class Recipe extends Component {
   handleCreateModal = flag => this.setState({ createModal: flag });
 
   renderRecipe = recipe => {
+    let macros;
     const { _id, name, products } = recipe;
     const macrosPerRecipe = utils.macrosPerMeal(recipe);
 
+    const { calories, proteins, carbs, fats } = macrosPerRecipe;
+
+    if ((calories && proteins && carbs && fats) === 0) {
+      macros = ""
+    } else {
+      macros = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+    }
+
     return (
       <Card key={_id} fluid raised>
-        <Card.Content header={name} />
+        <Card.Content>
+          <Card.Header style={{ display: 'inline' }}>{name}</Card.Header>
+          <Card.Meta style={{ marginTop: '5px' }}>{macros}</Card.Meta>
+        </Card.Content>
+
         {!_.isEmpty(products) && (
           <Card.Content>
             {this.renderProductList(products, this.selectProduct, _id)}
@@ -77,18 +91,14 @@ class Recipe extends Component {
               >
                 <List.Icon
                   name="food"
-                  style={{ float: "left" }}
+                  style={{ float: 'left', marginTop: '5px' }}
                   size="large"
                   verticalAlign="top"
                 />
 
-                <List.Content
-                  floated="left"
-                  header={{ content: name, as: "a" }}
-                  description={brand}
-                />
+                <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
 
-                <List.Content content={`(${grams}g)`} floated="right" />
+                <List.Content content={`(${grams}g)`} style={{ float: 'right', marginLeft: '5px' }} />
                 <List.Content floated="right" description={header} />
               </List.Item>
             );
@@ -97,13 +107,13 @@ class Recipe extends Component {
     );
   };
 
-  renderMacrosPerMeal = macrosPerMeal => {
-    const { calories, proteins, carbs, fats } = macrosPerMeal;
-    const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
-    const style = { paddingRight: "0.5em" };
+  // renderMacrosPerMeal = macrosPerMeal => {
+  //   const { calories, proteins, carbs, fats } = macrosPerMeal;
+  //   const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+  //   const style = { paddingRight: "0.5em", float: "right", marginTop: '5px' };
 
-    return <List.Content floated="right" description={header} style={style} />;
-  };
+  //   return <List.Content description={header} style={style} />;
+  // };
   renderSummary = (macrosPerMeal, recipeId, match) => {
     const renderAddButton = recipeId => {
       const path = {
@@ -134,9 +144,9 @@ class Recipe extends Component {
       <List>
         <List.Item>
           {renderAddButton(recipeId)}
-          {!_.isEmpty(macrosPerMeal)
+          {/* {!_.isEmpty(macrosPerMeal)
             ? this.renderMacrosPerMeal(macrosPerMeal)
-            : ""}
+            : ""} */}
         </List.Item>
       </List>
     );

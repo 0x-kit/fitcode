@@ -41,20 +41,11 @@ class MineFood extends Component {
           const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
           return (
             <List.Item onClick={() => this.selectProduct(product)} key={_id}>
-              <List.Content content={"100g"} floated="right" />
-              <List.Content
-                floated="right"
-                verticalAlign="middle"
-                description={header}
-              />
+              <List.Icon name="food" style={{ float: 'left', marginTop: '5px' }} size="large" verticalAlign="middle" />
 
-              <List.Icon name="food" size="large" verticalAlign="middle" />
-
-              <List.Content
-                header={{ content: name, as: "a" }}
-                description={brand}
-                verticalAlign="middle"
-              />
+              <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
+              <List.Content content={'(100g)'} style={{ float: 'right', marginLeft: '5px' }} />
+              <List.Content floated="right" description={header} />
             </List.Item>
           );
         })}

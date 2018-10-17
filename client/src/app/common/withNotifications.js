@@ -19,7 +19,7 @@ const withNotifications = WrappedComponent =>
       return (
         <div>
           <WrappedComponent dispatchNotification={this.dispatchNotification} {...this.props} />
-          <SemanticToastContainer animation="fade" position="top-right" />
+          <SemanticToastContainer animation="fade" position="top-center" />
         </div>
       );
     }
