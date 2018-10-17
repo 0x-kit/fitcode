@@ -1,5 +1,5 @@
 body {
-  min-width: 385px !important;
+  min-width: 370px !important;
 }
 
 .tabpanel {
@@ -82,17 +82,13 @@ div.ui.info.message {
   padding: 1em 1.5em;
   line-height: 1.4285em;
   color: rgba(0, 0, 0, 0.87);
-  -webkit-transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease,
+  -webkit-transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease, box-shadow 0.1s ease;
+  transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease, box-shadow 0.1s ease,
     -webkit-box-shadow 0.1s ease;
-  transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease,
-    -webkit-box-shadow 0.1s ease;
-  transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease,
-    box-shadow 0.1s ease;
-  transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease,
-    box-shadow 0.1s ease, -webkit-box-shadow 0.1s ease;
   border-radius: 0.28571429rem;
-  -webkit-box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.22) inset,
-    0 0 0 0 transparent;
+  -webkit-box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.22) inset, 0 0 0 0 transparent;
   box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.22) inset, 0 0 0 0 transparent;
 }
 
@@ -118,10 +114,25 @@ a.item.forwardRoute {
 } */
 
 @media only screen and (max-width: 500px) {
-  .ui.list .list > .item [class*="right floated"],
-  .ui.list > .item [class*="right floated"] {
+  .ui.list .list > .item [class*='right floated'],
+  .ui.list > .item [class*='right floated'] {
     float: left !important;
     margin: 0 0 0 2.35em !important;
     margin-left: 25px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .ui.grid > .stackable.stackable.row > .column,
+  .ui.stackable.grid > .column.grid > .column,
+  .ui.stackable.grid > .column.row > .column,
+  .ui.stackable.grid > .column:not(.row),
+  .ui.stackable.grid > .row > .column,
+  .ui.stackable.grid > .row > .wide.column,
+  .ui.stackable.grid > .wide.column {
+    margin: 0 0 !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    padding: 0.5rem 0.5rem !important;
   }
 }

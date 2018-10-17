@@ -35,101 +35,88 @@ class MealCards extends Component {
   };
 
   renderMeal = (mealsArr, part) => {
-    let macros;
     const meal = this.findMeal(mealsArr, part);
     const { _id, products, recipes } = meal;
     const macrosPerMeal = utils.macrosPerMeal(meal);
 
-    const { calories, proteins, carbs, fats } = macrosPerMeal;
-
-    if ((calories && proteins && carbs && fats) === 0) {
-      macros = ""
-    } else {
-      macros = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
-    }
-
     return (
       <Card key={_id} fluid raised>
-
+      
         <Card.Content>
           <Card.Header style={{ display: 'inline' }}>{part}</Card.Header>
-          <Card.Meta style={{ float: 'right', lineHeight: '1.8585em' }}>{macros}</Card.Meta>
+          <Card.Meta style={{ float: 'right', lineHeight: '1.8585em' }}>
+            {this.renderActions(part, _id, this.props.match)}
+          </Card.Meta>
         </Card.Content>
 
-        <Card.Content>
-          {this.renderList(products, recipes, _id)}
-        </Card.Content>
+        <Card.Content>{this.renderList(products, recipes, _id)}</Card.Content>
 
-        <Card.Content extra>
-          {this.renderSummary(macrosPerMeal, part, _id, this.props.match)}
-        </Card.Content>
-      </Card >
+        <Card.Content extra>{this.renderMacros(macrosPerMeal)}</Card.Content>
+      </Card>
     );
   };
 
   renderRecipeList = (recipesArr = [], mealId) => {
-    return (
-      recipesArr.filter(recipe => recipe.recipe !== null).map(recipe => {
-        const { serving } = recipe;
-        const { name } = recipe.recipe;
+    return recipesArr.filter(recipe => recipe.recipe !== null).map(recipe => {
+      const { serving } = recipe;
+      const { name } = recipe.recipe;
 
-        const macrosPerRecipe = utils.macrosPerRecipe(recipe.recipe, serving);
-        //console.log(macrosPerRecipe)
-        const { calories, proteins, carbs, fats } = macrosPerRecipe;
-        const header = `${calories * serving} CAL | ${proteins * serving} P | ${carbs * serving} C | ${fats *
-          serving} F`;
+      const macrosPerRecipe = utils.macrosPerRecipe(recipe.recipe, serving);
+      const { calories, proteins, carbs, fats } = macrosPerRecipe;
+      const header = `${calories * serving} CAL | ${proteins * serving} P | ${carbs * serving} C | ${fats * serving} F`;
 
-        return (
-          <List.Item
-            key={recipe._id}
-            onClick={() => {
-              this.selectRecipe(recipe, mealId);
-            }}
-          >
-            <List.Icon name="book" style={{ float: 'left' }} size="large" verticalAlign="top" />
+      return (
+        <List.Item
+          key={recipe._id}
+          onClick={() => {
+            this.selectRecipe(recipe, mealId);
+          }}
+        >
+          <List.Icon name="book" style={{ float: 'left' }} size="large" verticalAlign="top" />
 
-            <List.Content floated="left" header={{ content: name, as: 'a' }} description={'Recipe'} />
+          <List.Content floated="left" header={{ content: name, as: 'a' }} description={'Recipe'} />
 
-            <List.Content content={`(x${serving})`} style={{ float: 'right', marginLeft: '5px' }} />
-            <List.Content floated="right" description={header} />
-          </List.Item>
-        );
-      })
-    );
+          <List.Content content={`(x${serving})`} style={{ float: 'right', marginLeft: '5px' }} />
+          <List.Content floated="right" description={header} />
+        </List.Item>
+      );
+    });
   };
 
   renderProductList = (productsArr = [], mealId) => {
-    return (
+    return productsArr.filter(product => product.product !== null).map(product => {
+      const {
+        _id,
+        product: { name, brand }
+      } = product;
 
-      productsArr.filter(product => product.product !== null).map(product => {
-        const {
-          _id,
-          product: { name, brand }
-        } = product;
+      const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
+      const header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
 
-        const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
-        const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F `;
+      return (
+        <List.Item
+          key={_id}
+          onClick={() => {
+            this.selectProduct(product, mealId);
+          }}
+        >
+          <List.Icon name="food" style={{ float: 'left', marginTop: '5px' }} size="large" verticalAlign="top" />
 
-        return (
-          <List.Item
-            key={_id}
-            onClick={() => {
-              this.selectProduct(product, mealId);
-            }}
-          >
-            <List.Icon name="food" style={{ float: 'left', marginTop: '5px' }} size="large" verticalAlign="top" />
+          <List.Content
+            floated="left"
+            header={{ content: name, as: 'a' }}
+            description={brand}
+            style={{ marginBottom: '5px' }}
+          />
 
-            <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
-
-            <List.Content content={`(${grams}g)`} style={{ float: 'right', marginLeft: '5px' }} />
-            <List.Content floated="right" description={header} />
-          </List.Item>
-        );
-      })
-    );
+          <List.Content content={`(${grams}g)`} style={{ float: 'right', marginLeft: '5px' }} />
+          <List.Content floated="right" content={header} />
+        </List.Item>
+      );
+    });
   };
 
-  renderSummary = (macrosPerMeal, mealLabel, mealId, match) => {
+  renderMacros = macrosPerMeal => {
     const renderMacrosPerMeal = macrosPerMeal => {
       let header;
       const { calories, proteins, carbs, fats } = macrosPerMeal;
@@ -137,40 +124,37 @@ class MealCards extends Component {
       if ((calories && proteins && carbs && fats) === 0) {
         header = '';
       } else {
-        header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+        header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
       }
 
-      const style = { paddingTop: '0.5em', float: "right" };
+      const style = { paddingTop: '0.5em', float: 'right' };
 
       return <List.Content description={header} style={style} verticalAlign="middle" />;
     };
 
-    const renderAddButton = (mealLabel, mealId) => {
-      let path;
-      if (!_.isUndefined(match.params.date)) {
-        path = {
-          pathname: `${match.url}/add/${mealLabel}/${mealId}`
-        };
-      } else {
-        path = {
-          pathname: `/food/diary/add/${mealLabel}/${mealId}`
-        };
-      }
-
-      return (
-        <List.Content floated="left">
-          <Button content="Add Food" as={Link} to={path} size="small" secondary compact primary />
-        </List.Content>
-      );
-    };
-
     return (
       <List>
-        <List.Item>
-          {renderAddButton(mealLabel, mealId)}
-          {/* {!_.isEmpty(macrosPerMeal) ? renderMacrosPerMeal(macrosPerMeal) : ''} */}
-        </List.Item>
+        <List.Item>{!_.isEmpty(macrosPerMeal) ? renderMacrosPerMeal(macrosPerMeal) : ''}</List.Item>
       </List>
+    );
+  };
+
+  renderActions = (mealLabel, mealId, match) => {
+    let path;
+    if (!_.isUndefined(match.params.date)) {
+      path = {
+        pathname: `${match.url}/add/${mealLabel}/${mealId}`
+      };
+    } else {
+      path = {
+        pathname: `/food/diary/add/${mealLabel}/${mealId}`
+      };
+    }
+
+    return (
+      <List.Content floated="left">
+        <Button content="Add Food" as={Link} to={path} size="small" secondary compact primary />
+      </List.Content>
     );
   };
 
@@ -180,8 +164,8 @@ class MealCards extends Component {
         {!_.isEmpty(recipes) && this.renderRecipeList(recipes, mealId)}
         {!_.isEmpty(products) && this.renderProductList(products, mealId)}
       </Responsive>
-    )
-  }
+    );
+  };
 
   render() {
     const { mealsData } = this.props;
@@ -210,10 +194,11 @@ class MealCards extends Component {
             })}
           </Card.Group>
         ) : (
-            <div />
-          )}
+          <div />
+        )}
       </div>
     );
   }
 }
+
 export default MealCards;

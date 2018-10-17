@@ -1,20 +1,11 @@
-import React, { Component } from "react";
-import { reduxForm, Field } from "redux-form";
-import AddFood from "app/food/diary/add/AddFood.jsx";
-import AddRecipe from "app/food/diary/add/AddRecipe.jsx";
-import utils from "app/food/HomeUtils";
-import _ from "lodash";
+import React, { Component } from 'react';
+import { reduxForm, Field } from 'redux-form';
+import AddFood from 'app/food/diary/add/AddFood.jsx';
+import AddRecipe from 'app/food/diary/add/AddRecipe.jsx';
+import utils from 'app/food/HomeUtils';
+import _ from 'lodash';
 
-import {
-  Card,
-  Input,
-  List,
-  Header,
-  Responsive,
-  Container,
-  Segment,
-  Form
-} from "semantic-ui-react";
+import { Card, Input, List, Header, Responsive, Container, Segment, Form } from 'semantic-ui-react';
 
 class SearchFood extends Component {
   state = { modalOpenProduct: false, modalOpenRecipe: false };
@@ -55,20 +46,13 @@ class SearchFood extends Component {
 
     return (
       <Form.Field>
-        <Input
-          fluid
-          size="medium"
-          icon="search"
-          type="text"
-          placeholder="Search..."
-          {...field.input}
-        />
+        <Input fluid size="medium" icon="search" type="text" placeholder="Search..." {...field.input} />
         {validateError ? (
           <Header as="label" color="red" size="tiny" textAlign="center">
             {error}
           </Header>
         ) : (
-          ""
+          ''
         )}
       </Form.Field>
     );
@@ -79,22 +63,18 @@ class SearchFood extends Component {
       <List divided relaxed selection>
         {products.map(product => {
           const { _id, name, brand, calories, proteins, carbs, fats } = product;
-          const header = `${calories} KCAL | ${proteins} P | ${carbs} C | ${fats} F`;
+          const header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
 
           return (
             <List.Item onClick={() => this.selectProduct(product)} key={_id}>
-              <List.Icon
-                name="food"
-                style={{ float: "left ", marginTop: "5px" }}
-                size="large"
-                verticalAlign="top"
-              />
+              <List.Icon name="food" style={{ float: 'left ', marginTop: '5px' }} size="large" verticalAlign="top" />
               <List.Content
                 floated="left"
-                header={{ content: name, as: "a" }}
+                header={{ content: name, as: 'a' }}
                 description={brand}
+                style={{ marginBottom: '5px' }}
               />
-              <List.Content floated="right" description={header} />
+              <List.Content floated="right" content={header} />
             </List.Item>
           );
         })}
@@ -109,25 +89,13 @@ class SearchFood extends Component {
           const { _id, name } = recipe;
           const macrosPerRecipe = utils.macrosPerMeal(recipe);
           const { calories, proteins, carbs, fats } = macrosPerRecipe;
-          const header = `${calories} KCAL | ${proteins} P | ${carbs} C | ${fats} F`;
+          const header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
 
           return (
             <List.Item key={_id} onClick={() => this.selectRecipe(recipe)}>
-              <List.Icon
-                name="book"
-                style={{ float: "left" }}
-                size="large"
-                verticalAlign="middle"
-              />
-              <List.Content
-                header={{ content: name, as: "a" }}
-                floated="left"
-              />
-              <List.Content
-                floated="right"
-                verticalAlign="middle"
-                description={header}
-              />
+              <List.Icon name="book" style={{ float: 'left' }} size="large" verticalAlign="middle" />
+              <List.Content floated="left" header={{ content: name, as: 'a' }} description="Recipe" />
+              <List.Content floated="right" verticalAlign="middle" content={header} />
             </List.Item>
           );
         })}
@@ -149,9 +117,9 @@ class SearchFood extends Component {
     } = this.props;
     const { modalOpenProduct, modalOpenRecipe } = this.state;
     const searchStyle = {
-      fontSize: ".82857143em",
+      fontSize: '.82857143em',
       fontWeight: 700,
-      color: "#db2828"
+      color: '#db2828'
     };
     const recipeArr = _.map(userRecipes).reverse();
     return (
@@ -162,9 +130,7 @@ class SearchFood extends Component {
               <Header size="medium">
                 Search our food database by name or brand
                 <Header.Subheader>{selectedMeal.part}</Header.Subheader>
-                <Header.Subheader style={searchStyle}>
-                  {searchMessage}
-                </Header.Subheader>
+                <Header.Subheader style={searchStyle}>{searchMessage}</Header.Subheader>
               </Header>
             </Card.Content>
 
@@ -226,7 +192,7 @@ class SearchFood extends Component {
 
 const validate = values => {
   const errors = {};
-  const required = "Required field";
+  const required = 'Required field';
 
   if (!values.term) {
     errors.term = required;
@@ -235,4 +201,4 @@ const validate = values => {
   return errors;
 };
 
-export default reduxForm({ validate, form: "search" })(SearchFood);
+export default reduxForm({ validate, form: 'search' })(SearchFood);

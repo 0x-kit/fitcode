@@ -1,20 +1,11 @@
-import React, { Component } from "react";
-import _ from "lodash";
-import { Link } from "react-router-dom";
-import {
-  Card,
-  List,
-  Header,
-  Responsive,
-  Container,
-  Segment,
-  Button,
-  CardContent
-} from "semantic-ui-react";
+import React, { Component } from 'react';
+import _ from 'lodash';
+import { Link } from 'react-router-dom';
+import { Card, List, Header, Responsive, Container, Segment, Button } from 'semantic-ui-react';
 
-import ManageRecipeFood from "app/recipe/ManageRecipe.jsx";
-import CreateRecipe from "app/recipe/CreateRecipe.jsx";
-import utils from "app/food/HomeUtils";
+import ManageRecipeFood from 'app/recipe/ManageRecipe.jsx';
+import CreateRecipe from 'app/recipe/CreateRecipe.jsx';
+import utils from 'app/food/HomeUtils';
 
 class Recipe extends Component {
   state = { manageModal: false, createModal: false };
@@ -31,33 +22,21 @@ class Recipe extends Component {
   handleCreateModal = flag => this.setState({ createModal: flag });
 
   renderRecipe = recipe => {
-    let macros;
     const { _id, name, products } = recipe;
     const macrosPerRecipe = utils.macrosPerMeal(recipe);
-
-    const { calories, proteins, carbs, fats } = macrosPerRecipe;
-
-    if ((calories && proteins && carbs && fats) === 0) {
-      macros = ""
-    } else {
-      macros = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
-    }
 
     return (
       <Card key={_id} fluid raised>
         <Card.Content>
           <Card.Header style={{ display: 'inline' }}>{name}</Card.Header>
-          <Card.Meta style={{ marginTop: '5px' }}>{macros}</Card.Meta>
+          <Card.Meta style={{ float: 'right' }} className="buttonsX">
+            {this.renderActions(_id, this.props.match)}
+          </Card.Meta>
         </Card.Content>
-
         {!_.isEmpty(products) && (
-          <Card.Content>
-            {this.renderProductList(products, this.selectProduct, _id)}
-          </Card.Content>
+          <Card.Content>{this.renderProductList(products, this.selectProduct, _id)}</Card.Content>
         )}
-        <Card.Content extra>
-          {this.renderSummary(macrosPerRecipe, _id, this.props.match)}
-        </Card.Content>
+        <Card.Content extra>{this.renderMacros(macrosPerRecipe)}</Card.Content>
       </Card>
     );
   };
@@ -65,56 +44,64 @@ class Recipe extends Component {
   renderProductList = (productsArr = [], selectProduct, recipeId) => {
     return (
       <Responsive as={List} selection divided>
-        {productsArr
-          .filter(product => product.product !== null)
-          .map(product => {
-            const {
-              _id,
-              product: { name, brand }
-            } = product;
+        {productsArr.filter(product => product.product !== null).map(product => {
+          const {
+            _id,
+            product: { name, brand }
+          } = product;
 
-            const {
-              calories,
-              proteins,
-              carbs,
-              fats,
-              grams
-            } = utils.macrosPerProduct(product);
-            const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+          const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
+          const header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
 
-            return (
-              <List.Item
-                key={_id}
-                onClick={() => {
-                  selectProduct(product, recipeId);
-                }}
-              >
-                <List.Icon
-                  name="food"
-                  style={{ float: 'left', marginTop: '5px' }}
-                  size="large"
-                  verticalAlign="top"
-                />
+          return (
+            <List.Item
+              key={_id}
+              onClick={() => {
+                selectProduct(product, recipeId);
+              }}
+            >
+              <List.Icon name="food" style={{ float: 'left', marginTop: '5px' }} size="large" verticalAlign="top" />
 
-                <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
+              <List.Content
+                floated="left"
+                header={{ content: name, as: 'a' }}
+                description={brand}
+                style={{ marginBottom: '5px' }}
+              />
 
-                <List.Content content={`(${grams}g)`} style={{ float: 'right', marginLeft: '5px' }} />
-                <List.Content floated="right" description={header} />
-              </List.Item>
-            );
-          })}
+              <List.Content content={`(${grams}g)`} style={{ float: 'right', marginLeft: '5px' }} />
+              <List.Content floated="right" content={header} />
+            </List.Item>
+          );
+        })}
       </Responsive>
     );
   };
 
-  // renderMacrosPerMeal = macrosPerMeal => {
-  //   const { calories, proteins, carbs, fats } = macrosPerMeal;
-  //   const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
-  //   const style = { paddingRight: "0.5em", float: "right", marginTop: '5px' };
+  renderMacros = macrosPerMeal => {
+    const renderMacrosPerMeal = macrosPerMeal => {
+      let header;
+      const { calories, proteins, carbs, fats } = macrosPerMeal;
 
-  //   return <List.Content description={header} style={style} />;
-  // };
-  renderSummary = (macrosPerMeal, recipeId, match) => {
+      if ((calories && proteins && carbs && fats) === 0) {
+        header = '';
+      } else {
+        header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
+      }
+
+      const style = { paddingTop: '0.5em', float: 'right' };
+
+      return <List.Content description={header} style={style} verticalAlign="middle" />;
+    };
+
+    return (
+      <List>
+        <List.Item>{!_.isEmpty(macrosPerMeal) ? renderMacrosPerMeal(macrosPerMeal) : ''}</List.Item>
+      </List>
+    );
+  };
+
+  renderActions = (recipeId, match) => {
     const renderAddButton = recipeId => {
       const path = {
         pathname: `${match.url}/add/${recipeId}`
@@ -122,20 +109,8 @@ class Recipe extends Component {
 
       return (
         <List.Content floated="left">
-          <Button
-            content="Add Food"
-            as={Link}
-            to={path}
-            size="small"
-            secondary
-            compact
-          />
-          <Button
-            content="Delete Recipe"
-            size="small"
-            compact
-            onClick={() => this.props.complexDeleteRecipe(recipeId)}
-          />
+          <Button content="Add Food" as={Link} to={path} size="small" secondary compact />
+          <Button content="Delete" size="small" compact onClick={() => this.props.complexDeleteRecipe(recipeId)} />
         </List.Content>
       );
     };
@@ -189,19 +164,11 @@ class Recipe extends Component {
             </Card.Group>
           </Segment>
         ) : (
-            <div />
-          )}
-        <ManageRecipeFood
-          openModal={this.state.manageModal}
-          handleModal={this.handleManageModal}
-          {...this.props}
-        />
+          <div />
+        )}
+        <ManageRecipeFood openModal={this.state.manageModal} handleModal={this.handleManageModal} {...this.props} />
 
-        <CreateRecipe
-          openModal={this.state.createModal}
-          handleModal={this.handleCreateModal}
-          {...this.props}
-        />
+        <CreateRecipe openModal={this.state.createModal} handleModal={this.handleCreateModal} {...this.props} />
       </Responsive>
     );
   }

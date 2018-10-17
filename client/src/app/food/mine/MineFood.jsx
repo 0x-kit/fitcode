@@ -1,17 +1,8 @@
-import React, { Component } from "react";
-import ManageFood from "app/food/mine/ManageFood.jsx";
-import CreateFood from "app/food/mine/CreateFood.jsx";
-import _ from "lodash";
-import {
-  Card,
-  List,
-  Header,
-  Responsive,
-  Container,
-  Segment,
-  Button,
-  Transition
-} from "semantic-ui-react";
+import React, { Component } from 'react';
+import ManageFood from 'app/food/mine/ManageFood.jsx';
+import CreateFood from 'app/food/mine/CreateFood.jsx';
+import _ from 'lodash';
+import { Card, List, Header, Responsive, Container, Segment, Button, Transition } from 'semantic-ui-react';
 
 class MineFood extends Component {
   state = { manageModal: false, createModal: false };
@@ -28,24 +19,22 @@ class MineFood extends Component {
   renderProductList(products) {
     const productsArr = _.map(products);
     return (
-      <Transition.Group
-        as={List}
-        duration={700}
-        animation="fade"
-        divided
-        relaxed
-        selection
-      >
+      <Transition.Group as={List} duration={700} animation="fade" divided relaxed selection>
         {productsArr.map(product => {
           const { _id, name, brand, calories, proteins, carbs, fats } = product;
-          const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+          const header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
           return (
             <List.Item onClick={() => this.selectProduct(product)} key={_id}>
               <List.Icon name="food" style={{ float: 'left', marginTop: '5px' }} size="large" verticalAlign="middle" />
 
-              <List.Content floated="left" header={{ content: name, as: 'a' }} description={brand} />
+              <List.Content
+                floated="left"
+                header={{ content: name, as: 'a' }}
+                description={brand}
+                style={{ marginBottom: '5px' }}
+              />
               <List.Content content={'(100g)'} style={{ float: 'right', marginLeft: '5px' }} />
-              <List.Content floated="right" description={header} />
+              <List.Content floated="right" content={header} />
             </List.Item>
           );
         })}
@@ -58,13 +47,7 @@ class MineFood extends Component {
       <Segment basic style={{ marginBottom: '0px' }}>
         <Card.Content style={{ textAlign: 'center' }}>
           <Header size="medium">Your Personal Foods</Header>
-          <Button
-            secondary
-            onClick={() => this.handleCreateModal(true)}
-            compact
-            primary
-            content="Create Food"
-          />
+          <Button secondary onClick={() => this.handleCreateModal(true)} compact primary content="Create Food" />
         </Card.Content>
       </Segment>
     );
@@ -83,9 +66,7 @@ class MineFood extends Component {
 
             {!_.isEmpty(userProducts) && (
               <Card raised fluid>
-                <Card.Content>
-                  {this.renderProductList(userProducts)}
-                </Card.Content>
+                <Card.Content>{this.renderProductList(userProducts)}</Card.Content>
               </Card>
             )}
           </Card.Group>
@@ -97,11 +78,7 @@ class MineFood extends Component {
             {...this.props}
           />
 
-          <CreateFood
-            openModal={createModal}
-            handleModal={this.handleCreateModal}
-            {...this.props}
-          />
+          <CreateFood openModal={createModal} handleModal={this.handleCreateModal} {...this.props} />
         </Segment>
       </Responsive>
     );
