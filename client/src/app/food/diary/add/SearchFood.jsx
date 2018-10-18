@@ -63,7 +63,7 @@ class SearchFood extends Component {
       <List divided relaxed selection>
         {products.map(product => {
           const { _id, name, brand, calories, proteins, carbs, fats } = product;
-          const header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
+          const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`
 
           return (
             <List.Item onClick={() => this.selectProduct(product)} key={_id}>
@@ -89,7 +89,7 @@ class SearchFood extends Component {
           const { _id, name } = recipe;
           const macrosPerRecipe = utils.macrosPerMeal(recipe);
           const { calories, proteins, carbs, fats } = macrosPerRecipe;
-          const header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
+          const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`
 
           return (
             <List.Item key={_id} onClick={() => this.selectRecipe(recipe)}>

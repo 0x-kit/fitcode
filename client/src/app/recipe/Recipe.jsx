@@ -29,14 +29,14 @@ class Recipe extends Component {
       <Card key={_id} fluid raised>
         <Card.Content>
           <Card.Header style={{ display: 'inline' }}>{name}</Card.Header>
-          <Card.Meta style={{ float: 'right' }} className="buttonsX">
-            {this.renderActions(_id, this.props.match)}
+          <Card.Meta style={{ float: 'right' }}>
+            {this.renderAddButton(_id, this.props.match)}
           </Card.Meta>
         </Card.Content>
         {!_.isEmpty(products) && (
           <Card.Content>{this.renderProductList(products, this.selectProduct, _id)}</Card.Content>
         )}
-        <Card.Content extra>{this.renderMacros(macrosPerRecipe)}</Card.Content>
+        <Card.Content extra>{this.renderMacrosAndDelete(macrosPerRecipe, _id)}</Card.Content>
       </Card>
     );
   };
@@ -51,7 +51,7 @@ class Recipe extends Component {
           } = product;
 
           const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
-          const header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
+          const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`
 
           return (
             <List.Item
@@ -66,7 +66,7 @@ class Recipe extends Component {
                 floated="left"
                 header={{ content: name, as: 'a' }}
                 description={brand}
-                style={{ marginBottom: '5px' }}
+                style={{ margin: '0' }}
               />
 
               <List.Content content={`(${grams}g)`} style={{ float: 'right', marginLeft: '5px' }} />
@@ -78,7 +78,8 @@ class Recipe extends Component {
     );
   };
 
-  renderMacros = macrosPerMeal => {
+  renderMacrosAndDelete = (macrosPerMeal, recipeId) => {
+
     const renderMacrosPerMeal = macrosPerMeal => {
       let header;
       const { calories, proteins, carbs, fats } = macrosPerMeal;
@@ -86,42 +87,35 @@ class Recipe extends Component {
       if ((calories && proteins && carbs && fats) === 0) {
         header = '';
       } else {
-        header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
+        header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`
       }
 
-      const style = { paddingTop: '0.5em', float: 'right' };
+      const style = { paddingTop: '0.3em', float: 'right' };
 
       return <List.Content description={header} style={style} verticalAlign="middle" />;
     };
 
     return (
       <List>
-        <List.Item>{!_.isEmpty(macrosPerMeal) ? renderMacrosPerMeal(macrosPerMeal) : ''}</List.Item>
+        <List.Item>
+          <Button icon={{ name: "delete"}} basic size="small" compact onClick={() => this.props.complexDeleteRecipe(recipeId)} />
+          {!_.isEmpty(macrosPerMeal) ? renderMacrosPerMeal(macrosPerMeal) : ''}
+        </List.Item>
       </List>
     );
   };
 
-  renderActions = (recipeId, match) => {
-    const renderAddButton = recipeId => {
-      const path = {
-        pathname: `${match.url}/add/${recipeId}`
-      };
-
-      return (
-        <List.Content floated="left">
-          <Button content="Add Food" as={Link} to={path} size="small" secondary compact />
-          <Button content="Delete" size="small" compact onClick={() => this.props.complexDeleteRecipe(recipeId)} />
-        </List.Content>
-      );
+  renderAddButton = (recipeId, match) => {
+    const path = {
+      pathname: `${match.url}/add/${recipeId}`
     };
 
     return (
       <List>
         <List.Item>
-          {renderAddButton(recipeId)}
-          {/* {!_.isEmpty(macrosPerMeal)
-            ? this.renderMacrosPerMeal(macrosPerMeal)
-            : ""} */}
+          <List.Content>
+            <Button content="Add Food" as={Link} to={path} size="small" secondary compact />
+          </List.Content>
         </List.Item>
       </List>
     );
@@ -164,8 +158,8 @@ class Recipe extends Component {
             </Card.Group>
           </Segment>
         ) : (
-          <div />
-        )}
+            <div />
+          )}
         <ManageRecipeFood openModal={this.state.manageModal} handleModal={this.handleManageModal} {...this.props} />
 
         <CreateRecipe openModal={this.state.createModal} handleModal={this.handleCreateModal} {...this.props} />

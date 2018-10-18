@@ -69,17 +69,11 @@ div.ui.huge.borderless.inverted.menu{
   color: rgba(0, 0, 0, 0.6);
   
 }
-/* .ui.statistic.lxa > .value ~ .value {
-  font-size: 1.7rem !important;
-  
-} */
+
 .ui.mini.statistic.lxa > .value, .ui.mini.statistics .statistic > .value {
-	font-size: 1.33rem !important;
+  font-weight: 500;
+	font-size: 1.30rem !important;
 }
-/* .ui.statistic.lxb > .value {
-  font-weight: 300;
-  color: rgba(0, 0, 0, 0.6);
-} */
 
 div.ui.info.message {
   font-size: 1em;

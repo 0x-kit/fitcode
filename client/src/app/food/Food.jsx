@@ -14,7 +14,7 @@ class Food extends Component {
           <Segment raised>
             <Date {...this.props} />
             <DietGoal {...this.props} />
-            <Divider horizontal />
+            <Divider horizontal style={{ marginBottom: '0' }} />
             <MealCard {...this.props} />
           </Segment>
         )}

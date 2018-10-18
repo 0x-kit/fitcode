@@ -41,7 +41,7 @@ class MealCards extends Component {
 
     return (
       <Card key={_id} fluid raised>
-      
+
         <Card.Content>
           <Card.Header style={{ display: 'inline' }}>{part}</Card.Header>
           <Card.Meta style={{ float: 'right', lineHeight: '1.8585em' }}>
@@ -77,7 +77,7 @@ class MealCards extends Component {
           <List.Content floated="left" header={{ content: name, as: 'a' }} description={'Recipe'} />
 
           <List.Content content={`(x${serving})`} style={{ float: 'right', marginLeft: '5px' }} />
-          <List.Content floated="right" description={header} />
+          <List.Content floated="right" content={header} />
         </List.Item>
       );
     });
@@ -91,7 +91,7 @@ class MealCards extends Component {
       } = product;
 
       const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
-      const header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
+      const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
 
       return (
         <List.Item
@@ -124,7 +124,7 @@ class MealCards extends Component {
       if ((calories && proteins && carbs && fats) === 0) {
         header = '';
       } else {
-        header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
+        header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
       }
 
       const style = { paddingTop: '0.5em', float: 'right' };
@@ -194,8 +194,8 @@ class MealCards extends Component {
             })}
           </Card.Group>
         ) : (
-          <div />
-        )}
+            <div />
+          )}
       </div>
     );
   }

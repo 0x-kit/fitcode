@@ -22,7 +22,7 @@ class MineFood extends Component {
       <Transition.Group as={List} duration={700} animation="fade" divided relaxed selection>
         {productsArr.map(product => {
           const { _id, name, brand, calories, proteins, carbs, fats } = product;
-          const header = `${calories}CAL  ${proteins}P  ${carbs}C  ${fats}F`;
+          const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`
           return (
             <List.Item onClick={() => this.selectProduct(product)} key={_id}>
               <List.Icon name="food" style={{ float: 'left', marginTop: '5px' }} size="large" verticalAlign="middle" />

@@ -80,7 +80,7 @@ const renderMacros = (goalMacros, remainingMacros) => {
 
   return (
     <Segment basic padded style={{ paddingLeft: '0', paddingRight: '0' }}>
-      <Grid textAlign="center" textAlign="center" style={{ marginRight: '0', marginLeft: '0' }}>
+      <Grid textAlign="center"   style={{ marginRight: '0', marginLeft: '0' }}>
         <Grid.Row style={{ paddingLeft: '0', paddingRight: '0', marginRight: '0.2em', marginLeft: '0.2em' }}>
           {renderColumn('Proteins', proteins, rProteins)}
           {renderColumn('Carbs', carbs, rCarbs)}
