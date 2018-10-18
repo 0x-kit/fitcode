@@ -67,7 +67,7 @@ class CreateFood extends Component {
     const { handleSubmit, openModal } = this.props;
     const buttonStyle = { marginBottom: 10, width: 322 };
     return (
-      <Modal style={{ width: 350, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
+      <Modal style={{ width: 350, textAlign: 'center' }} open={openModal} dimmer="blurring" onClose={this.handleClose} size="mini">
         <Header subheader="Enter the nutritional info " content="Create Your Food" />
         <Modal.Actions>
           <Form onSubmit={handleSubmit(this.onSubmit)}>

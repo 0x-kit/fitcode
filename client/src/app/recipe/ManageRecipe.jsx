@@ -119,6 +119,7 @@ class ManageRecipe extends Component {
         open={openModal}
         onClose={this.handleClose}
         size="mini"
+        dimmer="blurring"
       >
         <Header subheader={selectedProduct.name} content="Edit Food" />
         <Modal.Content>

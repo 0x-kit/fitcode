@@ -105,7 +105,7 @@ class ManageRecipes extends Component {
     const modalStyle = { width: 300, textAlign: 'center' };
 
     return (
-      <Modal style={modalStyle} open={openModal} onClose={this.handleClose} size="mini">
+      <Modal style={modalStyle} open={openModal} onClose={this.handleClose} dimmer="blurring" size="mini">
         <Header subheader={selectedRecipe.name} content={'Edit Recipe'} />
         <Modal.Content>{this.renderMacros(macrosPerRecipe, serving)}</Modal.Content>
         <Modal.Actions>

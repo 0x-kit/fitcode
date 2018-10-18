@@ -78,7 +78,7 @@ class ManageWeight extends Component {
     const { openModal } = this.props;
     //console.log(openModal);
     return (
-      <Modal style={{ width: 300, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
+      <Modal style={{ width: 300, textAlign: 'center' }} open={openModal} dimmer="blurring" onClose={this.handleClose} size="mini">
         <Header subheader="Enter your weights" content="Edit Your Weights " style={{ height: 100 }} />
         <Modal.Actions>
           <Form onSubmit={handleSubmit(this.onSubmit)}>

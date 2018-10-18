@@ -82,6 +82,7 @@ class ManageFood extends Component {
         open={openModal}
         onClose={this.handleClose}
         size="mini"
+        dimmer="blurring"
       >
         <Header
           subheader="Enter name and calories"
