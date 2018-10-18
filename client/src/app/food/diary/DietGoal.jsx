@@ -4,7 +4,7 @@ import HomeUtils from 'app/food/HomeUtils';
 import _ from 'lodash';
 
 class DietGoal extends Component {
-  state = { toggleContent: false };
+  state = { toggleContent: true };
   handleContent = () => this.setState({ toggleContent: !this.state.toggleContent });
 
   render() {
@@ -36,22 +36,22 @@ const renderCalories = (goalMacros, remainingMacros, exerciseCals, handleContent
 
   const renderColumn = (label, value) => {
     return (
-      <Grid.Column computer={3}>
+      <Grid.Column style={{ paddingLeft: '0', paddingRight: '0', width: '16.25%' }} >
         <Statistic value={_.isNaN(value) ? '' : value} label={label} size="mini" className="lxa" />
       </Grid.Column>
     );
   };
 
   const renderOperator = op => (
-    <Grid.Column>
-      <Header size="huge" content={op} />
+    <Grid.Column style={{ paddingLeft: '1.1em', paddingRight: '0.7em', paddingTop: '0.19em', width: '6.25%' }}>
+      <Header size="small" content={op} />
     </Grid.Column>
   );
 
   return (
-    <Segment basic padded>
-      <Grid textAlign="center" stackable>
-        <Grid.Row>
+    <Segment basic style={{ paddingLeft: '0' }}>
+      <Grid textAlign="center" style={{ marginRight: '0' }}>
+        <Grid.Row style={{ paddingLeft: '0', paddingRight: '0', marginRight: '0.2em', marginLeft: '0.2em' }}>
           {renderColumn('Calories', calories)}
           {renderOperator('-')}
           {renderColumn('Food', foodValue)}
@@ -70,18 +70,18 @@ const renderMacros = (goalMacros, remainingMacros) => {
   const { rProteins, rCarbs, rFats } = remainingMacros;
 
   const renderColumn = (label, goal, remaining) => {
-    const value = `${goal - remaining} / ${goal} G`;
+    const value = `${goal - remaining}/${goal}G`;
     return (
-      <Grid.Column computer={5}>
+      <Grid.Column style={{ paddingLeft: '0', paddingRight: '0', width: '33%' }}>
         <Statistic value={_.isNaN(value) ? '' : value} label={label} size="mini" className="lxa" />
       </Grid.Column>
     );
   };
 
   return (
-    <Segment basic padded>
-      <Grid textAlign="center" stackable>
-        <Grid.Row>
+    <Segment basic padded style={{ paddingLeft: '0', paddingRight: '0' }}>
+      <Grid textAlign="center" textAlign="center" style={{ marginRight: '0', marginLeft: '0' }}>
+        <Grid.Row style={{ paddingLeft: '0', paddingRight: '0', marginRight: '0.2em', marginLeft: '0.2em' }}>
           {renderColumn('Proteins', proteins, rProteins)}
           {renderColumn('Carbs', carbs, rCarbs)}
           {renderColumn('Fats', fats, rFats)}

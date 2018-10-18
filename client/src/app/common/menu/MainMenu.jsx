@@ -12,7 +12,7 @@ class MainMenu extends Component {
     const { activeItem, handleItemClick } = this.state;
 
     return (
-      <Menu inverted size="small">
+      <Menu inverted size="huge" borderless>
         <Container>
           <Menu.Item as='a' header>
             <h3>

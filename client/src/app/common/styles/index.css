@@ -5,6 +5,9 @@ body {
 .tabpanel {
   margin-top: 50px;
 }
+div.ui.huge.borderless.inverted.menu{
+  border-radius: 0 !important;
+}
 
 .prueba.ui.statistic > .value,
 .prueba.ui.statistics .statistic > .value {
@@ -64,7 +67,19 @@ body {
 .ui.statistic.lxa > .value ~ .label {
   font-weight: 300;
   color: rgba(0, 0, 0, 0.6);
+  
 }
+/* .ui.statistic.lxa > .value ~ .value {
+  font-size: 1.7rem !important;
+  
+} */
+.ui.mini.statistic.lxa > .value, .ui.mini.statistics .statistic > .value {
+	font-size: 1.33rem !important;
+}
+/* .ui.statistic.lxb > .value {
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.6);
+} */
 
 div.ui.info.message {
   font-size: 1em;
@@ -113,16 +128,17 @@ a.item.forwardRoute {
   margin: 0 0.67em 0 0
 } */
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 482px) {
   .ui.list .list > .item [class*='right floated'],
   .ui.list > .item [class*='right floated'] {
+    width: 100%;
     float: left !important;
     margin: 0 0 0 2.35em !important;
     margin-left: 25px;
   }
 }
 
-@media only screen and (max-width: 400px) {
+/* @media only screen and (max-width: 400px) {
   .ui.grid > .stackable.stackable.row > .column,
   .ui.stackable.grid > .column.grid > .column,
   .ui.stackable.grid > .column.row > .column,
@@ -135,4 +151,4 @@ a.item.forwardRoute {
     box-shadow: none !important;
     padding: 0.5rem 0.5rem !important;
   }
-}
+} */
