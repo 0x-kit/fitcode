@@ -118,7 +118,6 @@ class AddFood extends Component {
         open={openModal}
         onClose={this.handleClose}
         size="mini"
-        dimmer="blurring"
       >
         <Header subheader={selectedProduct.name} content="Add Food" />
         <Modal.Content>

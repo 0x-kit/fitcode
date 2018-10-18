@@ -15,10 +15,10 @@ class MainMenu extends Component {
       <Menu inverted size="huge" borderless>
         <Container>
           <Menu.Item as='a' header>
-            <h3>
+            <h2>
               <Icon color="green" name="code" style={{ marginRight: '1.3em' }} />
               Fitcode
-          </h3>
+          </h2>
           </Menu.Item>
           {authenticated &&
             <Dropdown item simple text={userInfo}>

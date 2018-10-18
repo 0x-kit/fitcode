@@ -73,7 +73,7 @@ class MealCards extends Component {
             this.selectRecipe(recipe, mealId);
           }}
         >
-          <List.Icon name="book" style={{ float: 'left' }} size="large" verticalAlign="top" />
+          <List.Icon name="book" style={{ float: 'left', marginTop: '5px' }} size="large" verticalAlign="top" />
 
           <List.Content floated="left" header={{ content: name, as: 'a' }} description={'Recipe'} />
 

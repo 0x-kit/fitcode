@@ -29,9 +29,7 @@ class Recipe extends Component {
       <Card key={_id} fluid raised>
         <Card.Content>
           <Card.Header style={{ display: 'inline' }}>{name}</Card.Header>
-          <Card.Meta style={{ float: 'right' }}>
-            {this.renderAddButton(_id, this.props.match)}
-          </Card.Meta>
+          <Card.Meta style={{ float: 'right' }}>{this.renderAddButton(_id, this.props.match)}</Card.Meta>
         </Card.Content>
         {!_.isEmpty(products) && (
           <Card.Content>{this.renderProductList(products, this.selectProduct, _id)}</Card.Content>
@@ -51,7 +49,7 @@ class Recipe extends Component {
           } = product;
 
           const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
-          const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`
+          const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
 
           return (
             <List.Item
@@ -69,7 +67,7 @@ class Recipe extends Component {
                 style={{ margin: '0' }}
               />
 
-              <List.Content content={`(${grams}g)`} style={{ float: 'right', marginLeft: '5px' }} />
+              <List.Content content={`(${grams}g)`} style={{ float: 'right', marginLeft: '0', marginRight: '0' }} />
               <List.Content floated="right" content={header} />
             </List.Item>
           );
@@ -79,7 +77,6 @@ class Recipe extends Component {
   };
 
   renderMacrosAndDelete = (macrosPerMeal, recipeId) => {
-
     const renderMacrosPerMeal = macrosPerMeal => {
       let header;
       const { calories, proteins, carbs, fats } = macrosPerMeal;
@@ -87,7 +84,7 @@ class Recipe extends Component {
       if ((calories && proteins && carbs && fats) === 0) {
         header = '';
       } else {
-        header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`
+        header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
       }
 
       const style = { paddingTop: '0.3em', float: 'right' };
@@ -98,7 +95,13 @@ class Recipe extends Component {
     return (
       <List>
         <List.Item>
-          <Button icon={{ name: "delete"}} basic size="small" compact onClick={() => this.props.complexDeleteRecipe(recipeId)} />
+          <Button
+            icon={{ name: 'delete' }}
+            basic
+            size="small"
+            compact
+            onClick={() => this.props.complexDeleteRecipe(recipeId)}
+          />
           {!_.isEmpty(macrosPerMeal) ? renderMacrosPerMeal(macrosPerMeal) : ''}
         </List.Item>
       </List>
@@ -158,8 +161,8 @@ class Recipe extends Component {
             </Card.Group>
           </Segment>
         ) : (
-            <div />
-          )}
+          <div />
+        )}
         <ManageRecipeFood openModal={this.state.manageModal} handleModal={this.handleManageModal} {...this.props} />
 
         <CreateRecipe openModal={this.state.createModal} handleModal={this.handleCreateModal} {...this.props} />

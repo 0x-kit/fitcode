@@ -100,7 +100,7 @@ class ManageDiary extends Component {
     const buttonStyle = { width: 130, marginBottom: 10, marginTop: 10 };
     const modalStyle = { width: 300, textAlign: 'center' };
     return (
-      <Modal style={modalStyle} open={openModal} onClose={this.handleClose} dimmer="blurring" size="mini">
+      <Modal style={modalStyle} open={openModal} onClose={this.handleClose} size="mini">
         <Header subheader={selectedProduct.name} content="Edit Food" />
         <Modal.Content>{this.renderMacros(selectedProduct, serving)}</Modal.Content>
         <Modal.Actions>

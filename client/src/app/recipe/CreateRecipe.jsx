@@ -65,7 +65,6 @@ class CreateRecipe extends Component {
         open={openModal}
         onClose={this.handleClose}
         size="mini"
-        dimmer="blurring"
       >
         <Header subheader="Enter name" content="Create Your Recipe" />
         <Modal.Actions>
