@@ -41,7 +41,6 @@ class MealCards extends Component {
 
     return (
       <Card key={_id} fluid raised>
-
         <Card.Content>
           <Card.Header style={{ display: 'inline' }}>{part}</Card.Header>
           <Card.Meta style={{ float: 'right', lineHeight: '1.8585em' }}>
@@ -51,7 +50,9 @@ class MealCards extends Component {
 
         <Card.Content>{this.renderList(products, recipes, _id)}</Card.Content>
 
-        <Card.Content extra>{this.renderMacros(macrosPerMeal)}</Card.Content>
+        <Card.Content extra style={{ paddingTop: '0' }}>
+          {this.renderMacros(macrosPerMeal)}
+        </Card.Content>
       </Card>
     );
   };
@@ -194,8 +195,8 @@ class MealCards extends Component {
             })}
           </Card.Group>
         ) : (
-            <div />
-          )}
+          <div />
+        )}
       </div>
     );
   }

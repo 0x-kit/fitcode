@@ -4,7 +4,7 @@ import HomeUtils from 'app/food/HomeUtils';
 import _ from 'lodash';
 
 class DietGoal extends Component {
-  state = { toggleContent: true };
+  state = { toggleContent: false };
   handleContent = () => this.setState({ toggleContent: !this.state.toggleContent });
 
   render() {
@@ -21,8 +21,8 @@ class DietGoal extends Component {
               : renderMacros(macros, remainingMacros)}
           </div>
         ) : (
-            <div />
-          )}
+          <div />
+        )}
       </Card>
     );
   }
@@ -36,7 +36,7 @@ const renderCalories = (goalMacros, remainingMacros, exerciseCals, handleContent
 
   const renderColumn = (label, value) => {
     return (
-      <Grid.Column style={{ paddingLeft: '0', paddingRight: '0', width: '16.25%' }} >
+      <Grid.Column style={{ paddingLeft: '0', paddingRight: '0', width: '16.25%' }}>
         <Statistic value={_.isNaN(value) ? '' : value} label={label} size="mini" className="lxa" />
       </Grid.Column>
     );
@@ -49,7 +49,7 @@ const renderCalories = (goalMacros, remainingMacros, exerciseCals, handleContent
   );
 
   return (
-    <Segment basic style={{ paddingLeft: '0' }}>
+    <Segment basic style={{ paddingLeft: '0', marginRight: '0.5em' }}>
       <Grid textAlign="center" style={{ marginRight: '0' }}>
         <Grid.Row style={{ paddingLeft: '0', paddingRight: '0', marginRight: '0.2em', marginLeft: '0.2em' }}>
           {renderColumn('Calories', calories)}
@@ -80,7 +80,7 @@ const renderMacros = (goalMacros, remainingMacros) => {
 
   return (
     <Segment basic padded style={{ paddingLeft: '0', paddingRight: '0' }}>
-      <Grid textAlign="center"   style={{ marginRight: '0', marginLeft: '0' }}>
+      <Grid textAlign="center" style={{ marginRight: '0', marginLeft: '0' }}>
         <Grid.Row style={{ paddingLeft: '0', paddingRight: '0', marginRight: '0.2em', marginLeft: '0.2em' }}>
           {renderColumn('Proteins', proteins, rProteins)}
           {renderColumn('Carbs', carbs, rCarbs)}
