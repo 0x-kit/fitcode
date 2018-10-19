@@ -49,7 +49,7 @@ const renderCalories = (goalMacros, remainingMacros, exerciseCals, handleContent
   );
 
   return (
-    <Segment basic style={{ paddingLeft: '0', marginRight: '0.5em' }}>
+    <Segment basic style={{ paddingLeft: '0', marginRight: '0.5em',marginLeft: '0.5em' }}>
       <Grid textAlign="center" style={{ marginRight: '0' }}>
         <Grid.Row style={{ paddingLeft: '0', paddingRight: '0', marginRight: '0.2em', marginLeft: '0.2em' }}>
           {renderColumn('Calories', calories)}

@@ -5,7 +5,7 @@ body {
 .tabpanel {
   margin-top: 50px;
 }
-div.ui.huge.borderless.inverted.menu{
+div.ui.huge.borderless.inverted.menu {
   border-radius: 0 !important;
 }
 
@@ -67,12 +67,12 @@ div.ui.huge.borderless.inverted.menu{
 .ui.statistic.lxa > .value ~ .label {
   font-weight: 300;
   color: rgba(0, 0, 0, 0.6);
-  
 }
 
-.ui.mini.statistic.lxa > .value, .ui.mini.statistics .statistic > .value {
+.ui.mini.statistic.lxa > .value,
+.ui.mini.statistics .statistic > .value {
   font-weight: 500;
-	font-size: 1.30rem !important;
+  font-size: 1.3rem !important;
 }
 
 div.ui.info.message {
@@ -106,13 +106,14 @@ div.ui.info.message {
   margin-top: 0.5em;
 }
 
-/* a.item.backwardRoute {
-  justify-content: left !important;
-} */
-/* 
+a.item.backwardRoute,
 a.item.forwardRoute {
-  justify-content: center !important;
-} */
+  width: 20% !important;
+}
+
+a.item.dateFormat {
+  width: 60% !important;
+}
 
 /* i.chevron.circle.left.big.link.icon {
  margin: 0 0 0 0.67em

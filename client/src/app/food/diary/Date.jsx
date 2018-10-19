@@ -86,18 +86,29 @@ class Date extends Component {
       <Card raised fluid style={{ padding: '0' }}>
         {!loading ? (
           <div>
-            <Menu widths="3" style={{ height: '1.1em', border: '0', boxShadow: 'none' }}>
-              <Menu.Item as={Link} to={backwardRoute} onClick={() => this.changeDay(substract, 'substract')} className="backwardRoute">
-                <Icon size="big" link name="chevron circle left" />
+            <Menu widths="3" style={{ height: '1.1em', border: '0', boxShadow: 'none' }} borderless>
+              <Menu.Item
+                as={Link}
+                to={backwardRoute}
+                onClick={() => this.changeDay(substract, 'substract')}
+                className="backwardRoute"
+              >
+                <Icon size="big" link name="chevron circle left" style={{ marginLeft: '10px', marginRight: '0' }} />
               </Menu.Item>
 
               <Menu.Item
                 style={{ fontSize: '1.23em', fontWeight: 700 }}
                 name={moment(myDate).format('LL')}
                 onClick={() => this.hadleDateOpen()}
+                className="dateFormat"
               />
 
-              <Menu.Item as={Link} to={forwardRoute} onClick={() => this.changeDay(add, 'add')} className="forwardRoute">
+              <Menu.Item
+                as={Link}
+                to={forwardRoute}
+                onClick={() => this.changeDay(add, 'add')}
+                className="forwardRoute"
+              >
                 <Icon size="big" link name="chevron circle right" />
               </Menu.Item>
             </Menu>
