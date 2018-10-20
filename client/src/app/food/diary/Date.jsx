@@ -83,7 +83,7 @@ class Date extends Component {
     /*** */
 
     return (
-      <Card raised fluid style={{ padding: '0' }}>
+      <Card raised fluid style={{ padding: '0', marginBottom: '18px' }}>
         {!loading ? (
           <div>
             <Menu widths="3" style={{ height: '1.1em', border: '0', boxShadow: 'none' }} borderless>
@@ -93,7 +93,7 @@ class Date extends Component {
                 onClick={() => this.changeDay(substract, 'substract')}
                 className="backwardRoute"
               >
-                <Icon size="big" link name="chevron circle left" style={{ marginLeft: '10px', marginRight: '0' }} />
+                <Icon size="big" link name="chevron circle left" style={{ color: 'black' }} />
               </Menu.Item>
 
               <Menu.Item
@@ -109,7 +109,7 @@ class Date extends Component {
                 onClick={() => this.changeDay(add, 'add')}
                 className="forwardRoute"
               >
-                <Icon size="big" link name="chevron circle right" />
+                <Icon size="big" link name="chevron circle right" style={{ color: 'black' }} />
               </Menu.Item>
             </Menu>
             {dateTimeOpen && (

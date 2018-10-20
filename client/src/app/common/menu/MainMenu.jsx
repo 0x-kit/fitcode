@@ -21,7 +21,7 @@ class MainMenu extends Component {
         </Menu.Item>
         {authenticated && (
           <Dropdown item simple text={userInfo} style={{ paddingLeft: '0.1em', paddingRight: '0.1em' }}>
-            <Dropdown.Menu>
+            <Menu compact>
               <Dropdown.Item
                 as={Link}
                 to="/"
@@ -31,7 +31,7 @@ class MainMenu extends Component {
                 onClick={handleItemClick}
                 style={{ textAlign: 'center' }}
               />
-            </Dropdown.Menu>
+            </Menu>
           </Dropdown>
         )}
       </Menu>

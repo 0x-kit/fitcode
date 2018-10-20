@@ -36,7 +36,6 @@ class ManageRecipe extends Component {
     };
 
     if (this.state.deleteProduct === false) {
-      console.log("delete false");
       this.props.complexEditRecipeProduct(selectedRecipe, newProduct);
     } else {
       this.props.complexDeleteRecipeProduct(selectedRecipe, newProduct);

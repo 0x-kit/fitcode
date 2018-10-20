@@ -51,6 +51,8 @@ const complexFetchHome = date => async dispatch => {
 
     const reqConfig = { headers: { authorization: token } };
 
+    dispatch(loading(true));
+
     const goals = await axios.get(`/api/user/${userId}/goals`, reqConfig);
 
     const meals = await axios.get(`/api/diary/user/${userId}?date=${fDate}`, reqConfig);
@@ -73,6 +75,8 @@ const complexFetchHome = date => async dispatch => {
 
 const complexFetchRecipes = () => async dispatch => {
   try {
+    dispatch(loading(true));
+    
     const token = localStorage.getItem('token');
 
     const userId = localStorage.getItem('userId');
@@ -164,6 +168,7 @@ const complexSetDay = date => async dispatch => {
 
 const complexGetUserProducts = () => async dispatch => {
   try {
+    dispatch(loading(true));
     const token = localStorage.getItem('token');
 
     const userId = localStorage.getItem('userId');

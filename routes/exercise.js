@@ -1,16 +1,19 @@
 const router = require('express').Router();
 const ExerciseController = require('../controllers/exercise');
 
+const authController = require('../controllers/auth2');
+const requireAuth = authController.requireAuth;
+
 router
 
-  .get('/', ExerciseController.getExercises)
+  .get('/', requireAuth, ExerciseController.getExercises)
 
-  .get('/:exerciseId', ExerciseController.readExercise)
+  .get('/:exerciseId', requireAuth, ExerciseController.readExercise)
 
-  .post('/', ExerciseController.createExercise)
+  .post('/', requireAuth, ExerciseController.createExercise)
 
-  .put('/:exerciseId', ExerciseController.updateExercise)
+  .put('/:exerciseId', requireAuth, ExerciseController.updateExercise)
 
-  .delete('/:exerciseId', ExerciseController.deleteExercise);
+  .delete('/:exerciseId', requireAuth, ExerciseController.deleteExercise);
 
 module.exports = router;

@@ -115,14 +115,6 @@ a.item.dateFormat {
   width: 60% !important;
 }
 
-/* i.chevron.circle.left.big.link.icon {
- margin: 0 0 0 0.67em
-} */
-
-/* i.chevron.circle.right.big.link.icon {
-  margin: 0 0.67em 0 0
-} */
-
 @media only screen and (max-width: 482px) {
   .ui.list .list > .item [class*='right floated'],
   .ui.list > .item [class*='right floated'] {
@@ -132,18 +124,3 @@ a.item.dateFormat {
     margin-left: 25px;
   }
 }
-
-/* @media only screen and (max-width: 400px) {
-  .ui.grid > .stackable.stackable.row > .column,
-  .ui.stackable.grid > .column.grid > .column,
-  .ui.stackable.grid > .column.row > .column,
-  .ui.stackable.grid > .column:not(.row),
-  .ui.stackable.grid > .row > .column,
-  .ui.stackable.grid > .row > .wide.column,
-  .ui.stackable.grid > .wide.column {
-    margin: 0 0 !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-    padding: 0.5rem 0.5rem !important;
-  }
-} */

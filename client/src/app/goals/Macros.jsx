@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Segment, Container, Statistic, Card, Grid, Button } from 'semantic-ui-react';
+import { Segment, Container, Statistic, Card, Grid, Button, Dimmer, Loader } from 'semantic-ui-react';
 import ManageMacros from 'app/goals/ManageMacros.jsx';
 
 class Macros extends Component {
@@ -16,8 +16,8 @@ class Macros extends Component {
       <Card fluid raised style={cardStyle}>
         {macrosGrid(macros)}
       </Card>
-    )
-  }
+    );
+  };
 
   renderMainCard = () => {
     return (
@@ -31,31 +31,29 @@ class Macros extends Component {
   };
 
   render() {
-
     const { loading, macros } = this.props;
 
     return (
       <Container>
+        {loading ? (
+          <Dimmer active>
+            <Loader inverted>Loading</Loader>
+          </Dimmer>
+        ) : (
+          <Segment padded>
+            <Card.Group centered>
+              {this.renderMainCard()}
 
-        <Segment padded>
-          <Card.Group centered>
-            {this.renderMainCard()}
+              {!loading && !_.isEmpty(macros) ? this.renderMacros(macros) : <div />}
+            </Card.Group>
 
-            {!loading && !_.isEmpty(macros) ? (
-              this.renderMacros(macros)
-            ) : (
-                <div />
-              )}
-
-          </Card.Group>
-
-          <ManageMacros
-            complexEditMacros={this.props.complexEditMacros}
-            openModal={this.state.modalOpen}
-            handleModal={this.handleModal}
-          />
-        </Segment>
-
+            <ManageMacros
+              complexEditMacros={this.props.complexEditMacros}
+              openModal={this.state.modalOpen}
+              handleModal={this.handleModal}
+            />
+          </Segment>
+        )}
       </Container>
     );
   }
@@ -80,12 +78,12 @@ const macrosGrid = macros => {
           })}
         </Grid.Row>
       ) : (
-          <Grid.Row>
-            <Grid.Column computer={16}>
-              <Statistic label="Enter macros" size="tiny" />
-            </Grid.Column>
-          </Grid.Row>
-        )}
+        <Grid.Row>
+          <Grid.Column computer={16}>
+            <Statistic label="Enter macros" size="tiny" />
+          </Grid.Column>
+        </Grid.Row>
+      )}
     </Grid>
   );
 };

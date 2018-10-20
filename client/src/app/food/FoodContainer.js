@@ -2,6 +2,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, lifecycle } from 'recompose';
 import { homeOperations } from 'app/food/duck';
+
+import authOperations from 'app/root/duck/operations';
 import moment from 'moment';
 import _ from 'lodash';
 
@@ -22,13 +24,15 @@ const mapStateToProps = state => {
     selectedGrams: state.food.selectedGrams,
 
     date: state.food.date,
-    errorMessage: state.food.errorMessage,
-    editMode: state.auth.editMode
+    errorMessage: state.food.errorMessage
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ ...homeOperations }, dispatch);
+  const selectMainTab = authOperations.selectMainTab;
+  const selectSecondaryTab = authOperations.selectSecondaryTab;
+
+  return bindActionCreators({ ...homeOperations, selectMainTab, selectSecondaryTab }, dispatch);
 };
 
 export default compose(
@@ -40,6 +44,16 @@ export default compose(
   withNotifications,
   lifecycle({
     componentWillMount() {
+      const path = this.props.location.pathname.split('/');
+
+      if (!_.isEmpty(path[1])) {
+        const mainTab = path[1];
+        const secondaryTab = _.isUndefined(path[2]) ? '' : path[2];
+
+        this.props.selectMainTab(mainTab);
+        this.props.selectSecondaryTab(secondaryTab);
+      }
+
       const param = this.props.match.params.date;
 
       if (!_.isUndefined(param)) {

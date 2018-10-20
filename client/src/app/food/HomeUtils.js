@@ -131,7 +131,6 @@ class HomeInfo {
   };
 
   static macrosPerRecipe(recipe, serving = 1) {
-    //console.log(recipe, serving)
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
     let calArr = [],
@@ -174,15 +173,15 @@ class HomeInfo {
         carbs: carbArr.reduce(reducer) * _.parseInt(serving),
         fats: fatArr.reduce(reducer) * _.parseInt(serving)
       };
-      //console.log(macrosPerRecipe)
+
     }
 
     return macrosPerRecipe;
   }
 
-
   static enumerateDaysBetweenDates = (startDate, endDate) => {
-    let now = startDate, datesLabels = {};
+    let now = startDate,
+      datesLabels = {};
 
     while (now.isSameOrBefore(endDate)) {
       datesLabels[now.format('YYYY-MM-DD')] = 0;
@@ -191,7 +190,7 @@ class HomeInfo {
     return datesLabels;
   };
 
-  static datesArr = (datesObj) => {
+  static datesArr = datesObj => {
     let dates = Object.assign({}, datesObj);
     let datesArr = [];
 
@@ -199,21 +198,21 @@ class HomeInfo {
       datesArr.push(key);
     }
     return datesArr;
-  }
+  };
 
   static caloriesHistory(dateObj, meals) {
-
     let dates = Object.assign({}, dateObj);
 
     let caloriesHistory = [];
 
-    meals.forEach((meal) => {
+    meals.forEach(meal => {
       dates[moment(meal.date).format('YYYY-MM-DD')] += this.macrosPerMeal(meal).calories;
     });
 
     for (var key in dates) {
       caloriesHistory.push(dates[key]);
     }
+
     return caloriesHistory;
   }
 
@@ -222,7 +221,7 @@ class HomeInfo {
 
     let weightHistory = [];
 
-    weights.forEach((weight) => {
+    weights.forEach(weight => {
       if (dates.hasOwnProperty(moment(weight.date).format('YYYY-MM-DD')))
         dates[moment(weight.date).format('YYYY-MM-DD')] = weight.weight;
     });
@@ -235,9 +234,4 @@ class HomeInfo {
   }
 }
 
-
-
 export default HomeInfo;
-// let index = moment(prueba['5bbcb092a6d30a103c42a282'].date).format('YYYY-MM-DD')
-// arr[index] = 14;
-// console.log(_.map(prueba))

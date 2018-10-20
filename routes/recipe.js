@@ -1,29 +1,25 @@
-const router = require("express").Router();
-const RecipeController = require("../controllers/recipe");
+const router = require('express').Router();
+const RecipeController = require('../controllers/recipe');
 
-const authController = require("../controllers/auth2");
+const authController = require('../controllers/auth2');
 const requireAuth = authController.requireAuth;
 
 router
 
-  .get("/", RecipeController.getRecipes)
+  .get('/', RecipeController.getRecipes)
 
-  .get("/:recipeId", RecipeController.readRecipe)
+  .get('/:recipeId', RecipeController.readRecipe)
 
-  .post("/", RecipeController.createRecipe)
+  .post('/', requireAuth, RecipeController.createRecipe)
 
-  .put("/:recipeId", RecipeController.updateRecipe)
+  .put('/:recipeId', requireAuth, RecipeController.updateRecipe)
 
-  .delete("/:recipeId", RecipeController.deleteRecipe)
+  .delete('/:recipeId', requireAuth, RecipeController.deleteRecipe)
 
-  /***** BASIC CRUD */
+  .post('/:recipeId/product', requireAuth, RecipeController.addProduct)
 
-  // .get("/user/:userId", RecipeController.getUserRecipes)
+  .put('/:recipeId/product', requireAuth, RecipeController.editProduct)
 
-  .post("/:recipeId/product", requireAuth, RecipeController.addProduct)
-  
-  .put("/:recipeId/product", requireAuth, RecipeController.editProduct)
-
-  .delete("/:recipeId/product/:productId", RecipeController.deleteProduct);
+  .delete('/:recipeId/product/:productId', requireAuth, RecipeController.deleteProduct);
 
 module.exports = router;

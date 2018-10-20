@@ -1,34 +1,33 @@
-const UsersController = require('../controllers/user');
 const router = require('express').Router();
+const UsersController = require('../controllers/user');
+
+const authController = require('../controllers/auth2');
+const requireAuth = authController.requireAuth;
 
 router
-  .get('/', UsersController.getUsers)
+  .get('/', requireAuth, UsersController.getUsers)
 
-  .get('/:userId', UsersController.readUser)
+  .get('/:userId', requireAuth, UsersController.readUser)
 
-  .post('/', UsersController.createUser)
+  .post('/', requireAuth, UsersController.createUser)
 
-  .put('/:userId', UsersController.updateUser)
+  .put('/:userId', requireAuth, UsersController.updateUser)
 
-  .delete('/:userId', UsersController.deleteUser)
+  .delete('/:userId', requireAuth, UsersController.deleteUser)
 
+  .get('/:userId/products', requireAuth, UsersController.getRecentProducts)
 
+  .get('/:userId/goals', requireAuth, UsersController.getGoals)
 
-  /** Basic crud */
+  .get('/:userId/exercise', requireAuth, UsersController.getExercises)
 
-  .get('/:userId/products', UsersController.getRecentProducts)
+  .get('/:userId/recipe', requireAuth, UsersController.getRecipes)
 
-  .get('/:userId/goals', UsersController.getGoals)
+  .get('/:userId/history', requireAuth, UsersController.getHistory)
 
-  .get('/:userId/exercise', UsersController.getExercises)
+  .put('/:userId/macros', requireAuth, UsersController.setMacros)
 
-  .get('/:userId/recipe', UsersController.getRecipes)
-
-  .get('/:userId/history', UsersController.getHistory)
-
-  .put('/:userId/macros', UsersController.setMacros)
-
-  .put('/:userId/currentweight', UsersController.setCurrentWeight)
+  .put('/:userId/currentweight', requireAuth, UsersController.setCurrentWeight)
 
   .put('/:userId/goalweight', UsersController.setGoalWeight);
 

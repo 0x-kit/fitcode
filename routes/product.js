@@ -1,19 +1,22 @@
 const router = require('express').Router();
 const ProductsController = require('../controllers/product');
 
-router
-  .get('/search', ProductsController.searchProducts)
+const authController = require('../controllers/auth2');
+const requireAuth = authController.requireAuth;
 
-  .get('/user/:userId', ProductsController.getUserProducts)
+router
+  .get('/search', requireAuth, ProductsController.searchProducts)
+
+  .get('/user/:userId', requireAuth, ProductsController.getUserProducts)
 
   .get('/', ProductsController.getProducts)
 
-  .get('/:productId', ProductsController.readProduct)
+  .get('/:productId', requireAuth, ProductsController.readProduct)
 
-  .post('/', ProductsController.createProduct)
+  .post('/', requireAuth, ProductsController.createProduct)
 
-  .put('/:productId', ProductsController.updateProduct)
+  .put('/:productId', requireAuth, ProductsController.updateProduct)
 
-  .delete('/:productId', ProductsController.deleteProduct);
+  .delete('/:productId', requireAuth, ProductsController.deleteProduct);
 
 module.exports = router;

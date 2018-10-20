@@ -102,38 +102,35 @@ class History extends Component {
 
     return (
       <Container>
-        <Segment padded>
-          <Card raised fluid style={cardStyle}>
-            <Card.Content style={cardContentStyle}>
-              <Menu widths="2" style={menuStyle}>
-                <Menu.Item
-                  style={menuItemStyle}
-                  onClick={() => {
-                    this.hadleDateFromOpen();
-                  }}
-                  content={`From:  ${moment(this.props.fromDate).format('LL')}`}
-                />
-                <Menu.Item
-                  style={menuItemStyle}
-                  onClick={() => this.hadleDateToOpen()}
-                  content={`To:  ${moment(this.props.toDate).format('LL')}`}
-                />
-              </Menu>
-            </Card.Content>
-          </Card>
-
-          {dateFromOpen && this.renderFromDatePicker()}
-
-          {dateToOpen && this.renderToDatePicker()}
-
-          {loading ? (
-            <Dimmer active>
-              <Loader>Loading</Loader>
-            </Dimmer>
-          ) : (
-              this.renderHistory(diaries, weights)
-            )}
-        </Segment>
+        {loading ? (
+          <Dimmer active>
+            <Loader>Loading</Loader>
+          </Dimmer>
+        ) : (
+          <Segment padded>
+            <Card raised fluid style={cardStyle}>
+              <Card.Content style={cardContentStyle}>
+                <Menu widths="2" style={menuStyle}>
+                  <Menu.Item
+                    style={menuItemStyle}
+                    onClick={() => {
+                      this.hadleDateFromOpen();
+                    }}
+                    content={`From:  ${moment(this.props.fromDate).format('LL')}`}
+                  />
+                  <Menu.Item
+                    style={menuItemStyle}
+                    onClick={() => this.hadleDateToOpen()}
+                    content={`To:  ${moment(this.props.toDate).format('LL')}`}
+                  />
+                </Menu>
+              </Card.Content>
+            </Card>
+            {dateFromOpen && this.renderFromDatePicker()}
+            {dateToOpen && this.renderToDatePicker()}
+            {this.renderHistory(diaries, weights)}
+          </Segment>
+        )}
       </Container>
     );
   }

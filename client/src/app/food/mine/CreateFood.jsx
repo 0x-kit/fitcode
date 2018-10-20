@@ -9,7 +9,6 @@ class CreateFood extends Component {
   };
 
   onSubmit = values => {
-    //console.log(values);
     const { name, brand, calories, proteins, carbs, fats } = values;
     const newProduct = {
       name,
@@ -20,7 +19,6 @@ class CreateFood extends Component {
       fats,
       user: localStorage.getItem('userId')
     };
-    // console.log(newProduct);
     this.props.complexAddPersonalProduct(newProduct);
 
     this.handleClose();

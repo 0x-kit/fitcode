@@ -9,7 +9,6 @@ class CreateExercise extends Component {
   };
 
   onSubmit = values => {
-    // console.log(values);
     const { name, calories } = values;
     const newExercise = {
       user: localStorage.getItem('userId'),

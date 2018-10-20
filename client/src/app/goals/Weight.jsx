@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Container, Button, Grid, Statistic, Card, List, Transition } from 'semantic-ui-react';
+import { Segment, Container, Button, Grid, Statistic, Card, List, Transition, Dimmer, Loader } from 'semantic-ui-react';
 import moment from 'moment';
 import _ from 'lodash';
 import ManageWeight from 'app/goals/ManageWeight.jsx';
@@ -55,36 +55,39 @@ class Weight extends Component {
           {weightGrid(currentWeight, 'Current')}
         </Card>
       </Card.Group>
-    )
-  }
+    );
+  };
 
   render() {
     const { currentWeight, goalWeight, loading } = this.props;
     return (
       <Container>
+        {loading ? (
+          <Dimmer active>
+            <Loader inverted>Loading</Loader>
+          </Dimmer>
+        ) : (
+          <Segment padded>
+            <Card.Group centered>{this.renderMainCard()}</Card.Group>
 
-        <Segment padded>
-
-          <Card.Group centered>
-            {this.renderMainCard()}
-          </Card.Group>
-
-          {!loading && !_.isEmpty(currentWeight) && !_.isEmpty(goalWeight) ? (
-            this.renderWeights(currentWeight.weight, goalWeight.weight)
-          ) : (
-              <div />
+            {!_.isEmpty(currentWeight) && !_.isEmpty(goalWeight) ? (
+              this.renderWeights(currentWeight.weight, goalWeight.weight)
+            ) : (
+              <Dimmer active>
+                <Loader inverted>Loading</Loader>
+              </Dimmer>
             )}
 
-          <ManageWeight
-            goalWeight={this.props.goalWeight}
-            currentWeight={this.props.currentWeight}
-            complexEnterGoalWeight={this.props.complexEnterGoalWeight}
-            complexEnterCurrentWeight={this.props.complexEnterCurrentWeight}
-            openModal={this.state.modalOpen}
-            handleModal={this.handleModal}
-          />
-        </Segment>
-
+            <ManageWeight
+              goalWeight={this.props.goalWeight}
+              currentWeight={this.props.currentWeight}
+              complexEnterGoalWeight={this.props.complexEnterGoalWeight}
+              complexEnterCurrentWeight={this.props.complexEnterCurrentWeight}
+              openModal={this.state.modalOpen}
+              handleModal={this.handleModal}
+            />
+          </Segment>
+        )}
       </Container>
     );
   }
