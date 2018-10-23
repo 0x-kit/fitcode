@@ -322,13 +322,17 @@ exports.getHistory = async (req, res) => {
     const from = req.query.from;
     const to = req.query.to;
 
-    const fromDate = moment(from).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+    const fromDate = moment(from)
+      .format('YYYY-MM-DD')
+      .concat('T00:00:00.000Z');
 
-    const toDate = moment(to).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+    const toDate = moment(to)
+      .format('YYYY-MM-DD')
+      .concat('T00:00:00.000Z');
 
     if (!user) return res.status(404).json({ message: 'Not valid entries found for provided ID' });
 
-    const docs = await Diary.find({ user: userId, date: { $gte: fromDate, $lte: toDate } })
+    const docs = await Diary.find({ user: userId })
       .select(' products recipes user date part')
       .populate({ path: 'products.product' })
       .populate({
@@ -340,8 +344,14 @@ exports.getHistory = async (req, res) => {
 
     if (docs.length === 0) return res.status(200).json({ diaries: [], weights: [] });
 
-    const diaries = _.filter(docs, function(diary) {
+    let diaries = _.filter(docs, function(diary) {
       if (diary.products.length > 0 || diary.recipes.length > 0) {
+        return diary;
+      }
+    });
+
+    diaries = _.filter(diaries, function(diary) {
+      if (moment(diary.date).isBetween(fromDate, toDate, null, '[]')) {
         return diary;
       }
     });

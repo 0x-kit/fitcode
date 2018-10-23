@@ -26,12 +26,12 @@ exports.getDiaries = async (req, res) => {
     const reqDate = req.query.date;
 
     const startDate = moment(reqDate)
-      .startOf('day')
-      .format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+      .format('YYYY-MM-DD')
+      .concat('T00:00:00.000Z');
 
     const endDate = moment(reqDate)
-      .endOf('day')
-      .format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+      .format('YYYY-MM-DD')
+      .concat('T00:00:00.000Z');
 
     if (!user) return res.status(404).json({ message: 'Not valid entries found for provided ID' });
 

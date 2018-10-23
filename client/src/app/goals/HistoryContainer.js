@@ -4,7 +4,6 @@ import { compose, lifecycle } from 'recompose';
 import { goalsOperations } from 'app/goals/duck';
 import authOperations from 'app/root/duck/operations';
 import _ from 'lodash';
-import moment from 'moment';
 import withAuth from 'app/common/withAuth';
 import UserHistory from 'app/goals/History.jsx';
 
@@ -35,20 +34,16 @@ export default compose(
   withAuth,
   lifecycle({
     componentDidMount() {
-      this.props.complexFetchHistory(
-        moment()
-          .subtract(5, 'days')
-          .format('YYYY-MM-DD'),
-        this.props.date.format('YYYY-MM-DD')
-      );
+      this.props.complexFetchHistory(this.props.fromDate.format('YYYY-MM-DD'), this.props.toDate.format('YYYY-MM-DD'));
     },
 
     componentDidUpdate(prevProps) {
-      if (!this.props.fromDate.isSame(prevProps.fromDate) || !this.props.toDate.isSame(prevProps.toDate))
+      if (!this.props.fromDate.isSame(prevProps.fromDate) || !this.props.toDate.isSame(prevProps.toDate)) {
         this.props.complexFetchHistory(
           this.props.fromDate.format('YYYY-MM-DD'),
           this.props.toDate.format('YYYY-MM-DD')
         );
+      }
     },
     componentWillMount() {
       const path = this.props.location.pathname.split('/');

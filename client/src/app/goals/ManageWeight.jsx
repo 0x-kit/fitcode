@@ -15,7 +15,7 @@ class ManageWeight extends Component {
 
     if (this.props.currentWeight.weight !== currentWeight) {
       const newCurrentWeight = {
-        date: this.props.format('YYYY-MM-DD'),
+        date: this.props.date.format('YYYY-MM-DD'),
         weight: currentWeight
       };
       this.props.complexEnterCurrentWeight(newCurrentWeight);

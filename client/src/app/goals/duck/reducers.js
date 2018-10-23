@@ -3,7 +3,7 @@ import _ from 'lodash';
 import moment from 'moment';
 
 const INITIAL_STATE = {
-  fromDate: moment().subtract(5, 'days'),
+  fromDate: moment().subtract(4, 'days'),
   toDate: moment(),
   macros: {},
   diaries: [],
