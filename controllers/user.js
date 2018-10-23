@@ -160,9 +160,7 @@ exports.setCurrentWeight = async (req, res) => {
     let alreadyExists;
     const userId = req.params.userId;
     const currentWeight = req.body;
-    const currentDate = moment()
-      .startOf('day')
-      .format('YYYY-MM-DD');
+    const currentDate = currentWeight.date;
 
     const user = await User.findById(userId).select('goals');
 
@@ -170,43 +168,41 @@ exports.setCurrentWeight = async (req, res) => {
       return res.status(404).json({ message: 'Not valid entry found for provided ID' });
     }
 
-    if (currentWeight.date === currentDate) {
-      const weightsArr = user.goals.currentWeight;
+    const weightsArr = user.goals.currentWeight;
 
-      weightsArr.forEach(obj => {
-        if (!_.isUndefined(obj.date)) {
-          if (
-            moment(obj.date)
-              .startOf('day')
-              .format('YYYY-MM-DD') === currentDate
-          ) {
-            alreadyExists = obj;
-          }
+    weightsArr.forEach(obj => {
+      if (!_.isUndefined(obj.date)) {
+        if (
+          moment(obj.date)
+            .startOf('day')
+            .format('YYYY-MM-DD') === currentDate
+        ) {
+          alreadyExists = obj;
         }
-      });
+      }
+    });
 
-      if (!_.isUndefined(alreadyExists)) {
-        const query = await User.update(
-          {
-            _id: userId,
-            'goals.currentWeight._id': alreadyExists._id
-          },
-          {
-            $set: { 'goals.currentWeight.$': currentWeight }
-          },
-          {
-            new: true,
-            runValidators: true,
-            upsert: true
-          }
-        );
-
-        if (query.n === 1) {
-          const goals = await User.findById(userId).select('goals.currentWeight');
-          const currentWeight = goals.goals;
-
-          return res.status(200).json({ message: 'Current Weight sucessfully updated.', currentWeight });
+    if (!_.isUndefined(alreadyExists)) {
+      const query = await User.update(
+        {
+          _id: userId,
+          'goals.currentWeight._id': alreadyExists._id
+        },
+        {
+          $set: { 'goals.currentWeight.$': currentWeight }
+        },
+        {
+          new: true,
+          runValidators: true,
+          upsert: true
         }
+      );
+
+      if (query.n === 1) {
+        const goals = await User.findById(userId).select('goals.currentWeight');
+        const currentWeight = goals.goals;
+
+        return res.status(200).json({ message: 'Current Weight sucessfully updated.', currentWeight });
       }
     }
 

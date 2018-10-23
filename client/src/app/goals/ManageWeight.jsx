@@ -18,7 +18,11 @@ class ManageWeight extends Component {
         date: this.props.date.format('YYYY-MM-DD'),
         weight: currentWeight
       };
-      this.props.complexEnterCurrentWeight(newCurrentWeight);
+
+      this.props.complexEnterCurrentWeight(
+        newCurrentWeight,
+        this.props.date.format('YYYY-MM-DD').concat('T00:00:00.000Z')
+      );
     }
 
     this.props.handleModal(false);
@@ -66,8 +70,8 @@ class ManageWeight extends Component {
             {error}
           </Header>
         ) : (
-            ''
-          )}
+          ''
+        )}
       </Form.Field>
     );
   };

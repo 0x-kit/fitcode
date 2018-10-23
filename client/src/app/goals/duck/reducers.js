@@ -32,19 +32,23 @@ const goalsReducer = (state = INITIAL_STATE, action) => {
       };
 
     case types.FETCH_GOALS:
-      const { macros, currentWeight } = action.payload;
+      const { macros, currentWeight } = action.payload.data;
+      const { date } = action.payload;
+
       const goalWeight = {
-        weight: action.payload.goalWeight
+        weight: action.payload.data.goalWeight
       };
       const emptyWeight = {
         date: moment().format('YYYY-MM-DD'),
         weight: null
       };
+
+      const current = _.find(currentWeight, { date: date });
       return {
         ...state,
         macros: macros,
         goalWeight: goalWeight,
-        currentWeight: !_.isEmpty(currentWeight) ? currentWeight.slice(-1)[0] : emptyWeight
+        currentWeight: _.isUndefined(current) ? emptyWeight : current
       };
 
     case types.FETCH_HISTORY:
@@ -69,9 +73,11 @@ const goalsReducer = (state = INITIAL_STATE, action) => {
       };
 
     case types.SET_CURRENT_WEIGHT:
+      const weights = action.payload.currentWeight.currentWeight;
+      const current2 = _.find(weights, { date: action.payload.date });
       return {
         ...state,
-        currentWeight: action.payload.currentWeight.currentWeight.slice(-1)[0],
+        currentWeight: current2,
         message: action.payload.message
       };
 

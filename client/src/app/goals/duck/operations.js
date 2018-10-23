@@ -14,7 +14,7 @@ const {
   resetMessage
 } = ActionCreators;
 
-const complexFetchGoals = () => async dispatch => {
+const complexFetchGoals = date => async dispatch => {
   try {
     const token = localStorage.getItem('token');
 
@@ -24,7 +24,7 @@ const complexFetchGoals = () => async dispatch => {
 
     const goals = await axios.get(`/api/user/${userId}/goals`, reqConfig);
 
-    dispatch(fetchGoals(goals.data));
+    dispatch(fetchGoals(goals.data, date));
 
     dispatch(loading(false));
   } catch (error) {
@@ -73,7 +73,7 @@ const complexEditMacros = newMacros => async dispatch => {
   }
 };
 
-const complexEnterCurrentWeight = newCurrentWeight => async dispatch => {
+const complexEnterCurrentWeight = (newCurrentWeight, date) => async dispatch => {
   try {
     dispatch(loading(true));
 
@@ -84,8 +84,10 @@ const complexEnterCurrentWeight = newCurrentWeight => async dispatch => {
     const reqConfig = { headers: { authorization: token } };
 
     const response = await axios.put(`/api/user/${userId}/currentweight`, newCurrentWeight, reqConfig);
+
     const { currentWeight, message } = response.data;
-    dispatch(setCurrentWeight(currentWeight, message));
+
+    dispatch(setCurrentWeight(currentWeight, message, date));
 
     dispatch(loading(false));
   } catch (error) {

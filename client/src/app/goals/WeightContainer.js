@@ -10,8 +10,8 @@ import Weight from 'app/goals/Weight.jsx';
 const mapStateToProps = state => {
   return {
     currentWeight: state.goals.currentWeight,
-    weightHistory: state.goals.weightHistory,
     goalWeight: state.goals.goalWeight,
+    
     loading: state.goals.loading,
     date: state.food.date,
     errorMessage: state.goals.errorMessage
@@ -32,7 +32,7 @@ export default compose(
   withAuth,
   lifecycle({
     componentDidMount() {
-      this.props.complexFetchGoals();
+      this.props.complexFetchGoals(this.props.date.format('YYYY-MM-DD').concat('T00:00:00.000Z'));
     },
     componentWillMount() {
       const path = this.props.location.pathname.split('/');

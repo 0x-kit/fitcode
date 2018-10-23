@@ -9,7 +9,7 @@ const resetMessage = message => ({ type: types.RESET_MESSAGE, payload: message }
 
 const fetchError = error => ({ type: types.FETCH_GOALS_ERROR, payload: error });
 
-const fetchGoals = data => ({ type: types.FETCH_GOALS, payload: data });
+const fetchGoals = (data, date) => ({ type: types.FETCH_GOALS, payload: { data, date } });
 
 const fetchHistory = (diaries, weights) => ({ type: types.FETCH_HISTORY, payload: { diaries, weights } });
 
@@ -18,9 +18,9 @@ const editMacros = (macros, message) => ({
   payload: { macros, message }
 });
 
-const setCurrentWeight = (currentWeight, message) => ({
+const setCurrentWeight = (currentWeight, message, date) => ({
   type: types.SET_CURRENT_WEIGHT,
-  payload: { currentWeight, message }
+  payload: { currentWeight, message, date }
 });
 const setGoalWeight = (goalWeight, message) => ({
   type: types.SET_GOAL_WEIGHT,

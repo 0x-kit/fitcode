@@ -60,6 +60,7 @@ class Weight extends Component {
 
   render() {
     const { currentWeight, goalWeight, loading } = this.props;
+    //console.log(currentWeight, goalWeight);
     return (
       <Container>
         {loading ? (

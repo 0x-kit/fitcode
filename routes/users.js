@@ -17,7 +17,7 @@ router
 
   .get('/:userId/products', requireAuth, UsersController.getRecentProducts)
 
-  .get('/:userId/goals', requireAuth, UsersController.getGoals)
+  .get('/:userId/goals', UsersController.getGoals)
 
   .get('/:userId/exercise', requireAuth, UsersController.getExercises)
 
