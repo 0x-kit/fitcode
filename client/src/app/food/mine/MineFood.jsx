@@ -46,7 +46,7 @@ class MineFood extends Component {
     return (
       <Segment basic style={{ marginBottom: '0px' }}>
         <Card.Content style={{ textAlign: 'center' }}>
-          <Header size="medium">Your Personal Foods</Header>
+          <Header size="medium">Your Personal Food</Header>
           <Button secondary onClick={() => this.handleCreateModal(true)} compact primary content="Create Food" />
         </Card.Content>
       </Segment>

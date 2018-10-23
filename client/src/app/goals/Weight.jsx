@@ -79,6 +79,7 @@ class Weight extends Component {
             )}
 
             <ManageWeight
+              date={this.props.date}
               goalWeight={this.props.goalWeight}
               currentWeight={this.props.currentWeight}
               complexEnterGoalWeight={this.props.complexEnterGoalWeight}

@@ -28,6 +28,7 @@ class CreateExercise extends Component {
       label,
       labelPosition,
       maxLength,
+      type,
       meta: { touched, error }
     } = field;
 
@@ -44,7 +45,7 @@ class CreateExercise extends Component {
           label={label}
           labelPosition={labelPosition}
           placeholder={placeholder}
-          type="text"
+          type={type}
           maxLength={maxLength}
           {...field.input}
         />
@@ -73,6 +74,7 @@ class CreateExercise extends Component {
               label={{ basic: true, content: 'Name', className: 'createFood' }}
               labelPosition="left"
               placeholder="Enter name..."
+              type="text"
             />
 
             <Field
@@ -82,6 +84,7 @@ class CreateExercise extends Component {
               labelPosition="left"
               placeholder="Enter calories..."
               maxLength="7"
+              type="number"
             />
 
             <Button style={buttonStyle} secondary content="Add" />
@@ -96,6 +99,7 @@ const validate = values => {
   const errors = {};
   const required = 'Required field';
   const numbers = 'This field can only contain numbers';
+  const negative = 'This field cant contain negative values';
 
   if (!values.name) {
     errors.name = required;
@@ -107,6 +111,8 @@ const validate = values => {
     errors.calories = required;
   } else if (isNaN(values.calories)) {
     errors.calories = numbers;
+  } else if (values.calories < 0) {
+    errors.calories = negative;
   }
 
   return errors;

@@ -26,8 +26,8 @@ class History extends Component {
     };
   }
 
-  hadleDateFromOpen = () => this.setState({ dateFromOpen: !this.state.dateFromOpen });
-  hadleDateToOpen = () => this.setState({ dateToOpen: !this.state.dateToOpen });
+  hadleDateFromOpen = () => this.setState({ dateFromOpen: !this.state.dateFromOpen, dateToOpen: false });
+  hadleDateToOpen = () => this.setState({ dateToOpen: !this.state.dateToOpen, dateFromOpen: false });
 
   renderHistory = (diaries, weights) => {
     const datesObj = utils.enumerateDaysBetweenDates(this.props.fromDate.clone(), this.props.toDate.clone());
@@ -107,30 +107,30 @@ class History extends Component {
             <Loader>Loading</Loader>
           </Dimmer>
         ) : (
-          <Segment padded>
-            <Card raised fluid style={cardStyle}>
-              <Card.Content style={cardContentStyle}>
-                <Menu widths="2" style={menuStyle}>
-                  <Menu.Item
-                    style={menuItemStyle}
-                    onClick={() => {
-                      this.hadleDateFromOpen();
-                    }}
-                    content={`From:  ${moment(this.props.fromDate).format('LL')}`}
-                  />
-                  <Menu.Item
-                    style={menuItemStyle}
-                    onClick={() => this.hadleDateToOpen()}
-                    content={`To:  ${moment(this.props.toDate).format('LL')}`}
-                  />
-                </Menu>
-              </Card.Content>
-            </Card>
-            {dateFromOpen && this.renderFromDatePicker()}
-            {dateToOpen && this.renderToDatePicker()}
-            {this.renderHistory(diaries, weights)}
-          </Segment>
-        )}
+            <Segment padded>
+              <Card raised fluid style={cardStyle}>
+                <Card.Content style={cardContentStyle}>
+                  <Menu widths="2" style={menuStyle}>
+                    <Menu.Item
+                      style={menuItemStyle}
+                      onClick={() => {
+                        this.hadleDateFromOpen();
+                      }}
+                      content={`From:  ${moment(this.props.fromDate).format('LL')}`}
+                    />
+                    <Menu.Item
+                      style={menuItemStyle}
+                      onClick={() => this.hadleDateToOpen()}
+                      content={`To:  ${moment(this.props.toDate).format('LL')}`}
+                    />
+                  </Menu>
+                </Card.Content>
+              </Card>
+              {dateFromOpen && this.renderFromDatePicker()}
+              {dateToOpen && this.renderToDatePicker()}
+              {this.renderHistory(diaries, weights)}
+            </Segment>
+          )}
       </Container>
     );
   }

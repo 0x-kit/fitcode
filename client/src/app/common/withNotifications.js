@@ -8,18 +8,19 @@ const withNotifications = WrappedComponent =>
         description: message,
         icon: 'code',
         time: 1300,
-        title: 'Fitcode'
+        title: 'Fitcode',
+        size: 'huge'
       };
       setTimeout(() => {
         toast(toastOptions, () => cb(''));
-      }, 200);
+      }, 300);
     };
 
     render() {
       return (
         <div>
           <WrappedComponent dispatchNotification={this.dispatchNotification} {...this.props} />
-          <SemanticToastContainer animation="fade" position="top-center" />
+          <SemanticToastContainer animation="fade" position="bottom-center" />
         </div>
       );
     }

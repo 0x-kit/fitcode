@@ -55,8 +55,8 @@ class ManageMacros extends Component {
             {error}
           </Header>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </Form.Field>
     );
   };
@@ -76,7 +76,7 @@ class ManageMacros extends Component {
               component={this.renderField}
               labelInput="Calories"
               placeholder="Calories"
-              type="text"
+              type="number"
               maxLength="7"
               label={{ content: 'kcal' }}
               labelPosition="right"
@@ -86,7 +86,7 @@ class ManageMacros extends Component {
               component={this.renderField}
               labelInput="Proteins"
               placeholder="Proteins"
-              type="text"
+              type="number"
               maxLength="7"
               label={{ content: 'g' }}
               labelPosition="right"
@@ -96,7 +96,7 @@ class ManageMacros extends Component {
               component={this.renderField}
               labelInput="Carbs"
               placeholder="Carbs"
-              type="text"
+              type="number"
               maxLength="7"
               label={{ content: 'g' }}
               labelPosition="right"
@@ -106,7 +106,7 @@ class ManageMacros extends Component {
               component={this.renderField}
               labelInput="Fats"
               placeholder="Fats"
-              type="text"
+              type="number"
               maxLength="7"
               label={{ content: 'g' }}
               labelPosition="right"
@@ -126,29 +126,38 @@ const validate = values => {
   const errors = {};
   const required = 'Required field';
   const numbers = 'This field can only contain numbers';
+  const negative = 'This field cant contain negative values';
 
   if (!values.calories) {
     errors.calories = required;
   } else if (isNaN(values.calories)) {
     errors.calories = numbers;
+  } else if (values.calories < 0) {
+    errors.calories = negative;
   }
 
   if (!values.proteins) {
     errors.proteins = required;
   } else if (isNaN(values.proteins)) {
     errors.proteins = numbers;
+  } else if (values.proteins < 0) {
+    errors.proteins = negative;
   }
 
   if (!values.carbs) {
     errors.carbs = required;
   } else if (isNaN(values.carbs)) {
     errors.carbs = numbers;
+  } else if (values.carbs < 0) {
+    errors.carbs = negative;
   }
 
   if (!values.fats) {
     errors.fats = required;
   } else if (isNaN(values.fats)) {
     errors.fats = numbers;
+  } else if (values.fats < 0) {
+    errors.fats = negative;
   }
 
   return errors;

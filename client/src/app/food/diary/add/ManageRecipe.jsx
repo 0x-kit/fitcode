@@ -72,8 +72,8 @@ class ManageRecipes extends Component {
             {error}
           </Header>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </Form.Field>
     );
   };
@@ -116,7 +116,7 @@ class ManageRecipes extends Component {
               label={{ basic: true, content: 'qty' }}
               labelPosition="right"
               placeholder="Enter number of servings..."
-              type="text"
+              type="number"
               maxLength="7"
             />
             <Button style={buttonStyle} size="tiny" compact secondary content="Edit" floated="right" />
@@ -140,12 +140,16 @@ const validate = values => {
   const errors = {};
   const required = 'Required field';
   const numbers = 'This field can only contain numbers';
+  const negative = 'This field cant contain negative values';
 
   if (!values.serving) {
     errors.serving = required;
   } else if (isNaN(values.serving)) {
     errors.serving = numbers;
+  } else if (values.serving < 0) {
+    errors.serving = negative;
   }
+
   return errors;
 };
 

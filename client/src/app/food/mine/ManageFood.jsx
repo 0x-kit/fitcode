@@ -43,6 +43,7 @@ class ManageFood extends Component {
       label,
       labelPosition,
       maxLength,
+      type,
       meta: { touched, error }
     } = field;
 
@@ -59,7 +60,7 @@ class ManageFood extends Component {
           label={label}
           labelPosition={labelPosition}
           placeholder={placeholder}
-          type="text"
+          type={type}
           maxLength={maxLength}
           {...field.input}
         />
@@ -68,8 +69,8 @@ class ManageFood extends Component {
             {error}
           </Header>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </Form.Field>
     );
   };
@@ -88,6 +89,7 @@ class ManageFood extends Component {
               label={{ basic: true, content: 'Name', className: 'createFood' }}
               labelPosition="left"
               placeholder="Enter name..."
+              type="text"
             />
             <Field
               name="brand"
@@ -95,6 +97,7 @@ class ManageFood extends Component {
               label={{ basic: true, content: 'Brand', className: 'createFood' }}
               labelPosition="left"
               placeholder="Enter brand..."
+              type="text"
             />
 
             <Field
@@ -104,6 +107,7 @@ class ManageFood extends Component {
               labelPosition="left"
               placeholder="Enter calories..."
               maxLength="7"
+              type="number"
             />
 
             <Field
@@ -113,6 +117,7 @@ class ManageFood extends Component {
               labelPosition="left"
               placeholder="Enter proteins..."
               maxLength="7"
+              type="number"
             />
             <Field
               name="carbs"
@@ -121,6 +126,7 @@ class ManageFood extends Component {
               labelPosition="left"
               placeholder="Enter carbs..."
               maxLength="7"
+              type="number"
             />
             <Field
               name="fats"
@@ -129,6 +135,7 @@ class ManageFood extends Component {
               labelPosition="left"
               placeholder="Enter fats..."
               maxLength="7"
+              type="number"
             />
 
             <Button style={buttonStyle} size="tiny" secondary content="Edit" floated="right" />
@@ -152,6 +159,7 @@ const validate = values => {
   const errors = {};
   const required = 'Required field';
   const numbers = 'This field can only contain numbers';
+  const negative = 'This field cant contain negative values';
 
   if (!values.name) {
     errors.name = required;
@@ -169,24 +177,32 @@ const validate = values => {
     errors.calories = required;
   } else if (isNaN(values.calories)) {
     errors.calories = numbers;
+  } else if (values.calories < 0) {
+    errors.calories = negative;
   }
 
   if (!values.proteins) {
     errors.proteins = required;
   } else if (isNaN(values.proteins)) {
     errors.proteins = numbers;
+  } else if (values.proteins < 0) {
+    errors.proteins = negative;
   }
 
   if (!values.carbs) {
     errors.carbs = required;
   } else if (isNaN(values.carbs)) {
     errors.carbs = numbers;
+  } else if (values.carbs < 0) {
+    errors.carbs = negative;
   }
 
   if (!values.fats) {
     errors.fats = required;
   } else if (isNaN(values.fats)) {
     errors.fats = numbers;
+  } else if (values.fats < 0) {
+    errors.fats = negative;
   }
 
   return errors;

@@ -101,8 +101,8 @@ class ManageRecipe extends Component {
             {error}
           </Header>
         ) : (
-          ""
-        )}
+            ""
+          )}
       </Form.Field>
     );
   };
@@ -131,7 +131,7 @@ class ManageRecipe extends Component {
               label={{ basic: true, content: "g" }}
               labelPosition="right"
               placeholder="Enter weight..."
-              type="text"
+              type="number"
               maxLength="7"
             />
 
@@ -162,11 +162,14 @@ const validate = values => {
   const errors = {};
   const required = "Required field";
   const numbers = "This field can only contain numbers";
+  const negative = 'This field cant contain negative values';
 
   if (!values.serving) {
     errors.serving = required;
   } else if (isNaN(values.serving)) {
     errors.serving = numbers;
+  } else if (values.serving < 0) {
+    errors.serving = negative;
   }
   return errors;
 };

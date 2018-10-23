@@ -13,6 +13,7 @@ const mapStateToProps = state => {
     weightHistory: state.goals.weightHistory,
     goalWeight: state.goals.goalWeight,
     loading: state.goals.loading,
+    date: state.food.date,
     errorMessage: state.goals.errorMessage
   };
 };

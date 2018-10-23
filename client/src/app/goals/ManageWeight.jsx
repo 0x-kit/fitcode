@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import moment from 'moment';
 import { reduxForm, Field, reset } from 'redux-form';
 import { Header, Modal, Input, Form, Button, Label, Card } from 'semantic-ui-react';
 
@@ -16,7 +15,7 @@ class ManageWeight extends Component {
 
     if (this.props.currentWeight.weight !== currentWeight) {
       const newCurrentWeight = {
-        date: moment().format('YYYY-MM-DD'),
+        date: this.props.format('YYYY-MM-DD'),
         weight: currentWeight
       };
       this.props.complexEnterCurrentWeight(newCurrentWeight);
@@ -67,8 +66,8 @@ class ManageWeight extends Component {
             {error}
           </Header>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </Form.Field>
     );
   };
@@ -87,7 +86,7 @@ class ManageWeight extends Component {
               label={{ content: 'kg', pointing: 'left' }}
               labelPosition="right"
               placeholder="Enter your current weight..."
-              type="text"
+              type="number"
               maxLength="7"
               labelInput="Current Weight"
             />
@@ -97,7 +96,7 @@ class ManageWeight extends Component {
               label={{ content: 'kg', pointing: 'left' }}
               labelPosition="right"
               placeholder="Enter your goal weight..."
-              type="text"
+              type="number"
               maxLength="7"
               labelInput="Goal Weight"
             />
@@ -116,17 +115,22 @@ const validate = values => {
   const errors = {};
   const required = 'Required field';
   const numbers = 'This field can only contain numbers';
+  const negative = 'This field cant contain negative values';
 
   if (!values.goalWeight) {
     errors.goalWeight = required;
   } else if (isNaN(values.goalWeight)) {
     errors.goalWeight = numbers;
+  } else if (values.goalWeight < 0) {
+    errors.goalWeight = negative;
   }
 
   if (!values.currentWeight) {
     errors.currentWeight = required;
   } else if (isNaN(values.currentWeight)) {
     errors.currentWeight = numbers;
+  } else if (values.currentWeight < 0) {
+    errors.currentWeight = negative;
   }
 
   return errors;

@@ -85,7 +85,7 @@ exports.searchProducts = async (req, res) => {
       .or([{ name: term }, { brand: term }])
       .select('_id name brand calories carbs proteins fats');
 
-    const message = products.length === 0 ? 'Not products found.' : `${products.length} products found.`;
+    const message = products.length === 0 ? 'No products found.' : `${products.length} products found.`;
 
     return res.status(200).json({ message, products });
   } catch (err) {

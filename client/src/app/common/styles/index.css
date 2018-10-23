@@ -75,10 +75,6 @@ div.ui.huge.borderless.inverted.menu {
   font-size: 1.3rem !important;
 }
 
-div.ui.info.message {
-  font-size: 1em;
-}
-
 div.ui.info.message .header {
   color: #262636;
 }
@@ -115,12 +111,12 @@ a.item.dateFormat {
   width: 60% !important;
 }
 
-@media only screen and (max-width: 482px) {
+@media only screen and (max-width: 500px) {
   .ui.list .list > .item [class*='right floated'],
   .ui.list > .item [class*='right floated'] {
     width: 100%;
     float: left !important;
     margin: 0 0 0 2.35em !important;
     margin-left: 25px;
-  }
+  };
 }

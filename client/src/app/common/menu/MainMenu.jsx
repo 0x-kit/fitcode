@@ -12,21 +12,23 @@ class MainMenu extends Component {
     const { activeItem, handleItemClick } = this.state;
 
     return (
-      <Menu inverted size="large" borderless style={{ borderRadius: '0' }}>
+      <Menu inverted size="large" widths="3" borderless style={{ borderRadius: '0' }}>
         <Menu.Item as="a" header>
-          <h2>
-            <Icon color="green" name="code" style={{ marginRight: '0.3em' }} />
+          <h2 className="Fitcode">
+            <Icon color="green" name="code" style={{ marginRight: '0.4em' }} />
             Fitcode
           </h2>
         </Menu.Item>
+
         {authenticated && (
           <Dropdown item simple text={userInfo} style={{ paddingLeft: '0.1em', paddingRight: '0.1em' }}>
-            <Menu compact>
+            <Menu inverted compact>
               <Dropdown.Item
+
                 as={Link}
                 to="/"
                 text="Log out"
-                icon="power off"
+                icon={{ name: "power off", color: 'red' }}
                 active={activeItem === 'signout'}
                 onClick={handleItemClick}
                 style={{ textAlign: 'center' }}

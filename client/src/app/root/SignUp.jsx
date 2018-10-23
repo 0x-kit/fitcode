@@ -106,7 +106,7 @@ function validate(values) {
   if (!values.password) {
     errors.password = 'Enter a password';
   } else if (values.password.length < 5) {
-    errors.password = 'Password must be at least 5 characters length"';
+    errors.password = 'Password must be longer than 5 characters';
   }
   // If errors is empty, the form is fine to submit
   // If erros has *any* properties, reduxform assumes form is invalid
