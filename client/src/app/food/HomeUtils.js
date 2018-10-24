@@ -190,6 +190,17 @@ class HomeInfo {
     return datesLabels;
   };
 
+  static enumerateDaysBetweenDatesLabels = (startDate, endDate) => {
+    let now = startDate,
+      datesLabels = {};
+
+    while (now.isSameOrBefore(endDate)) {
+      datesLabels[now.format('Do')] = 0;
+      now.add(1, 'days');
+    }
+    return datesLabels;
+  };
+
   static datesArr = datesObj => {
     let dates = Object.assign({}, datesObj);
     let datesArr = [];

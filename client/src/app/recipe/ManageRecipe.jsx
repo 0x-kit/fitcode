@@ -9,7 +9,8 @@ import {
   Statistic,
   Form,
   Button,
-  Card
+  Card,
+  Label
 } from "semantic-ui-react";
 
 import HomeUtils from "app/food/HomeUtils";
@@ -89,13 +90,15 @@ class ManageRecipe extends Component {
       <Form.Field>
         <Input
           fluid
-          label={label}
           labelPosition={labelPosition}
           placeholder={placeholder}
           type={type}
           maxLength={maxLength}
           {...field.input}
-        />
+        >
+          <input style={{ textAlign: 'center' }} />
+          <Label basic>{label.content}</Label>
+        </Input>
         {validateError ? (
           <Header as="label" color="red" size="tiny" textAlign="center">
             {error}

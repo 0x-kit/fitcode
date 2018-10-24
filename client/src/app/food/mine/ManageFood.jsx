@@ -56,8 +56,8 @@ class ManageFood extends Component {
     return (
       <Form.Field>
         <Input
-          fluid
           label={label}
+          fluid
           labelPosition={labelPosition}
           placeholder={placeholder}
           type={type}
@@ -77,9 +77,9 @@ class ManageFood extends Component {
 
   render() {
     const { handleSubmit, openModal } = this.props;
-    const buttonStyle = { width: 155, marginBottom: 10, marginTop: 10 };
+    const buttonStyle = { width: 112, marginBottom: 10, marginTop: 10 };
     return (
-      <Modal style={{ width: 350, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
+      <Modal style={{ width: 270, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
         <Header subheader="Enter the nutritional info " content="Edit Your Food" />
         <Modal.Actions>
           <Form onSubmit={handleSubmit(this.onSubmit)}>

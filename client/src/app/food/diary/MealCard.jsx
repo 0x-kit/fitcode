@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
-import { Card, List, Button, Responsive } from 'semantic-ui-react';
+import { Card, List, Button } from 'semantic-ui-react';
 import utils from 'app/food/HomeUtils';
 import ManageDiaryFood from 'app/food/diary/ManageDiary.jsx';
 import ManageRecipe from 'app/food/diary/add/ManageRecipe.jsx';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
+
+
+const iconStyle = { float: 'left', marginTop: '5px' };
+const listContentStyle = { float: 'right', marginLeft: '5px' };
+const listHeaderStyle = { marginBottom: '5px' };
+
+const cardHeaderStyle = { display: 'inline' };
+const cardMetaStyle = { float: 'right', lineHeight: '1.8585em' }
+const cardContentStyle = { paddingTop: '0' };
 
 class MealCards extends Component {
   state = { modalOpenProduct: false, modalOpenRecipe: false };
@@ -30,27 +39,23 @@ class MealCards extends Component {
     this.setState({ modalOpenRecipe: flag });
   };
 
-  findMeal = (mealsArr, part) => {
-    return _.find(mealsArr, { part: part });
-  };
-
   renderMeal = (mealsArr, part) => {
-    const meal = this.findMeal(mealsArr, part);
+    const meal = _.find(mealsArr, { part: part });
     const { _id, products, recipes } = meal;
     const macrosPerMeal = utils.macrosPerMeal(meal);
 
     return (
       <Card key={_id} fluid raised>
         <Card.Content>
-          <Card.Header style={{ display: 'inline' }}>{part}</Card.Header>
-          <Card.Meta style={{ float: 'right', lineHeight: '1.8585em' }}>
+          <Card.Header style={cardHeaderStyle}>{part}</Card.Header>
+          <Card.Meta style={cardMetaStyle}>
             {this.renderActions(part, _id, this.props.match)}
           </Card.Meta>
         </Card.Content>
 
         <Card.Content>{this.renderList(products, recipes, _id)}</Card.Content>
 
-        <Card.Content extra style={{ paddingTop: '0' }}>
+        <Card.Content extra style={cardContentStyle}>
           {this.renderMacros(macrosPerMeal)}
         </Card.Content>
       </Card>
@@ -65,6 +70,8 @@ class MealCards extends Component {
       const macrosPerRecipe = utils.macrosPerRecipe(recipe.recipe, serving);
       const { calories, proteins, carbs, fats } = macrosPerRecipe;
       const header = `${calories * serving} CAL | ${proteins * serving} P | ${carbs * serving} C | ${fats * serving} F`;
+      const headerAs = { content: name, as: 'a' };
+      const servingContent = `(x${serving})`;
 
       return (
         <List.Item
@@ -73,11 +80,9 @@ class MealCards extends Component {
             this.selectRecipe(recipe, mealId);
           }}
         >
-          <List.Icon name="book" style={{ float: 'left', marginTop: '5px' }} size="large" verticalAlign="top" />
-
-          <List.Content floated="left" header={{ content: name, as: 'a' }} description={'Recipe'} />
-
-          <List.Content content={`(x${serving})`} style={{ float: 'right', marginLeft: '5px' }} />
+          <List.Icon name="book" style={iconStyle} size="large" />
+          <List.Content floated="left" header={headerAs} description={'Recipe'} />
+          <List.Content content={servingContent} style={listContentStyle} />
           <List.Content floated="right" content={header} />
         </List.Item>
       );
@@ -93,6 +98,8 @@ class MealCards extends Component {
 
       const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
       const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
+      const headerAs = { content: name, as: 'a' };
+      const gramsContent = `(${grams}g)`;
 
       return (
         <List.Item
@@ -101,16 +108,14 @@ class MealCards extends Component {
             this.selectProduct(product, mealId);
           }}
         >
-          <List.Icon name="food" style={{ float: 'left', marginTop: '5px' }} size="large" verticalAlign="top" />
-
+          <List.Icon name="food" style={iconStyle} size="large" verticalAlign="top" />
           <List.Content
             floated="left"
-            header={{ content: name, as: 'a' }}
+            header={headerAs}
             description={brand}
-            style={{ marginBottom: '5px' }}
+            style={listHeaderStyle}
           />
-
-          <List.Content content={`(${grams}g)`} style={{ float: 'right', marginLeft: '5px' }} />
+          <List.Content content={gramsContent} style={listContentStyle} />
           <List.Content floated="right" content={header} />
         </List.Item>
       );
@@ -161,16 +166,17 @@ class MealCards extends Component {
 
   renderList = (products, recipes, mealId) => {
     return (
-      <Responsive as={List} selection divided>
+      <List selection divided>
         {!_.isEmpty(recipes) && this.renderRecipeList(recipes, mealId)}
         {!_.isEmpty(products) && this.renderProductList(products, mealId)}
-      </Responsive>
+      </List>
     );
   };
 
   render() {
     const { mealsData } = this.props;
     const labels = ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Others'];
+
     return (
       <div>
         <ManageDiaryFood
@@ -180,12 +186,10 @@ class MealCards extends Component {
         />
 
         <ManageRecipe
-          complexDeleteDiaryRecipe={this.props.complexDeleteDiaryRecipe}
-          complexEditDiaryRecipe={this.props.complexEditDiaryRecipe}
           openModal={this.state.modalOpenRecipe}
           handleModal={this.handleModalRecipe}
-          selectedMeal={this.props.selectedMeal}
-          selectedRecipe={this.props.selectedRecipe}
+          {...this.props}
+
         />
 
         {!_.isEmpty(mealsData) ? (
@@ -195,8 +199,8 @@ class MealCards extends Component {
             })}
           </Card.Group>
         ) : (
-          <div />
-        )}
+            <div />
+          )}
       </div>
     );
   }
