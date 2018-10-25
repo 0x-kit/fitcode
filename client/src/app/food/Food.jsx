@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Segment, Divider, Dimmer, Loader } from 'semantic-ui-react';
+import { Container, Dimmer, Loader } from 'semantic-ui-react';
 import DietGoal from 'app/food/diary/DietGoal.jsx';
 import MealCard from 'app/food/diary/MealCard.jsx';
-import Date from 'app/food/diary/Date.jsx';
 
 class Food extends Component {
   render() {
@@ -15,12 +14,10 @@ class Food extends Component {
             <Loader inverted>Loading</Loader>
           </Dimmer>
         ) : (
-          <Segment raised>
-            <Date {...this.props} />
+          <Container>
             <DietGoal {...this.props} />
-            <Divider horizontal style={{ marginBottom: '0' }} />
             <MealCard {...this.props} />
-          </Segment>
+          </Container>
         )}
       </div>
     );

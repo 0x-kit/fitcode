@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Menu, Responsive, Container, Tab } from 'semantic-ui-react';
+import { Menu, Container, Tab } from 'semantic-ui-react';
+import Date from 'app/food/diary/Date.jsx';
 
 class MenuSecondary extends Component {
   constructor(props) {
@@ -94,14 +95,16 @@ class MenuSecondary extends Component {
   };
   render() {
     const menuStyle = { pointing: true, size: 'huge', borderless: true, widths: 3 };
-    const { authenticated, activeIndex, date } = this.props;
+    const { authenticated, activeIndex, date, loading } = this.props;
     return (
-      <div className="SecMenu" style={{ marginTop: 5 }}>
-        {authenticated && (
-          <Responsive as={Container}>
-            <Tab activeIndex={activeIndex} menu={menuStyle} panes={this.renderPanes(date)} />
-          </Responsive>
-        )}
+      <div className="SecMenu" style={{ marginTop: 5, marginBottom: 0 }}>
+        {authenticated &&
+          !loading && (
+            <Container>
+              <Date {...this.props} />
+              <Tab activeIndex={activeIndex} menu={menuStyle} panes={this.renderPanes(date)} />
+            </Container>
+          )}
       </div>
     );
   }

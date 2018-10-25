@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Container, Menu, Card, Dimmer, Loader } from 'semantic-ui-react';
+import { Container, Menu, Card, Dimmer, Loader } from 'semantic-ui-react';
 import Highcharts from 'highcharts';
 import moment from 'moment';
 import DatetimePicker from 'react-semantic-datetime';
@@ -18,14 +18,13 @@ import {
 import utils from 'app/food/HomeUtils';
 
 const menuStyle = { height: '1.1em', border: '0', boxShadow: 'none' };
-const menuItemStyle = { fontSize: '1.01428571rem', fontWeight: 700 };
+const menuItemStyle = { fontSize: '1.23em', fontWeight: 700 };
 const cardStyle = { padding: '0', marginBottom: '1em' };
-const cardContentStyle = { textAlign: 'center' };
+const cardContentStyle = { textAlign: 'center', padding: '0' };
 const chartStyle = { fontSize: '22px', fontFamily: 'Lato' };
 const chartTitleStyle = { fontSize: '22px', fontFamily: 'Lato' };
 const YAxisTitleStyle = { color: '#fb8c00' };
 const XAxisTitleStyle = { color: '#434348' };
-
 
 class History extends Component {
   constructor(props) {
@@ -44,7 +43,10 @@ class History extends Component {
     const caloriesHistory = utils.caloriesHistory(datesObj, diaries);
     const weightsHistory = utils.weightsHistory(datesObj, weights);
 
-    const datesObjForLabels = utils.enumerateDaysBetweenDatesLabels(this.props.fromDate.clone(), this.props.toDate.clone());
+    const datesObjForLabels = utils.enumerateDaysBetweenDatesLabels(
+      this.props.fromDate.clone(),
+      this.props.toDate.clone()
+    );
     const dateLabels = utils.datesArr(datesObjForLabels);
     return (
       <Card raised fluid>
@@ -118,35 +120,33 @@ class History extends Component {
             <Loader>Loading</Loader>
           </Dimmer>
         ) : (
-            <Segment padded>
-              <Card raised fluid style={cardStyle}>
-                <Card.Content style={cardContentStyle}>
-                  <Menu widths="2" borderless style={menuStyle}>
-                    <Menu.Item
-                      style={menuItemStyle}
-                      onClick={() => {
-                        this.hadleDateFromOpen();
-                      }}
-                      content={`From:  ${moment(this.props.fromDate).format('MMM Do [,] YY')}`}
-                    />
-                    <Menu.Item
-                      style={menuItemStyle}
-                      onClick={() => this.hadleDateToOpen()}
-                      content={`To:  ${moment(this.props.toDate).format('MMM Do [,] YY')}`}
-                    />
-                  </Menu>
-                </Card.Content>
-              </Card>
-              {dateFromOpen && this.renderFromDatePicker()}
-              {dateToOpen && this.renderToDatePicker()}
-              {this.renderHistory(diaries, weights)}
-            </Segment>
-          )}
+          <div>
+            <Card raised fluid style={cardStyle}>
+              <Card.Content style={cardContentStyle}>
+                <Menu widths="2" borderless style={menuStyle}>
+                  <Menu.Item
+                    style={menuItemStyle}
+                    onClick={() => {
+                      this.hadleDateFromOpen();
+                    }}
+                    content={`From:  ${moment(this.props.fromDate).format('MMM Do')}`}
+                  />
+                  <Menu.Item
+                    style={menuItemStyle}
+                    onClick={() => this.hadleDateToOpen()}
+                    content={`To:  ${moment(this.props.toDate).format('MMM Do')}`}
+                  />
+                </Menu>
+              </Card.Content>
+            </Card>
+            {dateFromOpen && this.renderFromDatePicker()}
+            {dateToOpen && this.renderToDatePicker()}
+            {this.renderHistory(diaries, weights)}
+          </div>
+        )}
       </Container>
     );
   }
 }
-
-
 
 export default withHighcharts(History, Highcharts);

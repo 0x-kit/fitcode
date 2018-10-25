@@ -6,14 +6,14 @@ import ManageRecipe from 'app/food/diary/add/ManageRecipe.jsx';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
-
 const iconStyle = { float: 'left', marginTop: '5px' };
 const listContentStyle = { float: 'right', marginLeft: '5px' };
 const listHeaderStyle = { marginBottom: '5px' };
 
-const cardHeaderStyle = { display: 'inline' };
-const cardMetaStyle = { float: 'right', lineHeight: '1.8585em' }
+const cardHeaderStyle = { display: 'inline', fontSize: '1.21428571rem' };
+const cardMetaStyle = { float: 'right', lineHeight: '1.8585em' };
 const cardContentStyle = { paddingTop: '0' };
+const cardStyle = { marginBottom: '0' };
 
 class MealCards extends Component {
   state = { modalOpenProduct: false, modalOpenRecipe: false };
@@ -45,12 +45,10 @@ class MealCards extends Component {
     const macrosPerMeal = utils.macrosPerMeal(meal);
 
     return (
-      <Card key={_id} fluid raised>
+      <Card style={cardStyle} key={_id} fluid raised>
         <Card.Content>
           <Card.Header style={cardHeaderStyle}>{part}</Card.Header>
-          <Card.Meta style={cardMetaStyle}>
-            {this.renderActions(part, _id, this.props.match)}
-          </Card.Meta>
+          <Card.Meta style={cardMetaStyle}>{this.renderActions(part, _id, this.props.match)}</Card.Meta>
         </Card.Content>
 
         <Card.Content>{this.renderList(products, recipes, _id)}</Card.Content>
@@ -109,12 +107,7 @@ class MealCards extends Component {
           }}
         >
           <List.Icon name="food" style={iconStyle} size="large" verticalAlign="top" />
-          <List.Content
-            floated="left"
-            header={headerAs}
-            description={brand}
-            style={listHeaderStyle}
-          />
+          <List.Content floated="left" header={headerAs} description={brand} style={listHeaderStyle} />
           <List.Content content={gramsContent} style={listContentStyle} />
           <List.Content floated="right" content={header} />
         </List.Item>
@@ -166,7 +159,7 @@ class MealCards extends Component {
 
   renderList = (products, recipes, mealId) => {
     return (
-      <List selection divided>
+      <List divided relaxed selection>
         {!_.isEmpty(recipes) && this.renderRecipeList(recipes, mealId)}
         {!_.isEmpty(products) && this.renderProductList(products, mealId)}
       </List>
@@ -185,12 +178,7 @@ class MealCards extends Component {
           {...this.props}
         />
 
-        <ManageRecipe
-          openModal={this.state.modalOpenRecipe}
-          handleModal={this.handleModalRecipe}
-          {...this.props}
-
-        />
+        <ManageRecipe openModal={this.state.modalOpenRecipe} handleModal={this.handleModalRecipe} {...this.props} />
 
         {!_.isEmpty(mealsData) ? (
           <Card.Group>
@@ -199,8 +187,8 @@ class MealCards extends Component {
             })}
           </Card.Group>
         ) : (
-            <div />
-          )}
+          <div />
+        )}
       </div>
     );
   }

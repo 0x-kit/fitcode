@@ -11,9 +11,9 @@ class DietGoal extends Component {
     const { toggleContent } = this.state;
     const { mealsData, macros, exerciseCals } = this.props;
     const remainingMacros = HomeUtils.macrosRemaining(mealsData, macros);
-
+    const cardStyle = { marginBottom: '0.8rem' };
     return (
-      <Card raised fluid onClick={() => this.handleContent()}>
+      <Card style={cardStyle} raised fluid onClick={() => this.handleContent()}>
         {!_.isEmpty(mealsData) ? (
           <div style={{ border: '0' }}>
             {!toggleContent

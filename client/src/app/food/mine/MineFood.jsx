@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ManageFood from 'app/food/mine/ManageFood.jsx';
 import CreateFood from 'app/food/mine/CreateFood.jsx';
 import _ from 'lodash';
-import { Card, List, Header, Responsive, Container, Segment, Button, Transition } from 'semantic-ui-react';
+import { Card, List, Header, Container, Segment, Button, Transition } from 'semantic-ui-react';
 
 class MineFood extends Component {
   state = { manageModal: false, createModal: false };
@@ -22,7 +22,7 @@ class MineFood extends Component {
       <Transition.Group as={List} duration={700} animation="fade" divided relaxed selection>
         {productsArr.map(product => {
           const { _id, name, brand, calories, proteins, carbs, fats } = product;
-          const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`
+          const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
           return (
             <List.Item onClick={() => this.selectProduct(product)} key={_id}>
               <List.Icon name="food" style={{ float: 'left', marginTop: '5px' }} size="large" verticalAlign="middle" />
@@ -43,10 +43,13 @@ class MineFood extends Component {
   }
 
   renderMainCard = () => {
+    const headerStyle = { fontSize: '1.21428571rem' };
     return (
       <Segment basic style={{ marginBottom: '0px' }}>
         <Card.Content style={{ textAlign: 'center' }}>
-          <Header size="medium">Your Personal Food</Header>
+          <Header style={headerStyle} size="medium">
+            Your Personal Food
+          </Header>
           <Button secondary onClick={() => this.handleCreateModal(true)} compact primary content="Create Food" />
         </Card.Content>
       </Segment>
@@ -59,8 +62,8 @@ class MineFood extends Component {
     const { manageModal, createModal } = this.state;
 
     return (
-      <Responsive as={Container}>
-        <Segment padded raised>
+      <Container>
+        <div>
           <Card.Group centered>
             {this.renderMainCard()}
 
@@ -79,8 +82,8 @@ class MineFood extends Component {
           />
 
           <CreateFood openModal={createModal} handleModal={this.handleCreateModal} {...this.props} />
-        </Segment>
-      </Responsive>
+        </div>
+      </Container>
     );
   }
 }

@@ -62,13 +62,13 @@ class Weight extends Component {
     const { currentWeight, goalWeight, loading } = this.props;
     //console.log(currentWeight, goalWeight);
     return (
-      <Container>
+      <div>
         {loading ? (
           <Dimmer active>
             <Loader inverted>Loading</Loader>
           </Dimmer>
         ) : (
-          <Segment padded>
+          <Container>
             <Card.Group centered>{this.renderMainCard()}</Card.Group>
 
             {!_.isEmpty(currentWeight) && !_.isEmpty(goalWeight) ? (
@@ -88,15 +88,15 @@ class Weight extends Component {
               openModal={this.state.modalOpen}
               handleModal={this.handleModal}
             />
-          </Segment>
+          </Container>
         )}
-      </Container>
+      </div>
     );
   }
 }
 
 const weightGrid = (weight, label) => {
-  const value = !_.isNull(weight) ? `${weight} Kg` : '';
+  const value = !_.isNull(weight) ? `${weight} Kg` : '- KG';
   const weightLabel = !_.isNull(weight) ? label : `Enter ${label} weight`;
   return (
     <Grid textAlign="center">

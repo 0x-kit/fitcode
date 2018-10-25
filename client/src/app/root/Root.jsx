@@ -24,7 +24,7 @@ const Root = props => {
     }
   ];
   return (
-    <div className="login-form" style={{ marginTop: 120 }}>
+    <div className="login-form" style={{ marginTop: 60 }}>
       <Grid>
         <Tab menu={{ secondary: true, pointing: true, size: 'massive' }} panes={tabs} />
       </Grid>

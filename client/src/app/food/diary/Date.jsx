@@ -73,7 +73,6 @@ class Date extends Component {
     const { myDate, dateTimeOpen } = this.state;
     const add = moment(myDate).add(1, 'day');
     const substract = moment(myDate).subtract(1, 'day');
-
     /*** */
     const paramBackwardRoute = this.checkBackwardPath() ? '' : substract.format('YYYY-MM-DD');
     const backwardRoute = { pathname: `/food/diary/${paramBackwardRoute}` };
@@ -83,7 +82,7 @@ class Date extends Component {
     /*** */
 
     return (
-      <Card raised fluid style={{ padding: '0', marginBottom: '18px' }}>
+      <Card raised fluid style={{ padding: '0', marginBottom: '10px' }}>
         {!loading ? (
           <div>
             <Menu widths="3" style={{ height: '1.1em', border: '0', boxShadow: 'none' }} borderless>

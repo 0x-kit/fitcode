@@ -14,12 +14,24 @@ import withNotifications from 'app/common/withNotifications';
 import { withRouter } from 'react-router';
 
 const mapDispatchToProps = dispatch => {
+  const complexAddDay = homeOperations.complexAddDay;
+  const complexSubstractDay = homeOperations.complexSubstractDay;
+  const complexSetDay = homeOperations.complexSetDay;
+
   const resetNotificationFood = homeOperations.resetMessage;
   const resetNotificationExercise = exerciseOperations.resetMessage;
   const resetNotificationsGoals = goalsOperations.resetMessage;
 
   return bindActionCreators(
-    { ...authOperations, resetNotificationFood, resetNotificationExercise, resetNotificationsGoals },
+    {
+      ...authOperations,
+      resetNotificationFood,
+      resetNotificationExercise,
+      resetNotificationsGoals,
+      complexAddDay,
+      complexSubstractDay,
+      complexSetDay
+    },
     dispatch
   );
 };
@@ -31,6 +43,7 @@ const mapStateToProps = state => {
     secondaryTab: state.auth.secondaryTab,
     activeIndex: state.auth.activeIndex,
     date: state.food.date,
+    loading: state.food.loading,
 
     foodNotification: state.food.message,
     exerciseNotification: state.exercise.message,

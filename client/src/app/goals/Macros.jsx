@@ -10,15 +10,6 @@ class Macros extends Component {
     this.setState({ modalOpen: flag });
   };
 
-  renderMacros = macros => {
-    const cardStyle = { padding: 15 };
-    return (
-      <Card fluid raised style={cardStyle}>
-        {macrosGrid(macros)}
-      </Card>
-    );
-  };
-
   renderMainCard = () => {
     return (
       <Segment basic style={{ marginBottom: '0px' }}>
@@ -30,62 +21,57 @@ class Macros extends Component {
     );
   };
 
+  renderMacros = macros => {
+    const { calories, proteins, carbs, fats } = macros;
+    const labels = ['Calories', 'Proteins', 'Carbs', 'Fats'];
+    const values = [calories, proteins, carbs, fats];
+    const cardStyle = { padding: 15 };
+
+    const renderGrid = (label, value, index) => (
+      <Card fluid raised style={cardStyle} key={index}>
+        <Grid textAlign="center">
+          <Grid.Row>
+            <Grid.Column computer={8} mobile={16}>
+              <Statistic value={value} label={label} size="tiny" />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Card>
+    );
+
+    return (
+      <Card.Group itemsPerRow="2">
+        {labels.map((label, index) => {
+          return renderGrid(label, values[index], index);
+        })}
+      </Card.Group>
+    );
+  };
+
   render() {
     const { loading, macros } = this.props;
 
     return (
-      <Container>
+      <div>
         {loading ? (
           <Dimmer active>
             <Loader inverted>Loading</Loader>
           </Dimmer>
         ) : (
-          <Segment padded>
-            <Card.Group centered>
-              {this.renderMainCard()}
-
-              {!loading && !_.isEmpty(macros) ? this.renderMacros(macros) : <div />}
-            </Card.Group>
+          <Container>
+            <Card.Group centered>{this.renderMainCard()} </Card.Group>
+            {!loading && !_.isEmpty(macros) ? this.renderMacros(macros) : <div />}
 
             <ManageMacros
               complexEditMacros={this.props.complexEditMacros}
               openModal={this.state.modalOpen}
               handleModal={this.handleModal}
             />
-          </Segment>
+          </Container>
         )}
-      </Container>
+      </div>
     );
   }
 }
-
-const macrosGrid = macros => {
-  const { calories, proteins, carbs, fats } = macros;
-  const labels = ['Calories', 'Proteins', 'Carbs', 'Fats'];
-  const values = [calories, proteins, carbs, fats];
-
-  const renderStatistic = (label, value, index) => (
-    <Grid.Column computer={4} tablet={4} mobile={8} key={index}>
-      <Statistic value={value} label={label} size="tiny" style={{ marginBottom: '15px', marginTop: '15px' }} />
-    </Grid.Column>
-  );
-  return (
-    <Grid textAlign="center">
-      {!_.isNull(calories && proteins && carbs && fats) ? (
-        <Grid.Row>
-          {labels.map((label, index) => {
-            return renderStatistic(label, values[index], index);
-          })}
-        </Grid.Row>
-      ) : (
-        <Grid.Row>
-          <Grid.Column computer={16}>
-            <Statistic label="Enter macros" size="tiny" />
-          </Grid.Column>
-        </Grid.Row>
-      )}
-    </Grid>
-  );
-};
 
 export default Macros;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ManageExercise from 'app/exercise/ManageExercise.jsx';
 import CreateExercise from 'app/exercise/CreateExercise.jsx';
 import _ from 'lodash';
-import { Card, List, Header, Responsive, Container, Segment, Button } from 'semantic-ui-react';
+import { Card, List, Header, Container, Segment, Button } from 'semantic-ui-react';
 
 class Exercise extends Component {
   state = { manageModal: false, createModal: false };
@@ -37,23 +37,20 @@ class Exercise extends Component {
   }
 
   renderMainCard = () => {
+    const headerStyle = { fontSize: '1.21428571rem' };
     return (
-      <Segment basic style={{ marginBottom: '0px' }}>
+      <Segment basic style={{ marginBottom: '0px', marginTop: '15px' }}>
         <Card.Content style={{ textAlign: 'center' }}>
-          <Header size="medium">Today's Exercises</Header>
-          <Button
-            content="Create Exercise"
-            secondary
-            onClick={() => this.handleCreateModal(true)}
-            compact
-            primary
-          />
+          <Header style={headerStyle} size="medium">
+            Today's Exercises
+          </Header>
+          <Button content="Create Exercise" secondary onClick={() => this.handleCreateModal(true)} compact primary />
         </Card.Content>
       </Segment>
     );
   };
 
-  renderSummary = (totalCalories) => {
+  renderSummary = totalCalories => {
     const header = totalCalories !== 0 ? totalCalories + ' KCAL' : '';
     const style = { paddingRight: '0.5em' };
     return (
@@ -62,17 +59,19 @@ class Exercise extends Component {
           <List.Content floated="right" header={header} style={style} />
         </List.Item>
       </List>
-    )
-  }
+    );
+  };
 
-  renderContent = (userExercises) => {
+  renderContent = userExercises => {
     return (
       <Card raised fluid>
-        <Card.Content>{this.renderExerciseList(userExercises)}</Card.Content>
+        <Card.Content>
+          <Card.Header>Exercises</Card.Header>
+          {this.renderExerciseList(userExercises)}
+        </Card.Content>
       </Card>
-    )
-  }
-
+    );
+  };
 
   render() {
     // handleSubmit provided by reduxForm
@@ -80,26 +79,22 @@ class Exercise extends Component {
     const { manageModal, createModal } = this.state;
 
     return (
-      <Responsive as={Container}>
-        <Segment padded>
-          <Card.Group centered>
-            {this.renderMainCard()}
+      <Container>
+        <Card.Group centered>
+          {this.renderMainCard()}
 
-            {!_.isEmpty(userExercises) &&
-              this.renderContent(userExercises)
-            }
+          {!_.isEmpty(userExercises) && this.renderContent(userExercises)}
 
-            <ManageExercise
-              openModal={manageModal}
-              handleModal={this.handleManageModal}
-              selectedExercise={selectedExercise}
-              {...this.props}
-            />
+          <ManageExercise
+            openModal={manageModal}
+            handleModal={this.handleManageModal}
+            selectedExercise={selectedExercise}
+            {...this.props}
+          />
 
-            <CreateExercise openModal={createModal} handleModal={this.handleCreateModal} {...this.props} />
-          </Card.Group>
-        </Segment>
-      </Responsive>
+          <CreateExercise openModal={createModal} handleModal={this.handleCreateModal} {...this.props} />
+        </Card.Group>
+      </Container>
     );
   }
 }

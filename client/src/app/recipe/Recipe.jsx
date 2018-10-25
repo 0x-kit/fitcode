@@ -24,11 +24,11 @@ class Recipe extends Component {
   renderRecipe = recipe => {
     const { _id, name, products } = recipe;
     const macrosPerRecipe = utils.macrosPerMeal(recipe);
-
+    const cardHeaderStyle = { display: 'inline', fontSize: '1.21428571rem' };
     return (
-      <Card key={_id} fluid raised>
+      <Card style={{ marginBottom: '0' }} key={_id} fluid raised>
         <Card.Content>
-          <Card.Header style={{ display: 'inline' }}>{name}</Card.Header>
+          <Card.Header style={cardHeaderStyle}>{name}</Card.Header>
           <Card.Meta style={{ float: 'right' }}>{this.renderAddButton(_id, this.props.match)}</Card.Meta>
         </Card.Content>
         {!_.isEmpty(products) && (
@@ -125,10 +125,13 @@ class Recipe extends Component {
   };
 
   renderMainCard = () => {
+    const headerStyle = { fontSize: '1.21428571rem' };
     return (
       <Segment basic style={{ marginBottom: '0px' }}>
         <Card.Content style={{ textAlign: 'center' }}>
-          <Header size="medium">Your Personal Recipes</Header>
+          <Header size="medium" style={headerStyle}>
+            Your Personal Recipes
+          </Header>
           <Button
             secondary
             onClick={() => this.handleCreateModal(true)}
@@ -148,25 +151,23 @@ class Recipe extends Component {
     const recipeArr = _.map(userRecipes).reverse();
 
     return (
-      <Responsive as={Container}>
+      <Container>
         {!loading ? (
-          <Segment padded raised>
-            <Card.Group centered>
-              {this.renderMainCard()}
+          <Card.Group centered>
+            {this.renderMainCard()}
 
-              {!_.isEmpty(userRecipes) &&
-                recipeArr.map(recipe => {
-                  return this.renderRecipe(recipe);
-                })}
-            </Card.Group>
-          </Segment>
+            {!_.isEmpty(userRecipes) &&
+              recipeArr.map(recipe => {
+                return this.renderRecipe(recipe);
+              })}
+          </Card.Group>
         ) : (
           <div />
         )}
         <ManageRecipeFood openModal={this.state.manageModal} handleModal={this.handleManageModal} {...this.props} />
 
         <CreateRecipe openModal={this.state.createModal} handleModal={this.handleCreateModal} {...this.props} />
-      </Responsive>
+      </Container>
     );
   }
 }
