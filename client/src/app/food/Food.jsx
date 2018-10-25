@@ -6,7 +6,7 @@ import MealCard from 'app/food/diary/MealCard.jsx';
 class Food extends Component {
   render() {
     const { loading } = this.props;
-
+    const containerStyle = { marginBottom: '2rem' };
     return (
       <div>
         {loading ? (
@@ -14,7 +14,7 @@ class Food extends Component {
             <Loader inverted>Loading</Loader>
           </Dimmer>
         ) : (
-          <Container>
+          <Container style={containerStyle}>
             <DietGoal {...this.props} />
             <MealCard {...this.props} />
           </Container>

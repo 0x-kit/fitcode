@@ -58,12 +58,12 @@ class MineFood extends Component {
 
   render() {
     // handleSubmit provided by reduxForm
-    const { selectedProduct, userProducts } = this.props;
+    const { selectedProduct, userProducts, loading } = this.props;
     const { manageModal, createModal } = this.state;
-
+    const containerStyle = { marginBottom: '2rem' };
     return (
-      <Container>
-        <div>
+      <Container style={containerStyle}>
+        {!loading ? (
           <Card.Group centered>
             {this.renderMainCard()}
 
@@ -73,16 +73,17 @@ class MineFood extends Component {
               </Card>
             )}
           </Card.Group>
+        ) : (
+          <div />
+        )}
+        <ManageFood
+          openModal={manageModal}
+          handleModal={this.handleManageModal}
+          selectedProduct={selectedProduct}
+          {...this.props}
+        />
 
-          <ManageFood
-            openModal={manageModal}
-            handleModal={this.handleManageModal}
-            selectedProduct={selectedProduct}
-            {...this.props}
-          />
-
-          <CreateFood openModal={createModal} handleModal={this.handleCreateModal} {...this.props} />
-        </div>
+        <CreateFood openModal={createModal} handleModal={this.handleCreateModal} {...this.props} />
       </Container>
     );
   }

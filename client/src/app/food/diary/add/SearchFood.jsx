@@ -5,7 +5,7 @@ import AddRecipe from 'app/food/diary/add/AddRecipe.jsx';
 import utils from 'app/food/HomeUtils';
 import _ from 'lodash';
 
-import { Card, Input, List, Header, Responsive, Container, Segment, Form } from 'semantic-ui-react';
+import { Card, Input, List, Header, Container, Form } from 'semantic-ui-react';
 
 class SearchFood extends Component {
   state = { modalOpenProduct: false, modalOpenRecipe: false };
@@ -122,70 +122,69 @@ class SearchFood extends Component {
       color: '#db2828'
     };
     const recipeArr = _.map(userRecipes).reverse();
+    const containerStyle = { marginBottom: '2rem' };
     return (
-      <Responsive as={Container}>
-        <Segment padded>
-          <Card raised fluid>
-            <Card.Content textAlign="center">
-              <Header size="medium">
-                Search our food database by name or brand
-                <Header.Subheader>{selectedMeal.part}</Header.Subheader>
-                <Header.Subheader style={searchStyle}>{searchMessage}</Header.Subheader>
-              </Header>
-            </Card.Content>
+      <Container style={containerStyle}>
+        <Card raised fluid>
+          <Card.Content textAlign="center">
+            <Header size="medium">
+              Search our food database by name or brand
+              <Header.Subheader>{selectedMeal.part}</Header.Subheader>
+              <Header.Subheader style={searchStyle}>{searchMessage}</Header.Subheader>
+            </Header>
+          </Card.Content>
 
-            <Card.Content>
-              <Form onSubmit={handleSubmit(this.onSubmit)}>
-                <Field name="term" component={this.renderField} />
-              </Form>
-            </Card.Content>
-          </Card>
+          <Card.Content>
+            <Form onSubmit={handleSubmit(this.onSubmit)}>
+              <Field name="term" component={this.renderField} />
+            </Form>
+          </Card.Content>
+        </Card>
 
-          {!loading ? (
-            products.length !== 0 && (
-              <Card raised fluid>
-                <Card.Content extra textAlign="center">
-                  Food
-                </Card.Content>
-                <Card.Content>{this.renderProductList(products)}</Card.Content>
-              </Card>
-            )
-          ) : (
-            <div />
-          )}
+        {!loading ? (
+          products.length !== 0 && (
+            <Card raised fluid>
+              <Card.Content extra textAlign="center">
+                Food
+              </Card.Content>
+              <Card.Content>{this.renderProductList(products)}</Card.Content>
+            </Card>
+          )
+        ) : (
+          <div />
+        )}
 
-          {!loading ? (
-            recipeArr.length !== 0 && (
-              <Card raised fluid>
-                <Card.Content extra textAlign="center">
-                  Recipes
-                </Card.Content>
-                <Card.Content>{this.renderRecipeList(recipeArr)}</Card.Content>
-              </Card>
-            )
-          ) : (
-            <div />
-          )}
+        {!loading ? (
+          recipeArr.length !== 0 && (
+            <Card raised fluid>
+              <Card.Content extra textAlign="center">
+                Recipes
+              </Card.Content>
+              <Card.Content>{this.renderRecipeList(recipeArr)}</Card.Content>
+            </Card>
+          )
+        ) : (
+          <div />
+        )}
 
-          <AddFood
-            complexAddDiaryProduct={this.props.complexAddDiaryProduct}
-            complexAddRecipeProduct={this.props.complexAddRecipeProduct}
-            openModal={modalOpenProduct}
-            handleModal={this.handleModalProduct}
-            selectedProduct={selectedProduct}
-            selectedMeal={selectedMeal}
-            selectedRecipe={selectedRecipe}
-          />
+        <AddFood
+          complexAddDiaryProduct={this.props.complexAddDiaryProduct}
+          complexAddRecipeProduct={this.props.complexAddRecipeProduct}
+          openModal={modalOpenProduct}
+          handleModal={this.handleModalProduct}
+          selectedProduct={selectedProduct}
+          selectedMeal={selectedMeal}
+          selectedRecipe={selectedRecipe}
+        />
 
-          <AddRecipe
-            complexAddDiaryRecipe={this.props.complexAddDiaryRecipe}
-            openModal={modalOpenRecipe}
-            handleModal={this.handleModalRecipe}
-            selectedMeal={selectedMeal}
-            selectedRecipe={selectedRecipe}
-          />
-        </Segment>
-      </Responsive>
+        <AddRecipe
+          complexAddDiaryRecipe={this.props.complexAddDiaryRecipe}
+          openModal={modalOpenRecipe}
+          handleModal={this.handleModalRecipe}
+          selectedMeal={selectedMeal}
+          selectedRecipe={selectedRecipe}
+        />
+      </Container>
     );
   }
 }

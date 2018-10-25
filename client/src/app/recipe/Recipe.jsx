@@ -149,9 +149,9 @@ class Recipe extends Component {
     // handleSubmit provided by reduxForm
     const { userRecipes, loading } = this.props;
     const recipeArr = _.map(userRecipes).reverse();
-
+    const containerStyle = { marginBottom: '2rem' };
     return (
-      <Container>
+      <Container style={containerStyle}>
         {!loading ? (
           <Card.Group centered>
             {this.renderMainCard()}

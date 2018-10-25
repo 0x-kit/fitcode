@@ -112,9 +112,9 @@ class History extends Component {
   render() {
     const { dateFromOpen, dateToOpen } = this.state;
     const { loading, diaries, weights } = this.props;
-
+    const containerStyle = { marginBottom: '2rem' };
     return (
-      <Container>
+      <Container style={containerStyle}>
         {loading ? (
           <Dimmer active>
             <Loader>Loading</Loader>

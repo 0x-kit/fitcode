@@ -77,9 +77,9 @@ class Exercise extends Component {
     // handleSubmit provided by reduxForm
     const { selectedExercise, userExercises } = this.props;
     const { manageModal, createModal } = this.state;
-
+    const containerStyle = { marginBottom: '2rem' };
     return (
-      <Container>
+      <Container style={containerStyle}>
         <Card.Group centered>
           {this.renderMainCard()}
 
