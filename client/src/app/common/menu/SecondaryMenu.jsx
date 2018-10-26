@@ -98,13 +98,12 @@ class MenuSecondary extends Component {
     const { authenticated, activeIndex, date, loading } = this.props;
     return (
       <div className="SecMenu" style={{ marginTop: 5, marginBottom: 0 }}>
-        {authenticated &&
-          !loading && (
-            <Container>
-              <Date {...this.props} />
-              <Tab activeIndex={activeIndex} menu={menuStyle} panes={this.renderPanes(date)} />
-            </Container>
-          )}
+        {authenticated && (
+          <Container>
+            <Date {...this.props} />
+            <Tab activeIndex={activeIndex} menu={menuStyle} panes={this.renderPanes(date)} />
+          </Container>
+        )}
       </div>
     );
   }

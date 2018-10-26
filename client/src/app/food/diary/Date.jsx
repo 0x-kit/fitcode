@@ -69,7 +69,7 @@ class Date extends Component {
   };
 
   render() {
-    const { loading } = this.props;
+    // const { loading } = this.props;
     const { myDate, dateTimeOpen } = this.state;
     const add = moment(myDate).add(1, 'day');
     const substract = moment(myDate).subtract(1, 'day');
@@ -83,48 +83,38 @@ class Date extends Component {
 
     return (
       <Card raised fluid style={{ padding: '0', marginBottom: '10px' }}>
-        {!loading ? (
-          <div>
-            <Menu widths="3" style={{ height: '1.1em', border: '0', boxShadow: 'none' }} borderless>
-              <Menu.Item
-                as={Link}
-                to={backwardRoute}
-                onClick={() => this.changeDay(substract, 'substract')}
-                className="backwardRoute"
-              >
-                <Icon size="big" link name="chevron circle left" style={{ color: 'black' }} />
-              </Menu.Item>
+        <Menu widths="3" style={{ height: '1.1em', border: '0', boxShadow: 'none' }} borderless>
+          <Menu.Item
+            as={Link}
+            to={backwardRoute}
+            onClick={() => this.changeDay(substract, 'substract')}
+            className="backwardRoute"
+          >
+            <Icon size="big" link name="chevron circle left" style={{ color: 'black' }} />
+          </Menu.Item>
 
-              <Menu.Item
-                style={{ fontSize: '1.23em', fontWeight: 700 }}
-                name={moment(myDate).format('LL')}
-                onClick={() => this.hadleDateOpen()}
-                className="dateFormat"
-              />
+          <Menu.Item
+            style={{ fontSize: '1.23em', fontWeight: 700 }}
+            name={moment(myDate).format('LL')}
+            onClick={() => this.hadleDateOpen()}
+            className="dateFormat"
+          />
 
-              <Menu.Item
-                as={Link}
-                to={forwardRoute}
-                onClick={() => this.changeDay(add, 'add')}
-                className="forwardRoute"
-              >
-                <Icon size="big" link name="chevron circle right" style={{ color: 'black' }} />
-              </Menu.Item>
-            </Menu>
-            {dateTimeOpen && (
-              <DatetimePicker
-                onChange={date => {
-                  this.changeDay(date);
-                  this.hadleDateOpen();
-                }}
-                moment={myDate}
-                time={false}
-                color="black"
-              />
-            )}
-          </div>
-        ) : (
-          <div />
+          <Menu.Item as={Link} to={forwardRoute} onClick={() => this.changeDay(add, 'add')} className="forwardRoute">
+            <Icon size="big" link name="chevron circle right" style={{ color: 'black' }} />
+          </Menu.Item>
+        </Menu>
+
+        {dateTimeOpen && (
+          <DatetimePicker
+            onChange={date => {
+              this.changeDay(date);
+              this.hadleDateOpen();
+            }}
+            moment={myDate}
+            time={false}
+            color="black"
+          />
         )}
       </Card>
     );
