@@ -86,8 +86,8 @@ class SearchFood extends Component {
     return (
       <List as={List} divided relaxed selection>
         {recipes.map(recipe => {
-          const { _id, name } = recipe;
-          const macrosPerRecipe = utils.macrosPerMeal(recipe);
+          const { _id, name, products } = recipe;
+          const macrosPerRecipe = utils.reduceMacros(products);
           const { calories, proteins, carbs, fats } = macrosPerRecipe;
           const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
 

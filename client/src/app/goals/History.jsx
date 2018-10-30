@@ -39,15 +39,14 @@ class History extends Component {
   hadleDateToOpen = () => this.setState({ dateToOpen: !this.state.dateToOpen, dateFromOpen: false });
 
   renderHistory = (diaries, weights) => {
-    const datesObj = utils.enumerateDaysBetweenDates(this.props.fromDate.clone(), this.props.toDate.clone());
+    const { fromDate, toDate } = this.props;
+    const datesObj = utils.enumerateDaysBetweenDates(fromDate.clone(), toDate.clone(), 'YYYY-MM-DD');
     const caloriesHistory = utils.caloriesHistory(datesObj, diaries);
     const weightsHistory = utils.weightsHistory(datesObj, weights);
 
-    const datesObjForLabels = utils.enumerateDaysBetweenDatesLabels(
-      this.props.fromDate.clone(),
-      this.props.toDate.clone()
-    );
+    const datesObjForLabels = utils.enumerateDaysBetweenDates(fromDate.clone(), toDate.clone(), 'Do');
     const dateLabels = utils.datesArr(datesObjForLabels);
+    
     return (
       <Card raised fluid>
         <HighchartsChart>

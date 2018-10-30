@@ -25,8 +25,9 @@ class MealCards extends Component {
     this.handleModalProduct(true);
   };
 
-  selectRecipe = (recipe, mealId) => {
-    this.props.selectRecipe(recipe.recipe, recipe.serving);
+  selectRecipe = (recipe, serving, mealId) => {
+   // console.log(recipe, serving);
+    this.props.selectRecipe(recipe, serving);
     this.props.selectMeal(mealId);
     this.handleModalRecipe(true);
   };
@@ -61,11 +62,10 @@ class MealCards extends Component {
   };
 
   renderRecipeList = (recipesArr = [], mealId) => {
-    return recipesArr.filter(recipe => recipe.recipe !== null).map(recipe => {
-      const { serving } = recipe;
-      const { name } = recipe.recipe;
-
-      const macrosPerRecipe = utils.macrosPerRecipe(recipe.recipe, serving);
+    return recipesArr.filter(recipe => recipe.recipe !== null).map(({ recipe, serving }) => {
+      const { name, products } = recipe;
+      const macrosPerRecipe = utils.reduceMacros(products, serving);
+      console.log(macrosPerRecipe,serving);
       const { calories, proteins, carbs, fats } = macrosPerRecipe;
       const header = `${calories * serving} CAL | ${proteins * serving} P | ${carbs * serving} C | ${fats * serving} F`;
       const headerAs = { content: name, as: 'a' };
@@ -75,7 +75,7 @@ class MealCards extends Component {
         <List.Item
           key={recipe._id}
           onClick={() => {
-            this.selectRecipe(recipe, mealId);
+            this.selectRecipe(recipe, serving, mealId);
           }}
         >
           <List.Icon name="book" style={iconStyle} size="large" />
@@ -93,8 +93,8 @@ class MealCards extends Component {
         _id,
         product: { name, brand }
       } = product;
-
       const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
+
       const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
       const headerAs = { content: name, as: 'a' };
       const gramsContent = `(${grams}g)`;

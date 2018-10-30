@@ -72,8 +72,8 @@ class ManageRecipes extends Component {
             {error}
           </Header>
         ) : (
-            ''
-          )}
+          ''
+        )}
       </Form.Field>
     );
   };
@@ -99,8 +99,7 @@ class ManageRecipes extends Component {
 
   render() {
     const { selectedRecipe, openModal, handleSubmit, serving } = this.props;
-
-    const macrosPerRecipe = utils.macrosPerMeal(selectedRecipe);
+    const macrosPerRecipe = utils.reduceMacros(selectedRecipe.products);
     const buttonStyle = { width: 130, marginBottom: 10, marginTop: 10 };
     const modalStyle = { width: 300, textAlign: 'center' };
 

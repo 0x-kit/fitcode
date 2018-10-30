@@ -22,8 +22,10 @@ class Recipe extends Component {
   handleCreateModal = flag => this.setState({ createModal: flag });
 
   renderRecipe = recipe => {
+    console.log(recipe);
     const { _id, name, products } = recipe;
-    const macrosPerRecipe = utils.macrosPerMeal(recipe);
+
+    const macrosPerRecipe = utils.reduceMacros(products);
     const cardHeaderStyle = { display: 'inline', fontSize: '1.21428571rem' };
     return (
       <Card style={{ marginBottom: '0' }} key={_id} fluid raised>

@@ -60,8 +60,8 @@ class AddRecipe extends Component {
             {error}
           </Header>
         ) : (
-            ''
-          )}
+          ''
+        )}
       </Form.Field>
     );
   };
@@ -87,7 +87,8 @@ class AddRecipe extends Component {
 
   render() {
     const { selectedRecipe, openModal, handleSubmit, serving } = this.props;
-    const macrosPerRecipe = utils.macrosPerMeal(selectedRecipe);
+
+    const macrosPerRecipe = utils.reduceMacros(selectedRecipe.products);
 
     const buttonStyle = { width: 272, marginBottom: 10, marginTop: 10 };
     const modalStyle = { width: 300, textAlign: 'center' };
