@@ -6,7 +6,7 @@ import { Header, Modal, Statistic, Button, Card, Form, Input, Label } from 'sema
 
 import _ from 'lodash';
 
-import utils from 'app/food/HomeUtils';
+import transform from 'app/common/Transformations';
 
 class ManageRecipes extends Component {
   state = { deleteRecipe: false };
@@ -99,7 +99,7 @@ class ManageRecipes extends Component {
 
   render() {
     const { selectedRecipe, openModal, handleSubmit, serving } = this.props;
-    const macrosPerRecipe = utils.reduceMacros(selectedRecipe.products);
+    const macrosPerRecipe = transform.reduceMacros(selectedRecipe.products);
     const buttonStyle = { width: 130, marginBottom: 10, marginTop: 10 };
     const modalStyle = { width: 300, textAlign: 'center' };
 

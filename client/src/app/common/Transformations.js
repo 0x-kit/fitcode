@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
 
-class HomeInfo {
+export default class Transformations {
   static per(num, amount) {
     return Math.round((num * amount) / 100);
   }
@@ -196,5 +196,3 @@ class HomeInfo {
     return weightHistory;
   }
 }
-
-export default HomeInfo;

@@ -2,9 +2,12 @@ import React from 'react';
 import { Tab } from 'semantic-ui-react';
 import SignInContainer from 'app/root/SignInContainer';
 import SignUpContainer from 'app/root/SignUpContainer';
-import Grid from 'app/common/styles/FormGrid.jsx';
+import Grid from 'app/common/FormGrid.jsx';
 
-const Root = props => {
+const menuStyle = { secondary: true, pointing: true, size: 'massive' }
+const divStyle = { marginTop: 60 }
+
+const Root = () => {
   const tabs = [
     {
       menuItem: 'Sign in',
@@ -24,9 +27,9 @@ const Root = props => {
     }
   ];
   return (
-    <div className="login-form" style={{ marginTop: 60 }}>
+    <div className="login-form" style={divStyle}>
       <Grid>
-        <Tab menu={{ secondary: true, pointing: true, size: 'massive' }} panes={tabs} />
+        <Tab menu={menuStyle} panes={tabs} />
       </Grid>
     </div>
   );

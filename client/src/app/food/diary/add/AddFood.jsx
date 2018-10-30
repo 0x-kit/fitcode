@@ -13,7 +13,7 @@ import {
   Label
 } from "semantic-ui-react";
 
-import HomeUtils from "app/food/HomeUtils";
+import transform from "app/common/Transformations";
 import _ from "lodash";
 
 class AddFood extends Component {
@@ -52,9 +52,9 @@ class AddFood extends Component {
         key={index}
         value={label}
         label={
-          isNaN(HomeUtils.per(term, serving))
+          isNaN(transform.per(term, serving))
             ? ""
-            : HomeUtils.per(term, serving)
+            : transform.per(term, serving)
         }
       />
     );

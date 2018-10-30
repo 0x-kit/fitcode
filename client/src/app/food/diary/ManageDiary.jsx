@@ -4,7 +4,7 @@ import { compose } from 'recompose';
 import { reduxForm, Field, formValueSelector, reset } from 'redux-form';
 import { Header, Modal, Input, Statistic, Form, Button, Card, Label } from 'semantic-ui-react';
 
-import utils from 'app/food/HomeUtils';
+import transform from 'app/common/Transformations';
 
 class ManageDiary extends Component {
   state = { deleteProduct: false };
@@ -42,7 +42,7 @@ class ManageDiary extends Component {
     const terms = [calories, proteins, carbs, fats];
 
     const renderStatistic = (label, term, serving, index) => (
-      <Statistic key={index} value={label} label={isNaN(utils.per(term, serving)) ? '' : utils.per(term, serving)} />
+      <Statistic key={index} value={label} label={isNaN(transform.per(term, serving)) ? '' : transform.per(term, serving)} />
     );
     return (
       <Card.Group centered>

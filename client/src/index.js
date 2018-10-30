@@ -13,24 +13,25 @@ import Root from 'app/root/RootContainer';
 import FoodContainer from 'app/food/FoodContainer';
 import SearchFoodContainer from 'app/food/diary/add/SearchFoodContainer';
 import MineFoodContainer from 'app/food/mine/MineFoodContainer';
-
 import MacrosContainer from 'app/goals/MacrosContainer';
 import WeightContainer from 'app/goals/WeightContainer';
 import HistoryContainer from 'app/goals/HistoryContainer';
 import ExerciseContainer from 'app/exercise/ExerciseContainer';
 import RecipeContainer from 'app/recipe/RecipeContainer';
-import NotFound from 'app/common/NotFound';
+import NotFound from 'app/common/NotFound.jsx';
+
+const initialState = {
+  authenticated: localStorage.getItem('token'),
+  userInfo: localStorage.getItem('userInfo'),
+  mainTab: 'food',
+  secondaryTab: 'diary',
+  activeIndex: 0
+}
 
 const store = createStore(
   rootReducer,
   {
-    auth: {
-      authenticated: localStorage.getItem('token'),
-      userInfo: localStorage.getItem('userInfo'),
-      mainTab: 'food',
-      secondaryTab: 'diary',
-      activeIndex: 0
-    }
+    auth: initialState
   },
   applyMiddleware(reduxThunk)
 );
@@ -49,7 +50,6 @@ ReactDOM.render(
           <Route path="/goals/weight" exact component={WeightContainer} />
           <Route path="/goals/history" exact component={HistoryContainer} />
           <Route path="/exercise" exact component={ExerciseContainer} />
-
           <Route path="/" exact component={Root} />
           <Route component={NotFound} />
         </Switch>

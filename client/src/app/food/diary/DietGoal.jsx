@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Grid, Statistic, Segment, Header } from 'semantic-ui-react';
-import HomeUtils from 'app/food/HomeUtils';
+import transform from 'app/common/Transformations';
 import _ from 'lodash';
 
 class DietGoal extends Component {
@@ -10,7 +10,7 @@ class DietGoal extends Component {
   render() {
     const { toggleContent } = this.state;
     const { mealsData, macros, exerciseCals } = this.props;
-    const remainingMacros = HomeUtils.macrosRemaining(mealsData, macros);
+    const remainingMacros = transform.macrosRemaining(mealsData, macros);
     const cardStyle = { marginBottom: '0.8rem' };
     return (
       <Card style={cardStyle} raised fluid onClick={() => this.handleContent()}>

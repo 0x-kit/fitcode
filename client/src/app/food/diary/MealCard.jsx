@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, List, Button } from 'semantic-ui-react';
-import utils from 'app/food/HomeUtils';
+import transform from 'app/common/Transformations';
 import ManageDiaryFood from 'app/food/diary/ManageDiary.jsx';
 import ManageRecipe from 'app/food/diary/add/ManageRecipe.jsx';
 import { Link } from 'react-router-dom';
@@ -26,7 +26,6 @@ class MealCards extends Component {
   };
 
   selectRecipe = (recipe, serving, mealId) => {
-   // console.log(recipe, serving);
     this.props.selectRecipe(recipe, serving);
     this.props.selectMeal(mealId);
     this.handleModalRecipe(true);
@@ -43,7 +42,7 @@ class MealCards extends Component {
   renderMeal = (mealsArr, part) => {
     const meal = _.find(mealsArr, { part: part });
     const { _id, products, recipes } = meal;
-    const macrosPerMeal = utils.macrosPerMeal(meal);
+    const macrosPerMeal = transform.macrosPerMeal(meal);
 
     return (
       <Card style={cardStyle} key={_id} fluid raised>
@@ -63,10 +62,11 @@ class MealCards extends Component {
 
   renderRecipeList = (recipesArr = [], mealId) => {
     return recipesArr.filter(recipe => recipe.recipe !== null).map(({ recipe, serving }) => {
+
       const { name, products } = recipe;
-      const macrosPerRecipe = utils.reduceMacros(products, serving);
-      console.log(macrosPerRecipe,serving);
+      const macrosPerRecipe = transform.reduceMacros(products, serving);
       const { calories, proteins, carbs, fats } = macrosPerRecipe;
+
       const header = `${calories * serving} CAL | ${proteins * serving} P | ${carbs * serving} C | ${fats * serving} F`;
       const headerAs = { content: name, as: 'a' };
       const servingContent = `(x${serving})`;
@@ -93,7 +93,7 @@ class MealCards extends Component {
         _id,
         product: { name, brand }
       } = product;
-      const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
+      const { calories, proteins, carbs, fats, grams } = transform.macrosPerProduct(product);
 
       const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
       const headerAs = { content: name, as: 'a' };
@@ -187,8 +187,8 @@ class MealCards extends Component {
             })}
           </Card.Group>
         ) : (
-          <div />
-        )}
+            <div />
+          )}
       </div>
     );
   }

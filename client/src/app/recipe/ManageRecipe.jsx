@@ -13,7 +13,7 @@ import {
   Label
 } from "semantic-ui-react";
 
-import HomeUtils from "app/food/HomeUtils";
+import transform from "app/common/Transformations";
 
 class ManageRecipe extends Component {
   state = { deleteProduct: false };
@@ -55,9 +55,9 @@ class ManageRecipe extends Component {
         key={index}
         value={label}
         label={
-          isNaN(HomeUtils.per(term, serving))
+          isNaN(transform.per(term, serving))
             ? ""
-            : HomeUtils.per(term, serving)
+            : transform.per(term, serving)
         }
       />
     );

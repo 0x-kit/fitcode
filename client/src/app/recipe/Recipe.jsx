@@ -5,7 +5,7 @@ import { Card, List, Header, Responsive, Container, Segment, Button } from 'sema
 
 import ManageRecipeFood from 'app/recipe/ManageRecipe.jsx';
 import CreateRecipe from 'app/recipe/CreateRecipe.jsx';
-import utils from 'app/food/HomeUtils';
+import transform from 'app/common/Transformations';
 
 class Recipe extends Component {
   state = { manageModal: false, createModal: false };
@@ -22,10 +22,9 @@ class Recipe extends Component {
   handleCreateModal = flag => this.setState({ createModal: flag });
 
   renderRecipe = recipe => {
-    console.log(recipe);
     const { _id, name, products } = recipe;
 
-    const macrosPerRecipe = utils.reduceMacros(products);
+    const macrosPerRecipe = transform.reduceMacros(products);
     const cardHeaderStyle = { display: 'inline', fontSize: '1.21428571rem' };
     return (
       <Card style={{ marginBottom: '0' }} key={_id} fluid raised>
@@ -50,7 +49,7 @@ class Recipe extends Component {
             product: { name, brand }
           } = product;
 
-          const { calories, proteins, carbs, fats, grams } = utils.macrosPerProduct(product);
+          const { calories, proteins, carbs, fats, grams } = transform.macrosPerProduct(product);
           const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
 
           return (
@@ -164,8 +163,8 @@ class Recipe extends Component {
               })}
           </Card.Group>
         ) : (
-          <div />
-        )}
+            <div />
+          )}
         <ManageRecipeFood openModal={this.state.manageModal} handleModal={this.handleManageModal} {...this.props} />
 
         <CreateRecipe openModal={this.state.createModal} handleModal={this.handleCreateModal} {...this.props} />

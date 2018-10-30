@@ -15,7 +15,7 @@ import {
   SplineSeries,
   Tooltip
 } from 'react-jsx-highcharts';
-import utils from 'app/food/HomeUtils';
+import transform from 'app/common/Transformations';
 
 const menuStyle = { height: '1.1em', border: '0', boxShadow: 'none' };
 const menuItemStyle = { fontSize: '1.23em', fontWeight: 700 };
@@ -40,12 +40,12 @@ class History extends Component {
 
   renderHistory = (diaries, weights) => {
     const { fromDate, toDate } = this.props;
-    const datesObj = utils.enumerateDaysBetweenDates(fromDate.clone(), toDate.clone(), 'YYYY-MM-DD');
-    const caloriesHistory = utils.caloriesHistory(datesObj, diaries);
-    const weightsHistory = utils.weightsHistory(datesObj, weights);
+    const datesObj = transform.enumerateDaysBetweenDates(fromDate.clone(), toDate.clone(), 'YYYY-MM-DD');
+    const caloriesHistory = transform.caloriesHistory(datesObj, diaries);
+    const weightsHistory = transform.weightsHistory(datesObj, weights);
 
-    const datesObjForLabels = utils.enumerateDaysBetweenDates(fromDate.clone(), toDate.clone(), 'Do');
-    const dateLabels = utils.datesArr(datesObjForLabels);
+    const datesObjForLabels = transform.enumerateDaysBetweenDates(fromDate.clone(), toDate.clone(), 'Do');
+    const dateLabels = transform.datesArr(datesObjForLabels);
     
     return (
       <Card raised fluid>

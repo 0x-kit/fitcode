@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import AddFood from 'app/food/diary/add/AddFood.jsx';
 import AddRecipe from 'app/food/diary/add/AddRecipe.jsx';
-import utils from 'app/food/HomeUtils';
+import transform from 'app/common/Transformations';
 import _ from 'lodash';
 
 import { Card, Input, List, Header, Container, Form } from 'semantic-ui-react';
@@ -87,7 +87,7 @@ class SearchFood extends Component {
       <List as={List} divided relaxed selection>
         {recipes.map(recipe => {
           const { _id, name, products } = recipe;
-          const macrosPerRecipe = utils.reduceMacros(products);
+          const macrosPerRecipe = transform.reduceMacros(products);
           const { calories, proteins, carbs, fats } = macrosPerRecipe;
           const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
 

@@ -26,7 +26,7 @@ const UserSchema = new Schema({
   password: {
     type: String,
     validate: {
-      validator: password => password.length > 5,
+      validator: password => password.length < 5,
       message: 'Password must be longer than 5 characters.'
     },
     required: [true, 'Password is required.']
@@ -48,11 +48,11 @@ const UserSchema = new Schema({
 });
 
 /** Methods */
-UserSchema.methods.comparePassword = function(password) {
+UserSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-UserSchema.methods.generateJwt = function() {
+UserSchema.methods.generateJwt = function () {
   const user = this;
   const timestamp = new Date().getTime();
 
@@ -60,7 +60,7 @@ UserSchema.methods.generateJwt = function() {
 };
 
 /** Hooks */
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function (next) {
   const user = this;
 
   const diaries = _.times(5, index => DiaryModel.createDiary(index, user._id));
@@ -70,7 +70,7 @@ UserSchema.pre('save', async function(next) {
   next();
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function (next) {
   let user = this;
 
   if (!user.isModified('password')) {

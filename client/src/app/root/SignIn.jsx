@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
-import FormGrid from 'app/common/styles/FormGrid.jsx';
+import Grid from 'app/common/FormGrid.jsx';
 import { Button, Form, Segment, Icon, Header, Input, Divider } from 'semantic-ui-react';
 
 class Signin extends Component {
@@ -45,7 +45,7 @@ class Signin extends Component {
     const { handleSubmit } = this.props;
 
     return (
-      <FormGrid>
+      <Grid>
         <Form onSubmit={handleSubmit(this.onSubmit)}>
           <Segment>
             <Field
@@ -77,7 +77,7 @@ class Signin extends Component {
             {this.props.errorMessage}
           </Header>
         </Form>
-      </FormGrid>
+      </Grid>
     );
   }
 }
