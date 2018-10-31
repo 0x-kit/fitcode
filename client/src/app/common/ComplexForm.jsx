@@ -26,27 +26,45 @@ const renderField = (field) => {
     if (type === 'text' || type === 'email' || type === 'number' || type === 'checkbox') {
         return (
             <Form.Field>
-                <Input
-                    labelPosition={labelPosition}
-                    placeholder={placeholder}
-                    type={type}
-                    maxLength={maxLength}
-                    {...field.input}
-                >
-                    <Label style={labelStyle} basic>
-                        {labelInput}
-                    </Label>
-                    <input style={inputStyle} />
-                    <Label basic style={labelStyleContent}>{label.content}</Label>
-                </Input>
-                {validateError ? (
-                    <Header as="label" color="red" size="tiny" textAlign="center">
-                        {error}
-                    </Header>
-                ) : (
-                        ''
+
+                {label.content !== '' ? (
+                    <Input
+                        labelPosition={labelPosition}
+                        placeholder={placeholder}
+                        type={type}
+                        maxLength={maxLength}
+                        {...field.input}
+                    >
+                        <Label style={labelStyle} basic>
+                            {labelInput}
+                        </Label>
+                        <input style={inputStyle} />
+                        <Label basic style={labelStyleContent}>{label.content}</Label>
+                    </Input>) : (
+                        <Input
+                            labelPosition={labelPosition}
+                            placeholder={placeholder}
+                            type={type}
+                            maxLength={maxLength}
+                            {...field.input}
+                        >
+                            <Label style={labelStyle} basic>
+                                {labelInput}
+                            </Label>
+                            <input style={inputStyle} />
+                        </Input>
                     )}
-            </Form.Field>)
+
+                {
+                    validateError ? (
+                        <Header as="label" color="red" size="tiny" textAlign="center">
+                            {error}
+                        </Header>
+                    ) : (
+                            ''
+                        )
+                }
+            </Form.Field >)
     } else if (type === 'select') {
         const { options, name } = field
         return (
@@ -73,8 +91,10 @@ const complexForm = ({ handleSubmit, fields, buttons }) => {
             ))}
 
             {buttons.map((button, index) => (
-                <Button
+
+                < Button
                     key={index}
+                    style={button.style}
                     {...button}
                 />
             ))}

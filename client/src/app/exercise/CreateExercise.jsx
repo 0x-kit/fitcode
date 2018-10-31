@@ -1,8 +1,28 @@
 import React, { Component } from 'react';
-import { reduxForm, Field, reset } from 'redux-form';
-import { Header, Modal, Input, Form, Button } from 'semantic-ui-react';
+import { reduxForm, reset } from 'redux-form';
+import { Header, Modal } from 'semantic-ui-react';
 import moment from 'moment';
+import ComplexForm from 'app/common/ComplexForm.jsx'
+import { validateNumbers, validateText } from 'app/common/Validation.js'
+
+const modalStyle = { width: 300, textAlign: 'center' };
+const buttonStyle = { marginBottom: '15px' };
+const inputStyle = { textAlign: 'center', width: 40 };
+const labelStyle = { width: '6em', textAlign: 'center' }
+
+
 class CreateExercise extends Component {
+
+  fields = [
+    { name: 'name', type: 'text', placeholder: 'Enter name', label: { content: '', basic: 'true'}, labelPosition: 'left', labelInput: 'Name', inputStyle, labelStyle },
+    { name: 'calories', type: 'number', placeholder: 'Enter calories', label: { content: 'kcal', pointing: 'left' }, labelPosition: 'right', labelInput: 'Calories', inputStyle, labelStyle },
+  ]
+
+  buttons = [
+    { content: 'Add', secondary: true, style: buttonStyle }
+  ]
+
+
   handleClose = () => {
     this.props.handleModal(false);
     this.props.dispatch(reset('createExercise'));
@@ -22,99 +42,23 @@ class CreateExercise extends Component {
     this.handleClose();
   };
 
-  renderField = field => {
-    const {
-      placeholder,
-      label,
-      labelPosition,
-      maxLength,
-      type,
-      meta: { touched, error }
-    } = field;
-
-    let validateError = false;
-
-    if (touched && error) {
-      validateError = true;
-    }
-
-    return (
-      <Form.Field>
-        <Input
-          fluid
-          label={label}
-          labelPosition={labelPosition}
-          placeholder={placeholder}
-          type={type}
-          maxLength={maxLength}
-          {...field.input}
-        />
-        {validateError ? (
-          <Header as="label" color="red" size="tiny" textAlign="center">
-            {error}
-          </Header>
-        ) : (
-            ''
-          )}
-      </Form.Field>
-    );
-  };
-
   render() {
     const { handleSubmit, openModal } = this.props;
-    const buttonStyle = { marginBottom: 10, width: 270 };
+
     return (
-      <Modal style={{ width: 300, textAlign: 'center' }} open={openModal} onClose={this.handleClose} size="mini">
+      <Modal style={modalStyle} open={openModal} onClose={this.handleClose} size="mini">
         <Header subheader="Enter name and calories" content="Add Your Exercise" />
         <Modal.Actions>
-          <Form onSubmit={handleSubmit(this.onSubmit)}>
-            <Field
-              name="name"
-              component={this.renderField}
-              label={{ basic: true, content: 'Name', className: 'createFood' }}
-              labelPosition="left"
-              placeholder="Enter name..."
-              type="text"
-            />
-
-            <Field
-              name="calories"
-              component={this.renderField}
-              label={{ basic: true, content: 'Calories', className: 'createFood' }}
-              labelPosition="left"
-              placeholder="Enter calories..."
-              maxLength="7"
-              type="number"
-            />
-
-            <Button style={buttonStyle} secondary content="Add" />
-          </Form>
+          <ComplexForm handleSubmit={handleSubmit(this.onSubmit)} fields={this.fields} buttons={this.buttons} />
         </Modal.Actions>
       </Modal>
     );
   }
 }
 
-const validate = values => {
-  const errors = {};
-  const required = 'Required field';
-  const numbers = 'This field can only contain numbers';
-  const negative = 'This field cant contain negative values';
 
-  if (!values.name) {
-    errors.name = required;
-  } else if (values.name.length < 2) {
-    errors.name = 'Name must be at least 2 characters length"';
-  }
-
-  if (!values.calories) {
-    errors.calories = required;
-  } else if (isNaN(values.calories)) {
-    errors.calories = numbers;
-  } else if (values.calories < 0) {
-    errors.calories = negative;
-  }
-
+const validate = ({ name, calories }) => {
+  const errors = { ...validateNumbers('calories', calories), ...validateText('name', name) }
   return errors;
 };
 

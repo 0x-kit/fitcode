@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { reduxForm, reset } from 'redux-form';
 import { Header, Modal } from 'semantic-ui-react';
+
 import ComplexForm from 'app/common/ComplexForm.jsx';
 import { validateNumbers } from 'app/common/Validation.js';
 
@@ -13,15 +14,15 @@ const labelStyle = { width: '5.1em', textAlign: 'center' }
 const labelStyleContent = { width: '3.3em', textAlign: 'center' }
 
 class ManageMacros extends Component {
-  buttons = [
-    { content: 'Update', secondary: true, style: { buttonStyle } }
-  ];
-
   fields = [
     { name: 'calories', type: 'number', placeholder: 'Calories', label: { content: 'kcal' }, labelPosition: 'right', maxLength: 7, labelInput: 'Calories', inputStyle, labelStyle, labelStyleContent },
     { name: 'proteins', type: 'number', placeholder: 'Proteins', label: { content: 'g' }, labelPosition: 'right', maxLength: 7, labelInput: 'Proteins', inputStyle, labelStyle, labelStyleContent },
     { name: 'carbs', type: 'number', placeholder: 'Carbs', label: { content: 'g' }, labelPosition: 'right', maxLength: 7, labelInput: 'Carbs', inputStyle, labelStyle, labelStyleContent },
     { name: 'fats', type: 'number', placeholder: 'Fats', label: { content: 'g' }, labelPosition: 'right', maxLength: 7, labelInput: 'Fats', inputStyle, labelStyle, labelStyleContent },
+  ];
+
+  buttons = [
+    { content: 'Update', secondary: true, style: buttonStyle }
   ];
 
   handleClose = () => {
@@ -30,7 +31,7 @@ class ManageMacros extends Component {
   };
 
   onSubmit = macros => {
-    this.props.handleModal(false);
+    this.props.handleClose();
     this.props.complexEditMacros(macros);
   };
 

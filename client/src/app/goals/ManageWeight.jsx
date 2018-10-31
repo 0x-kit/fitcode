@@ -6,7 +6,7 @@ import { Header, Modal } from 'semantic-ui-react';
 import ComplexForm from 'app/common/ComplexForm.jsx'
 import { validateNumbers } from 'app/common/Validation.js'
 
-const buttonStyle = { marginTop: '15px', marginBottom: '15px', width: '300px', height: '200' };
+const buttonStyle = { marginTop: '15px', marginBottom: '15px', width: '275px' };
 const inputStyle = { textAlign: 'center', width: 70 };
 const modalStyle = { width: 300, textAlign: 'center' };
 const labelStyle = { width: '11em', textAlign: 'center' }
@@ -19,7 +19,7 @@ class ManageWeight extends Component {
   ]
 
   buttons = [
-    { content: 'Update', secondary: true, style: { buttonStyle } }
+    { content: 'Update', secondary: true, style: buttonStyle }
   ]
 
   onSubmit = values => {
@@ -42,7 +42,7 @@ class ManageWeight extends Component {
       );
     }
 
-    this.props.handleModal(false);
+    this.handleClose();
   };
 
   handleClose = () => {
