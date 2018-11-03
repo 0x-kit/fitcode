@@ -29,6 +29,6 @@ router
 
   .put('/:userId/currentweight', requireAuth, UsersController.setCurrentWeight)
 
-  .put('/:userId/goalweight', UsersController.setGoalWeight);
+  .put('/:userId/goalweight', requireAuth, UsersController.setGoalWeight);
 
 module.exports = router;

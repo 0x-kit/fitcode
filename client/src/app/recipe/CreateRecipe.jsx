@@ -1,17 +1,42 @@
-import React, { Component } from "react";
-import { reduxForm, Field, reset } from "redux-form";
-import { Header, Modal, Input, Form, Button } from "semantic-ui-react";
+import React, { Component } from 'react';
+import { reduxForm, reset } from 'redux-form';
+import ComplexModal from 'app/common/Modal.jsx';
+import { ComplexForm } from 'app/common/Form.jsx';
+import { validateText } from 'app/common/Validation.js';
+
+const modalProps = {
+  title: 'Create Your Recipe',
+  subtitle: 'Enter the name',
+  style: { width: 300, textAlign: 'center' }
+};
+
+const inputStyle = { textAlign: 'center', width: 70 };
+const buttonStyle = { marginBottom: 5, width: 272 };
+
+const lLStyle = { width: '5.1em', textAlign: 'center' };
+const rLStyle2 = { width: '0em', textAlign: 'center', borderLeftWidth: 0 };
 
 class CreateRecipe extends Component {
+  fields = [
+    {
+      name: 'name',
+      formInput: { type: 'text', placeholder: 'Enter name', maxLenght: 15, inputStyle },
+      labelRight: { content: '', style: rLStyle2 },
+      labelLeft: { content: 'Name', style: lLStyle }
+    }
+  ];
+
+  buttons = [{ content: 'Create', secondary: true, style: buttonStyle }];
+
   handleClose = () => {
     this.props.handleModal(false);
-    this.props.dispatch(reset("createRecipe"));
+    this.props.dispatch(reset('createRecipe'));
   };
 
   onSubmit = values => {
     const { name } = values;
     const newRecipe = {
-      user: localStorage.getItem("userId"),
+      user: localStorage.getItem('userId'),
       name
     };
 
@@ -19,95 +44,21 @@ class CreateRecipe extends Component {
     this.handleClose();
   };
 
-  renderField = field => {
-    const {
-      placeholder,
-      label,
-      labelPosition,
-      maxLength,
-      meta: { touched, error }
-    } = field;
-
-    let validateError = false;
-
-    if (touched && error) {
-      validateError = true;
-    }
-
-    return (
-      <Form.Field>
-        <Input
-          fluid
-          label={label}
-          labelPosition={labelPosition}
-          placeholder={placeholder}
-          type="text"
-          maxLength={maxLength}
-          {...field.input}
-        />
-        {validateError ? (
-          <Header as="label" color="red" size="tiny" textAlign="center">
-            {error}
-          </Header>
-        ) : (
-          ""
-        )}
-      </Form.Field>
-    );
-  };
-
   render() {
     const { handleSubmit, openModal } = this.props;
-    const buttonStyle = { marginBottom: 10, width: 242 };
+
     return (
-      <Modal
-        style={{ width: 270, textAlign: "center" }}
-        open={openModal}
-        onClose={this.handleClose}
-        size="mini"
-      >
-        <Header subheader="Enter name" content="Create Your Recipe" />
-        <Modal.Actions>
-          <Form onSubmit={handleSubmit(this.onSubmit)}>
-            <Field
-              name="name"
-              component={this.renderField}
-              label={{
-                basic: true,
-                content: "Name",
-                className: "createExercise"
-              }}
-              labelPosition="left"
-              placeholder="Enter name..."
-            />
-            <Button
-              style={buttonStyle}
-              size="small"
-              secondary
-              content="Create"
-            />
-          </Form>
-        </Modal.Actions>
-      </Modal>
+      <ComplexModal openModal={openModal} onClose={this.handleClose} {...modalProps}>
+        <ComplexForm handleSubmit={handleSubmit(this.onSubmit)} fields={this.fields} buttons={this.buttons} />
+      </ComplexModal>
     );
   }
 }
 
-const validate = values => {
-  const errors = {};
-  const required = "Required field";
-
-  if (!values.name) {
-    errors.name = required;
-  } else if (values.name.length < 2) {
-    errors.name = 'Name must be at least 2 characters length"';
-  }
-
-  return errors;
-};
+const validate = values => ({ ...validateText(values) });
 
 export default reduxForm({
   validate,
-  form: "createRecipe",
+  form: 'createRecipe',
   enableReinitialize: true
 })(CreateRecipe);

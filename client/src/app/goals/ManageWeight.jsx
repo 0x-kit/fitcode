@@ -2,25 +2,38 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { reduxForm, reset } from 'redux-form';
-import { Header, Modal } from 'semantic-ui-react';
-import ComplexForm from 'app/common/ComplexForm.jsx'
-import { validateNumbers } from 'app/common/Validation.js'
 
-const buttonStyle = { marginTop: '15px', marginBottom: '15px', width: '275px' };
+import { validateNumbers } from 'app/common/Validation.js';
+import { ComplexForm } from 'app/common/Form.jsx';
+import ComplexModal from 'app/common/Modal.jsx';
+
+const modalProps = {
+  title: 'Edit Your Weights',
+  subtitle: 'Enter your current weight or weight goal',
+  style: { width: 300, textAlign: 'center' }
+};
+
+const buttonStyle = { marginBottom: 5, width: 272 };
 const inputStyle = { textAlign: 'center', width: 70 };
-const modalStyle = { width: 300, textAlign: 'center' };
-const labelStyle = { width: '11em', textAlign: 'center' }
-
+const lLStyle = { width: '11em', textAlign: 'center' };
 
 class ManageWeight extends Component {
   fields = [
-    { name: 'currentWeight', type: 'number', placeholder: 'Enter your current weight', label: { content: 'kg', pointing: 'left' }, labelPosition: 'right', maxLength: 7, labelInput: 'Current Weight', inputStyle, labelStyle },
-    { name: 'goalWeight', type: 'number', placeholder: 'Enter your weight goal', label: { content: 'kg', pointing: 'left' }, labelPosition: 'right', maxLength: 7, labelInput: 'Weight Goal', inputStyle, labelStyle },
-  ]
+    {
+      name: 'currentWeight',
+      formInput: { type: 'number', placeholder: 'Enter your current weight', maxLenght: 7, inputStyle },
+      labelRight: { content: 'kg' },
+      labelLeft: { content: 'Current Weight', style: lLStyle }
+    },
+    {
+      name: 'goalWeight',
+      formInput: { type: 'number', placeholder: 'Enter your weight goal', maxLenght: 7, inputStyle },
+      labelRight: { content: 'kg' },
+      labelLeft: { content: 'Weight Goal', style: lLStyle }
+    }
+  ];
 
-  buttons = [
-    { content: 'Update', secondary: true, style: buttonStyle }
-  ]
+  buttons = [{ content: 'Update', secondary: true, style: buttonStyle }];
 
   onSubmit = values => {
     const { goalWeight, currentWeight } = values;
@@ -55,15 +68,13 @@ class ManageWeight extends Component {
     const { openModal } = this.props;
 
     return (
-      <Modal style={modalStyle} open={openModal} onClose={this.handleClose} size="mini">
-        <Header subheader="Enter your weights" content="Edit Your Weights " />
-        <Modal.Actions>
-          <ComplexForm handleSubmit={handleSubmit(this.onSubmit)} fields={this.fields} buttons={this.buttons} />
-        </Modal.Actions>
-      </Modal>
+      <ComplexModal openModal={openModal} onClose={this.handleClose} {...modalProps}>
+        <ComplexForm handleSubmit={handleSubmit(this.onSubmit)} fields={this.fields} buttons={this.buttons} />
+      </ComplexModal>
     );
   }
 }
+const validate = values => ({ ...validateNumbers(values) });
 
 export default compose(
   connect(state => ({
@@ -72,5 +83,5 @@ export default compose(
       currentWeight: state.goals.currentWeight.weight
     }
   })),
-  reduxForm({ validate: validateNumbers, form: 'setWeight', enableReinitialize: true })
+  reduxForm({ validate, form: 'setWeight', enableReinitialize: true })
 )(ManageWeight);

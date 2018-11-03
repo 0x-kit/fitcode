@@ -2,28 +2,51 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { reduxForm, reset } from 'redux-form';
-import { Header, Modal } from 'semantic-ui-react';
-
-import ComplexForm from 'app/common/ComplexForm.jsx';
+import ComplexModal from 'app/common/Modal.jsx';
 import { validateNumbers } from 'app/common/Validation.js';
+import { ComplexForm } from 'app/common/Form.jsx';
 
-const modalStyle = { width: 300, textAlign: 'center' };
+const modalProps = {
+  title: 'Edit Your Macros',
+  subtitle: 'Enter your diet requirements',
+  style: { width: 300, textAlign: 'center' }
+};
+
 const inputStyle = { textAlign: 'center', width: 70 };
-const buttonStyle = { marginTop: '15px', marginBottom: '15px', width: '275px' };
-const labelStyle = { width: '5.1em', textAlign: 'center' }
-const labelStyleContent = { width: '3.3em', textAlign: 'center' }
+const buttonStyle = { marginBottom: 5, width: 272 };
+
+const lLStyle = { width: '5.1em', textAlign: 'center' };
+const rLStyle = { width: '3.3em', textAlign: 'center' };
 
 class ManageMacros extends Component {
   fields = [
-    { name: 'calories', type: 'number', placeholder: 'Calories', label: { content: 'kcal' }, labelPosition: 'right', maxLength: 7, labelInput: 'Calories', inputStyle, labelStyle, labelStyleContent },
-    { name: 'proteins', type: 'number', placeholder: 'Proteins', label: { content: 'g' }, labelPosition: 'right', maxLength: 7, labelInput: 'Proteins', inputStyle, labelStyle, labelStyleContent },
-    { name: 'carbs', type: 'number', placeholder: 'Carbs', label: { content: 'g' }, labelPosition: 'right', maxLength: 7, labelInput: 'Carbs', inputStyle, labelStyle, labelStyleContent },
-    { name: 'fats', type: 'number', placeholder: 'Fats', label: { content: 'g' }, labelPosition: 'right', maxLength: 7, labelInput: 'Fats', inputStyle, labelStyle, labelStyleContent },
+    {
+      name: 'calories',
+      formInput: { type: 'number', placeholder: 'Calories', maxLenght: 7, inputStyle },
+      labelRight: { content: 'kcal', style: rLStyle },
+      labelLeft: { content: 'Calories', style: lLStyle }
+    },
+    {
+      name: 'proteins',
+      formInput: { type: 'number', placeholder: 'Proteins', maxLenght: 7, inputStyle },
+      labelRight: { content: 'g', style: rLStyle },
+      labelLeft: { content: 'Proteins', style: lLStyle }
+    },
+    {
+      name: 'carbs',
+      formInput: { type: 'number', placeholder: 'Carbs', maxLenght: 7, inputStyle },
+      labelRight: { content: 'g', style: rLStyle },
+      labelLeft: { content: 'Carbs', style: lLStyle }
+    },
+    {
+      name: 'fats',
+      formInput: { type: 'number', placeholder: 'Fats', maxLenght: 7, inputStyle },
+      labelRight: { content: 'g', style: rLStyle },
+      labelLeft: { content: 'Fats', style: lLStyle }
+    }
   ];
 
-  buttons = [
-    { content: 'Update', secondary: true, style: buttonStyle }
-  ];
+  buttons = [{ content: 'Update', secondary: true, style: buttonStyle }];
 
   handleClose = () => {
     this.props.handleModal(false);
@@ -40,15 +63,14 @@ class ManageMacros extends Component {
     const { openModal } = this.props;
 
     return (
-      <Modal style={modalStyle} open={openModal} onClose={this.handleClose} size="mini">
-        <Header subheader="Enter your diet requirements" content="Edit Your Macros" />
-        <Modal.Actions>
-          <ComplexForm handleSubmit={handleSubmit(this.onSubmit)} fields={this.fields} buttons={this.buttons} />
-        </Modal.Actions>
-      </Modal>
+      <ComplexModal openModal={openModal} onClose={this.handleClose} {...modalProps}>
+        <ComplexForm handleSubmit={handleSubmit(this.onSubmit)} fields={this.fields} buttons={this.buttons} />
+      </ComplexModal>
     );
   }
 }
+
+const validate = values => ({ ...validateNumbers(values) });
 
 export default compose(
   connect(state => ({
@@ -59,5 +81,5 @@ export default compose(
       fats: state.goals.macros.fats
     }
   })),
-  reduxForm({ validate: validateNumbers, form: 'manageMacros', enableReinitialize: true })
+  reduxForm({ validate, form: 'manageMacros', enableReinitialize: true })
 )(ManageMacros);

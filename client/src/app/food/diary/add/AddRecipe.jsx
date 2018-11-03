@@ -1,17 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { reduxForm, Field, formValueSelector, reset } from 'redux-form';
-import { Header, Modal, Statistic, Button, Card, Form, Input, Label } from 'semantic-ui-react';
-
+import { reduxForm, formValueSelector, reset } from 'redux-form';
+import { Statistic, Card } from 'semantic-ui-react';
 import _ from 'lodash';
-
 import transform from 'app/common/Transformations';
 
+import ComplexModal from 'app/common/Modal.jsx';
+import { ComplexForm } from 'app/common/Form.jsx';
+import { validateNumbers } from 'app/common/Validation.js';
+
+const inputStyle = { textAlign: 'center', width: 70 };
+const buttonStyle = { width: 272, marginBottom: 5 };
+const lLStyle = { width: '5.9em', textAlign: 'center' };
+const rLStyle = { borderLeftWidth: 0 };
+
 class AddRecipe extends Component {
+  state = { deleteRecipe: false };
+  fields = [
+    {
+      name: 'serving',
+      formInput: { type: 'number', placeholder: 'Weight', maxLenght: 7, inputStyle },
+      labelRight: { content: '', style: rLStyle },
+      labelLeft: { content: '#Servings', style: lLStyle }
+    }
+  ];
+  buttons = [{ content: 'Add', secondary: true, style: buttonStyle }];
   handleClose = () => {
     this.props.handleModal(false);
-    this.props.dispatch(reset('addRecipe'));
+    this.props.dispatch(reset('addRecipeToDiary'));
   };
 
   onSubmit = values => {
@@ -27,47 +44,7 @@ class AddRecipe extends Component {
     this.handleClose();
   };
 
-  renderField = field => {
-    const {
-      placeholder,
-      label,
-      labelPosition,
-      maxLength,
-      type,
-      meta: { touched, error }
-    } = field;
-
-    let validateError = false;
-
-    if (touched && error) {
-      validateError = true;
-    }
-    return (
-      <Form.Field>
-        <Input
-          fluid
-          labelPosition={labelPosition}
-          placeholder={placeholder}
-          type={type}
-          maxLength={maxLength}
-          {...field.input}
-        >
-          <input style={{ textAlign: 'center', width: 70 }} />
-          <Label basic>{label.content}</Label>
-        </Input>
-        {validateError ? (
-          <Header as="label" color="red" size="tiny" textAlign="center">
-            {error}
-          </Header>
-        ) : (
-          ''
-        )}
-      </Form.Field>
-    );
-  };
-
-  renderMacros = (macrosPerRecipe, serving) => {
-    const { calories, proteins, carbs, fats } = macrosPerRecipe;
+  renderMacros = ({ calories, proteins, carbs, fats }, serving) => {
     const labels = ['Calories', 'Proteins', 'Carbs', 'Fats'];
     const terms = [calories, proteins, carbs, fats];
 
@@ -77,63 +54,30 @@ class AddRecipe extends Component {
     return (
       <Card.Group centered>
         <Statistic.Group className="prueba">
-          {labels.map((label, index) => {
-            return renderStatistic(label, terms[index], index);
-          })}
+          {labels.map((label, index) => renderStatistic(label, terms[index], index))}
         </Statistic.Group>
       </Card.Group>
     );
   };
-
   render() {
     const { selectedRecipe, openModal, handleSubmit, serving } = this.props;
-
     const macrosPerRecipe = transform.reduceMacros(selectedRecipe.products);
-
-    const buttonStyle = { width: 272, marginBottom: 10, marginTop: 10 };
-    const modalStyle = { width: 300, textAlign: 'center' };
+    const modalProps = {
+      title: 'Add Recipe',
+      subtitle: selectedRecipe.name,
+      style: { width: 300, textAlign: 'center' },
+      content: this.renderMacros(macrosPerRecipe, serving)
+    };
 
     return (
-      <Modal style={modalStyle} open={openModal} onClose={this.handleClose} size="mini">
-        <Header subheader={selectedRecipe.name} content={'Add Recipe'} />
-        <Modal.Content>{this.renderMacros(macrosPerRecipe, serving)}</Modal.Content>
-        <Modal.Actions>
-          <Form onSubmit={handleSubmit(this.onSubmit)}>
-            <Field
-              name="serving"
-              component={this.renderField}
-              label={{ basic: true, content: 'qty' }}
-              labelPosition="right"
-              placeholder="Enter number of servings..."
-              type="number"
-              maxLength="7"
-            />
-            <Button style={buttonStyle} size="small" compact secondary content="Add" floated="right" />
-          </Form>
-        </Modal.Actions>
-      </Modal>
+      <ComplexModal openModal={openModal} onClose={this.handleClose} {...modalProps}>
+        <ComplexForm handleSubmit={handleSubmit(this.onSubmit)} fields={this.fields} buttons={this.buttons} />
+      </ComplexModal>
     );
   }
 }
 
-const validate = values => {
-  const errors = {};
-  const required = 'Required field';
-  const numbers = 'This field can only contain numbers';
-  const negative = 'This field cant contain negative values';
-
-  if (!values.serving) {
-    errors.serving = required;
-  } else if (isNaN(values.serving)) {
-    errors.serving = numbers;
-  } else if (values.serving < 0) {
-    errors.serving = negative;
-  }
-  return errors;
-};
-
-// Selector needed in order to access the value of the 'serving' field of the addProduct form
-// This way we can update in real time the macros depending upon serving size
+const validate = values => ({ ...validateNumbers(values) });
 const selector = formValueSelector('addRecipeToDiary');
 
 export default compose(

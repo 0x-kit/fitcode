@@ -3,10 +3,11 @@ import { Container, Dimmer, Loader } from 'semantic-ui-react';
 import DietGoal from 'app/food/diary/DietGoal.jsx';
 import MealCard from 'app/food/diary/MealCard.jsx';
 
+const containerStyle = { marginBottom: '2rem' };
 class Food extends Component {
   render() {
     const { loading } = this.props;
-    const containerStyle = { marginBottom: '2rem' };
+
     return (
       <div>
         {loading ? (

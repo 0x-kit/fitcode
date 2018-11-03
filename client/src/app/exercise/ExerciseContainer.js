@@ -13,7 +13,6 @@ const mapStateToProps = state => {
     userExercises: state.exercise.userExercises,
     selectedExercise: state.exercise.selectedExercise,
     exerciseCals: state.exercise.exerciseCals,
-
     loading: state.food.loading,
     errorMessage: state.food.errorMessage
   };

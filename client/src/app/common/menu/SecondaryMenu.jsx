@@ -94,7 +94,13 @@ class MenuSecondary extends Component {
     ];
   };
   render() {
-    const menuStyle = { pointing: true, size: 'huge', borderless: true, widths: 3 };
+    const menuStyle = {
+      pointing: true,
+      size: 'huge',
+      widths: 3,
+      secondary: false,
+      style: { boxShadow: '1px 0px 0px 0px #d4d4d5,0 1px 25px 5px rgba(34,36,38,.12),0 1px 15px rgba(34,36,38,.15)' }
+    };
     const { authenticated, activeIndex, date } = this.props;
     return (
       <div className="SecMenu" style={{ marginTop: 5, marginBottom: 0 }}>

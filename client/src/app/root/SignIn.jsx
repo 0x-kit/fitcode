@@ -1,102 +1,56 @@
 import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import Grid from 'app/common/FormGrid.jsx';
-import { Button, Form, Segment, Icon, Header, Input, Divider } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
+
+import { SimpleForm } from 'app/common/Form.jsx';
+import { validateEmail, validateText } from 'app/common/Validation.js';
 
 class Signin extends Component {
+  fields = [
+    {
+      name: 'email',
+      formInput: { type: 'text', icon: 'user', iconPosition: 'left', placeholder: 'E-mail address' }
+    },
+    {
+      name: 'password',
+      formInput: { type: 'password', icon: 'lock', iconPosition: 'left', placeholder: 'Password' }
+    }
+  ];
+
+  buttons = [
+    { content: 'Sign In', secondary: false, color: 'teal', fluid: true, size: 'large', style: { marginBottom: 10 } },
+    {
+      content: 'Sign In using Google',
+      secondary: false,
+      color: 'google plus',
+      fluid: true,
+      size: 'large',
+      href: '/api/auth/google',
+      icon: { name: 'google plus' }
+    }
+  ];
+
   onSubmit = values => {
     this.props.complexSignin(values, () => {
       this.props.history.push('/food/diary');
     });
   };
 
-  renderField(field) {
-    // form states: pristine, touched, invalid
-    const {
-      icon,
-      iconPosition,
-      placeholder,
-      type,
-      meta: { touched, error }
-    } = field;
-
-    let validateError = false;
-
-    if (touched && error) {
-      validateError = true;
-    }
-
-    return (
-      <Form.Field>
-        <Input fluid icon={icon} iconPosition={iconPosition} placeholder={placeholder} type={type} {...field.input} />
-        {validateError ? (
-          <Header as="label" color="red">
-            {error}
-          </Header>
-        ) : (
-          ''
-        )}
-      </Form.Field>
-    );
-  }
-
   render() {
-    // handleSubmit provided by reduxForm
-    const { handleSubmit } = this.props;
+    const { handleSubmit, errorMessage } = this.props;
 
     return (
       <Grid>
-        <Form onSubmit={handleSubmit(this.onSubmit)}>
-          <Segment>
-            <Field
-              name="email"
-              type="text"
-              icon="user"
-              iconPosition="left"
-              placeholder="E-mail address"
-              component={this.renderField}
-            />
-            <Field
-              name="password"
-              type="password"
-              icon="lock"
-              iconPosition="left"
-              placeholder="Password"
-              component={this.renderField}
-            />
-
-            <Button type="submit" color="teal" fluid size="large">
-              Sign in
-            </Button>
-            <Divider horizontal>OR</Divider>
-            <Button href="/api/auth/google" color="google plus" fluid size="large">
-              <Icon name="google plus" /> Sign in using Google
-            </Button>
-          </Segment>
-          <Header as="h5" color="red">
-            {this.props.errorMessage}
-          </Header>
-        </Form>
+        <SimpleForm handleSubmit={handleSubmit(this.onSubmit)} fields={this.fields} buttons={this.buttons} />
+        <Header as="h5" color="red" content={errorMessage} />
       </Grid>
     );
   }
 }
 
-function validate(values) {
-  //console.log(values) -> {email: 'email@email.com, password: 'password'}
-  const errors = {};
-
-  // Validate the inputs from 'values' - names of fields is the glue
-  if (!values.email) {
-    errors.email = 'Enter an email';
-  }
-
-  if (!values.password) {
-    errors.password = 'Enter a password';
-  }
-  // If errors is empty, the form is fine to submit
-  // If erros has *any* properties, reduxform assumes form is invalid
-  return errors;
-}
-
+const validate = ({ email, password }) => ({
+  ...validateText('password', password, 5),
+  ...validateEmail('email', email)
+});
 export default reduxForm({ validate, form: 'signin' })(Signin);

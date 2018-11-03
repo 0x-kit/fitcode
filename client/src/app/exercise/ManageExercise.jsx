@@ -1,19 +1,53 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { compose } from "recompose";
-import moment from "moment";
-import { reduxForm, Field, reset } from "redux-form";
-import { Header, Modal, Input, Form, Button } from "semantic-ui-react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import moment from 'moment';
+import { reduxForm, reset } from 'redux-form';
 
-class ManageFood extends Component {
+import { ComplexForm } from 'app/common/Form.jsx';
+import ComplexModal from 'app/common/Modal.jsx';
+import { validateNumbers, validateText } from 'app/common/Validation.js';
+
+const modalProps = {
+  title: 'Edit your Exercise',
+  subtitle: 'Enter name and calories',
+  style: { width: 300, textAlign: 'center' }
+};
+
+const buttonStyle = { width: 130, marginBottom: 5 };
+const inputStyle = { textAlign: 'left', width: 40 };
+const lLStyle = { width: '6em', textAlign: 'center' };
+const rLStyle = { borderLeftWidth: 0 };
+
+class ManageExercise extends Component {
   state = { deleteProduct: false };
+
+  fields = [
+    {
+      name: 'name',
+      formInput: { type: 'text', placeholder: 'Enter name', maxLenght: 15, inputStyle },
+      labelRight: { content: '', style: rLStyle },
+      labelLeft: { content: 'Name', style: lLStyle }
+    },
+    {
+      name: 'calories',
+      formInput: { type: 'number', placeholder: 'Enter calories', maxLenght: 7, inputStyle },
+      labelRight: { content: 'kcal' },
+      labelLeft: { content: 'Calories', style: lLStyle }
+    }
+  ];
+
+  buttons = [
+    { content: 'Edit', secondary: true, style: buttonStyle, floated: 'right' },
+    { content: 'Delete', secondary: false, style: buttonStyle, floated: 'left', onClick: () => this.handleDelete(true) }
+  ];
 
   handleDelete = flag => this.setState({ deleteProduct: flag });
 
   handleClose = () => {
     this.handleDelete(false);
     this.props.handleModal(false);
-    this.props.dispatch(reset("manageExercise"));
+    this.props.dispatch(reset('manageExercise'));
   };
 
   onSubmit = values => {
@@ -21,8 +55,8 @@ class ManageFood extends Component {
     const { name, calories } = values;
 
     const newExercise = {
-      user: localStorage.getItem("userId"),
-      date: moment().format("YYYY-MM-DD"),
+      user: localStorage.getItem('userId'),
+      date: moment().format('YYYY-MM-DD'),
       name,
       calories
     };
@@ -36,122 +70,18 @@ class ManageFood extends Component {
     this.handleClose();
   };
 
-  renderField = field => {
-    const {
-      placeholder,
-      label,
-      labelPosition,
-      maxLength,
-      meta: { touched, error }
-    } = field;
-
-    let validateError = false;
-
-    if (touched && error) {
-      validateError = true;
-    }
-
-    return (
-      <Form.Field>
-        <Input
-          fluid
-          label={label}
-          labelPosition={labelPosition}
-          placeholder={placeholder}
-          type="text"
-          maxLength={maxLength}
-          {...field.input}
-        />
-        {validateError ? (
-          <Header as="label" color="red" size="tiny" textAlign="center">
-            {error}
-          </Header>
-        ) : (
-          ""
-        )}
-      </Form.Field>
-    );
-  };
-
   render() {
     const { handleSubmit, openModal } = this.props;
-    const buttonStyle = { width: 155, marginBottom: 10, marginTop: 10 };
+
     return (
-      <Modal
-        style={{ width: 350, textAlign: "center" }}
-        open={openModal}
-        onClose={this.handleClose}
-        size="mini"
-      >
-        <Header
-          subheader="Enter name and calories"
-          content="Edit Your Exercise"
-        />
-        <Modal.Actions>
-          <Form onSubmit={handleSubmit(this.onSubmit)}>
-            <Field
-              name="name"
-              component={this.renderField}
-              label={{ basic: true, content: "Name", className: "createFood" }}
-              labelPosition="left"
-              placeholder="Enter name..."
-            />
-
-            <Field
-              name="calories"
-              component={this.renderField}
-              label={{
-                basic: true,
-                content: "Calories",
-                className: "createFood"
-              }}
-              labelPosition="left"
-              placeholder="Enter calories..."
-              maxLength="7"
-            />
-
-            <Button
-              style={buttonStyle}
-              size="tiny"
-              secondary
-              content="Edit"
-              floated="right"
-            />
-            <Button
-              style={buttonStyle}
-              size="tiny"
-              content="Delete"
-              floated="left"
-              onClick={() => {
-                this.handleDelete(true);
-              }}
-            />
-          </Form>
-        </Modal.Actions>
-      </Modal>
+      <ComplexModal {...modalProps} openModal={openModal} onClose={this.handleClose}>
+        <ComplexForm handleSubmit={handleSubmit(this.onSubmit)} fields={this.fields} buttons={this.buttons} />
+      </ComplexModal>
     );
   }
 }
 
-const validate = values => {
-  const errors = {};
-  const required = "Required field";
-  const numbers = "This field can only contain numbers";
-
-  if (!values.name) {
-    errors.name = required;
-  } else if (values.name.length < 2) {
-    errors.name = 'Name must be at least 2 characters length"';
-  }
-
-  if (!values.calories) {
-    errors.calories = required;
-  } else if (isNaN(values.calories)) {
-    errors.calories = numbers;
-  }
-
-  return errors;
-};
+const validate = ({ calories, name }) => ({ ...validateNumbers({ calories }), ...validateText({ name }) });
 
 export default compose(
   connect(state => ({
@@ -160,5 +90,5 @@ export default compose(
       calories: state.exercise.selectedExercise.calories
     }
   })),
-  reduxForm({ validate, form: "manageExercise", enableReinitialize: true })
-)(ManageFood);
+  reduxForm({ validate, form: 'manageExercise', enableReinitialize: true })
+)(ManageExercise);

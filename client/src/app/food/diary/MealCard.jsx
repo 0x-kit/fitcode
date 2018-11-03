@@ -47,27 +47,20 @@ class MealCards extends Component {
     return (
       <Card style={cardStyle} key={_id} fluid raised>
         <Card.Content>
-          <Card.Header style={cardHeaderStyle}>{part}</Card.Header>
-          <Card.Meta style={cardMetaStyle}>{this.renderActions(part, _id, this.props.match)}</Card.Meta>
+          <Card.Header style={cardHeaderStyle} content={part} />
+          <Card.Meta style={cardMetaStyle} content={this.renderActions(part, _id, this.props.match)} />
         </Card.Content>
-
-        <Card.Content>{this.renderList(products, recipes, _id)}</Card.Content>
-
-        <Card.Content extra style={cardContentStyle}>
-          {this.renderMacros(macrosPerMeal)}
-        </Card.Content>
+        <Card.Content content={this.renderList(products, recipes, _id)} />
+        <Card.Content extra style={cardContentStyle} content={this.renderMacros(macrosPerMeal)} />
       </Card>
     );
   };
 
   renderRecipeList = (recipesArr = [], mealId) => {
     return recipesArr.filter(recipe => recipe.recipe !== null).map(({ recipe, serving }) => {
-
       const { name, products } = recipe;
-      const macrosPerRecipe = transform.reduceMacros(products, serving);
-      const { calories, proteins, carbs, fats } = macrosPerRecipe;
-
-      const header = `${calories * serving} CAL | ${proteins * serving} P | ${carbs * serving} C | ${fats * serving} F`;
+      const { calories, proteins, carbs, fats } = transform.reduceMacros(products, serving);
+      const header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
       const headerAs = { content: name, as: 'a' };
       const servingContent = `(x${serving})`;
 
@@ -116,19 +109,12 @@ class MealCards extends Component {
   };
 
   renderMacros = macrosPerMeal => {
-    const renderMacrosPerMeal = macrosPerMeal => {
-      let header;
-      const { calories, proteins, carbs, fats } = macrosPerMeal;
+    const renderMacrosPerMeal = ({ calories, proteins, carbs, fats }) => {
+      const listContentStyle = { paddingTop: '0.5em', float: 'right' };
+      const header =
+        (calories && proteins && carbs && fats) === 0 ? '' : `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
 
-      if ((calories && proteins && carbs && fats) === 0) {
-        header = '';
-      } else {
-        header = `${calories} CAL | ${proteins} P | ${carbs} C | ${fats} F`;
-      }
-
-      const style = { paddingTop: '0.5em', float: 'right' };
-
-      return <List.Content description={header} style={style} verticalAlign="middle" />;
+      return <List.Content description={header} style={listContentStyle} verticalAlign="middle" />;
     };
 
     return (
@@ -151,9 +137,10 @@ class MealCards extends Component {
     }
 
     return (
-      <List.Content floated="left">
-        <Button content="Add Food" as={Link} to={path} size="small" secondary compact primary />
-      </List.Content>
+      <List.Content
+        floated="left"
+        content={<Button content="Add Food" as={Link} to={path} size="small" secondary compact primary />}
+      />
     );
   };
 
@@ -172,23 +159,18 @@ class MealCards extends Component {
 
     return (
       <div>
+        {!_.isEmpty(mealsData) ? (
+          <Card.Group content={labels.map(label => this.renderMeal(_.map(mealsData), label))} />
+        ) : (
+          <div />
+        )}
+
         <ManageDiaryFood
           openModal={this.state.modalOpenProduct}
           handleModal={this.handleModalProduct}
           {...this.props}
         />
-
         <ManageRecipe openModal={this.state.modalOpenRecipe} handleModal={this.handleModalRecipe} {...this.props} />
-
-        {!_.isEmpty(mealsData) ? (
-          <Card.Group>
-            {labels.map(label => {
-              return this.renderMeal(_.map(mealsData), label);
-            })}
-          </Card.Group>
-        ) : (
-            <div />
-          )}
       </div>
     );
   }

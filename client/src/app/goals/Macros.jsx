@@ -6,23 +6,22 @@ import ManageMacros from 'app/goals/ManageMacros.jsx';
 class Macros extends Component {
   state = { modalOpen: false };
 
-  handleModal = flag => {
-    this.setState({ modalOpen: flag });
-  };
+  handleModal = flag => this.setState({ modalOpen: flag });
 
   renderMainCard = () => {
+    const segmentStyle = { marginBottom: '0px' };
+    const cardStyle = { textAlign: 'center' };
     return (
-      <Segment basic style={{ marginBottom: '0px' }}>
-        <Card.Content style={{ textAlign: 'center' }}>
-          {/* <Header size="medium">Your Diet</Header> */}
-          <Button onClick={() => this.handleModal(true)} content="Diet Settings" secondary />
-        </Card.Content>
+      <Segment basic style={segmentStyle}>
+        <Card.Content
+          style={cardStyle}
+          content={<Button onClick={() => this.handleModal(true)} content="Diet Settings" secondary />}
+        />
       </Segment>
     );
   };
 
-  renderMacros = macros => {
-    const { calories, proteins, carbs, fats } = macros;
+  renderMacros = ({ calories, proteins, carbs, fats }) => {
     const labels = ['Calories', 'Proteins', 'Carbs', 'Fats'];
     const values = [calories, proteins, carbs, fats];
     const cardStyle = { padding: 15 };
@@ -40,11 +39,7 @@ class Macros extends Component {
     );
 
     return (
-      <Card.Group itemsPerRow="2">
-        {labels.map((label, index) => {
-          return renderGrid(label, values[index], index);
-        })}
-      </Card.Group>
+      <Card.Group itemsPerRow="2">{labels.map((label, index) => renderGrid(label, values[index], index))}</Card.Group>
     );
   };
 
@@ -59,8 +54,9 @@ class Macros extends Component {
           </Dimmer>
         ) : (
           <Container>
-            <Card.Group centered>{this.renderMainCard()} </Card.Group>
-            {!loading && !_.isEmpty(macros) ? this.renderMacros(macros) : <div />}
+            <Card.Group centered content={this.renderMainCard()} />
+
+            {!_.isEmpty(macros) && this.renderMacros(macros)}
 
             <ManageMacros
               complexEditMacros={this.props.complexEditMacros}

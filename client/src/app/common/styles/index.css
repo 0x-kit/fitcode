@@ -2,13 +2,6 @@ body {
   min-width: 370px !important;
 }
 
-.tabpanel {
-  margin-top: 50px;
-}
-div.ui.huge.borderless.inverted.menu {
-  border-radius: 0 !important;
-}
-
 .prueba.ui.statistic > .value,
 .prueba.ui.statistics .statistic > .value {
   font-size: 0.8rem !important;
@@ -21,47 +14,6 @@ div.ui.huge.borderless.inverted.menu {
 .prueba.ui.statistics:first-child {
   margin-top: 3px;
   margin-bottom: 3px;
-}
-
-.editYF {
-  width: 90px;
-}
-
-.ui.basic.label.createFood {
-  border: 1px solid rgba(34, 36, 38, 0.15);
-  color: rgba(0, 0, 0, 0.87);
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  width: 5.25em;
-  text-align: left;
-}
-
-.prueba2.ui.statistics .statistic > .value {
-  font-size: 0.7rem !important;
-}
-
-.prueba2.ui.statistics > .statistic {
-  margin-right: 10px;
-  margin-left: 10px;
-}
-
-.prueba2.ui.statistics.prueba2 {
-  margin: 0;
-}
-
-.label.macrosLabel {
-  width: 5.1em;
-  text-align: center;
-}
-
-.label.macrosLabelContent {
-  width: 3.3em;
-  text-align: center;
-}
-
-.label.weightLabel {
-  width: 11em;
-  text-align: center;
 }
 
 .ui.statistic.lxa > .value ~ .label {
@@ -77,6 +29,19 @@ div.ui.huge.borderless.inverted.menu {
 
 div.ui.info.message .header {
   color: #262636;
+}
+
+div.ui.huge.borderless.inverted.menu {
+  border-radius: 0 !important;
+}
+
+a.item.backwardRoute,
+a.item.forwardRoute {
+  width: 20% !important;
+}
+
+a.item.dateFormat {
+  width: 60% !important;
 }
 
 div.ui.info.message {
@@ -97,20 +62,6 @@ div.ui.info.message {
   box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.22) inset, 0 0 0 0 transparent;
 }
 
-.mobContent div.description {
-  margin-left: 2.05em;
-  margin-top: 0.5em;
-}
-
-a.item.backwardRoute,
-a.item.forwardRoute {
-  width: 20% !important;
-}
-
-a.item.dateFormat {
-  width: 60% !important;
-}
-
 @media only screen and (max-width: 500px) {
   .ui.list .list > .item [class*='right floated'],
   .ui.list > .item [class*='right floated'] {
@@ -118,5 +69,5 @@ a.item.dateFormat {
     float: left !important;
     margin: 0 0 0 2.35em !important;
     margin-left: 25px;
-  };
+  }
 }
