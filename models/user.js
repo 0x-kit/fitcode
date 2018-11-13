@@ -26,7 +26,7 @@ const UserSchema = new Schema({
   password: {
     type: String,
     validate: {
-      validator: password => password.length < 5,
+      validator: password => password.length >= 5,
       message: 'Password must be longer than 5 characters.'
     },
     required: [true, 'Password is required.']
