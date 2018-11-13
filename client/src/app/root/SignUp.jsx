@@ -12,19 +12,42 @@ class Signup extends Component {
   fields = [
     {
       name: 'name',
-      formInput: { type: 'text', icon: 'id badge', iconPosition: 'left', placeholder: 'Name' }
+      formInput: {
+        type: 'text',
+        icon: 'id badge',
+        iconPosition: 'left',
+        placeholder: 'Name'
+      }
     },
     {
       name: 'email',
-      formInput: { type: 'text', icon: 'user', iconPosition: 'left', placeholder: 'E-mail address' }
+      formInput: {
+        type: 'text',
+        icon: 'user',
+        iconPosition: 'left',
+        placeholder: 'E-mail address'
+      }
     },
     {
       name: 'password',
-      formInput: { type: 'password', icon: 'lock', iconPosition: 'left', placeholder: 'Password' }
+      formInput: {
+        type: 'password',
+        icon: 'lock',
+        iconPosition: 'left',
+        placeholder: 'Password'
+      }
     }
   ];
 
-  buttons = [{ content: 'Register', secondary: false, color: 'teal', fluid: true, size: 'large' }];
+  buttons = [
+    {
+      content: 'Register',
+      secondary: false,
+      color: 'teal',
+      fluid: true,
+      size: 'large'
+    }
+  ];
 
   onSubmit = values => {
     this.props.complexSignUp(values, () => {
@@ -36,7 +59,11 @@ class Signup extends Component {
     const { handleSubmit, errorMessage } = this.props;
     return (
       <Grid>
-        <SimpleForm handleSubmit={handleSubmit(this.onSubmit)} fields={this.fields} buttons={this.buttons} />
+        <SimpleForm
+          handleSubmit={handleSubmit(this.onSubmit)}
+          fields={this.fields}
+          buttons={this.buttons}
+        />
         <Header style={headerStyle} as="h5" color="red" content={errorMessage} />
       </Grid>
     );
@@ -44,8 +71,8 @@ class Signup extends Component {
 }
 
 const validate = ({ name, email, password }) => ({
-  ...validateText('name', name, 5),
-  ...validateText('password', password, 5),
+  ...validateText({ name }, 5),
+  ...validateText({ password }, 5),
   ...validateEmail('email', email)
 });
 
