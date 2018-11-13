@@ -10,16 +10,33 @@ class Signin extends Component {
   fields = [
     {
       name: 'email',
-      formInput: { type: 'text', icon: 'user', iconPosition: 'left', placeholder: 'E-mail address' }
+      formInput: {
+        type: 'text',
+        icon: 'user',
+        iconPosition: 'left',
+        placeholder: 'E-mail address'
+      }
     },
     {
       name: 'password',
-      formInput: { type: 'password', icon: 'lock', iconPosition: 'left', placeholder: 'Password' }
+      formInput: {
+        type: 'password',
+        icon: 'lock',
+        iconPosition: 'left',
+        placeholder: 'Password'
+      }
     }
   ];
 
   buttons = [
-    { content: 'Sign In', secondary: false, color: 'teal', fluid: true, size: 'large', style: { marginBottom: 10 } },
+    {
+      content: 'Sign In',
+      secondary: false,
+      color: 'teal',
+      fluid: true,
+      size: 'large',
+      style: { marginBottom: 10 }
+    },
     {
       content: 'Sign In using Google',
       secondary: false,
@@ -42,7 +59,11 @@ class Signin extends Component {
 
     return (
       <Grid>
-        <SimpleForm handleSubmit={handleSubmit(this.onSubmit)} fields={this.fields} buttons={this.buttons} />
+        <SimpleForm
+          handleSubmit={handleSubmit(this.onSubmit)}
+          fields={this.fields}
+          buttons={this.buttons}
+        />
         <Header as="h5" color="red" content={errorMessage} />
       </Grid>
     );
@@ -50,7 +71,7 @@ class Signin extends Component {
 }
 
 const validate = ({ email, password }) => ({
-  ...validateText('password', password, 5),
+  ...validateText({ password }, 5),
   ...validateEmail('email', email)
 });
 export default reduxForm({ validate, form: 'signin' })(Signin);

@@ -22,7 +22,7 @@ export function validateNumbers(values) {
 
 export function validateText(values, minLength = 2) {
   const errors = {};
-  console.log(values);
+  
   Object.entries(values).forEach(([key, value]) => {
     if (!value) {
       errors[key] = required;

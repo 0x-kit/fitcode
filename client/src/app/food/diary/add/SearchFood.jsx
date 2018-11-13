@@ -20,7 +20,12 @@ class SearchFood extends Component {
   fields = [
     {
       name: 'term',
-      formInput: { type: 'text', icon: 'search', iconPosition: 'left', placeholder: 'Search...' }
+      formInput: {
+        type: 'text',
+        icon: 'search',
+        iconPosition: 'left',
+        placeholder: 'Search...'
+      }
     }
   ];
 
@@ -53,8 +58,18 @@ class SearchFood extends Component {
         const listContentStyle = { marginBottom: '5px' };
         return (
           <List.Item onClick={() => this.selectProduct(product)} key={_id}>
-            <List.Icon name="food" style={iconStyle} size="large" verticalAlign="top" />
-            <List.Content floated="left" header={listHeaderStyle} description={brand} style={listContentStyle} />
+            <List.Icon
+              name="food"
+              style={iconStyle}
+              size="large"
+              verticalAlign="top"
+            />
+            <List.Content
+              floated="left"
+              header={listHeaderStyle}
+              description={brand}
+              style={listContentStyle}
+            />
             <List.Content floated="right" content={header} />
           </List.Item>
         );
@@ -71,8 +86,17 @@ class SearchFood extends Component {
         const listHeaderStyle = { content: name, as: 'a' };
         return (
           <List.Item key={_id} onClick={() => this.selectRecipe(recipe)}>
-            <List.Icon name="book" style={iconStyle} size="large" verticalAlign="middle" />
-            <List.Content floated="left" header={listHeaderStyle} description="Recipe" />
+            <List.Icon
+              name="book"
+              style={iconStyle}
+              size="large"
+              verticalAlign="middle"
+            />
+            <List.Content
+              floated="left"
+              header={listHeaderStyle}
+              description="Recipe"
+            />
             <List.Content floated="right" verticalAlign="middle" content={header} />
           </List.Item>
         );
@@ -106,12 +130,18 @@ class SearchFood extends Component {
                 <Header size="medium">
                   Search our food database by name or brand
                   <Header.Subheader>{selectedMeal.part}</Header.Subheader>
-                  <Header.Subheader style={searchStyle}>{searchMessage}</Header.Subheader>
+                  <Header.Subheader style={searchStyle}>
+                    {searchMessage}
+                  </Header.Subheader>
                 </Header>
               </Card.Content>
 
               <Card.Content>
-                <SimpleForm handleSubmit={handleSubmit(this.onSubmit)} fields={this.fields} buttons={this.buttons} />
+                <SimpleForm
+                  handleSubmit={handleSubmit(this.onSubmit)}
+                  fields={this.fields}
+                  buttons={this.buttons}
+                />
               </Card.Content>
             </Card>
 
@@ -129,7 +159,6 @@ class SearchFood extends Component {
               </Card>
             )}
           </Container>
-
         )}
         <AddFood
           complexAddDiaryProduct={this.props.complexAddDiaryProduct}
@@ -152,6 +181,6 @@ class SearchFood extends Component {
     );
   }
 }
-const validate = ({ term }) => ({ ...validateText({ term }) });
+const validate = ({ term }) => ({ ...validateText({ term }, 1) });
 
 export default reduxForm({ validate, form: 'search' })(SearchFood);

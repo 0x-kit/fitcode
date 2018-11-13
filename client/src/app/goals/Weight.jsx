@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import ManageWeight from 'app/goals/ManageWeight.jsx';
-import { Segment, Container, Button, Grid, Statistic, Card, Dimmer, Loader } from 'semantic-ui-react';
+import {
+  Segment,
+  Container,
+  Button,
+  Grid,
+  Statistic,
+  Card,
+  Dimmer,
+  Loader
+} from 'semantic-ui-react';
 
 class Weight extends Component {
   state = { modalOpen: false };
@@ -15,7 +24,13 @@ class Weight extends Component {
       <Segment basic style={segmentStyle}>
         <Card.Content
           style={cardStyle}
-          content={<Button onClick={() => this.handleModal(true)} content="Weight Settings" secondary />}
+          content={
+            <Button
+              onClick={() => this.handleModal(true)}
+              content="Weight Settings"
+              secondary
+            />
+          }
         />
       </Segment>
     );
@@ -23,7 +38,7 @@ class Weight extends Component {
 
   weightGrid = (weight, label) => {
     const value = !_.isNull(weight) ? `${weight} Kg` : '';
-    const weightLabel = !_.isNull(weight) ? label : `Enter today's current weight!`;
+    const weightLabel = !_.isNull(weight) ? label : `Enter ${label} weight!`;
     return (
       <Grid textAlign="center">
         <Grid.Row>
@@ -39,8 +54,18 @@ class Weight extends Component {
     const cardStyle = { padding: 15 };
     return (
       <Card.Group itemsPerRow="2">
-        <Card fluid raised style={cardStyle} content={this.weightGrid(goalWeight, 'Goal')} />
-        <Card fluid raised style={cardStyle} content={this.weightGrid(currentWeight, 'Current')} />
+        <Card
+          fluid
+          raised
+          style={cardStyle}
+          content={this.weightGrid(goalWeight, 'Goal')}
+        />
+        <Card
+          fluid
+          raised
+          style={cardStyle}
+          content={this.weightGrid(currentWeight, 'Current')}
+        />
       </Card.Group>
     );
   };

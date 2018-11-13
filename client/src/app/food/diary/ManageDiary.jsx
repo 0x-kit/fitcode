@@ -77,7 +77,7 @@ class ManageDiary extends Component {
   render() {
     const { selectedProduct, serving, handleSubmit, openModal } = this.props;
     const modalProps = {
-      title: 'Edit Your Food"',
+      title: 'Edit Your Food',
       subtitle: selectedProduct.name,
       style: { width: 300, textAlign: 'center' },
       content: this.renderMacros(selectedProduct, serving)
