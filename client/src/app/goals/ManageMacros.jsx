@@ -54,7 +54,7 @@ class ManageMacros extends Component {
   };
 
   onSubmit = macros => {
-    this.props.handleClose();
+    this.handleClose();
     this.props.complexEditMacros(macros);
   };
 
