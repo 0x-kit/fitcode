@@ -57,7 +57,7 @@ const complexFetchHome = date => async dispatch => {
 
     const meals = await axios.get(`/api/diary/user/${userId}?date=${fDate}`, reqConfig);
 
-    const exercises = await axios.get(`/api/user/${userId}/exercise`, reqConfig);
+    const exercises = await axios.get(`/api/user/${userId}/exercise?date=${fDate}`, reqConfig);
 
     dispatch(setDay(date));
 

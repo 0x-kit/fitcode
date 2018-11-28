@@ -12,15 +12,17 @@ const {
   resetMessage
 } = ActionCreators;
 
-const complexFetchExercises = () => async dispatch => {
+const complexFetchExercises = (date) => async dispatch => {
   try {
     const token = localStorage.getItem('token');
+
+    const fDate = date.format('YYYY-MM-DD');
 
     const userId = localStorage.getItem('userId');
 
     const reqConfig = { headers: { authorization: token } };
 
-    const response = await axios.get(`/api/user/${userId}/exercise`, reqConfig);
+    const response = await axios.get(`/api/user/${userId}/exercise?date=${fDate}`, reqConfig);
 
     dispatch(fetchExercises(response.data));
 

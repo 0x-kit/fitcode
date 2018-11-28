@@ -1,4 +1,3 @@
-// import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, lifecycle } from 'recompose';
@@ -13,7 +12,8 @@ const mapStateToProps = state => {
     userExercises: state.exercise.userExercises,
     selectedExercise: state.exercise.selectedExercise,
     exerciseCals: state.exercise.exerciseCals,
-    loading: state.food.loading,
+    loading: state.exercise.loading,
+    date: state.food.date,
     errorMessage: state.food.errorMessage
   };
 };
@@ -32,7 +32,7 @@ export default compose(
   withAuth,
   lifecycle({
     componentDidMount() {
-      this.props.complexFetchExercises();
+      this.props.complexFetchExercises(this.props.date);
     },
     componentWillMount() {
       const path = this.props.location.pathname.split('/');

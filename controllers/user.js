@@ -114,9 +114,7 @@ exports.getGoals = async (req, res) => {
 exports.getExercises = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const date = moment()
-      .startOf('day')
-      .format('YYYY-MM-DD');
+    const date = req.query.date;
 
     const docs = await Exercise.find({ user: userId, date: date }).select('_id date user calories name');
 

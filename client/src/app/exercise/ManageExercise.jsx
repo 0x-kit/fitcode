@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import moment from 'moment';
 import { reduxForm, reset } from 'redux-form';
 
 import { ComplexForm } from 'app/common/Form.jsx';
@@ -56,7 +55,7 @@ class ManageExercise extends Component {
 
     const newExercise = {
       user: localStorage.getItem('userId'),
-      date: moment().format('YYYY-MM-DD'),
+      date: this.props.date.format('YYYY-MM-DD'),
       name,
       calories
     };

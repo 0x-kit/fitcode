@@ -72,7 +72,7 @@ class Exercise extends Component {
   );
 
   render() {
-    const { selectedExercise, userExercises } = this.props;
+    const { selectedExercise, userExercises, loading } = this.props;
     const { manageModal, createModal } = this.state;
 
     return (
@@ -80,7 +80,7 @@ class Exercise extends Component {
         <Card.Group centered>
           {this.renderMainCard()}
 
-          {!_.isEmpty(userExercises) && this.renderContent(userExercises)}
+          {!_.isEmpty(userExercises) && !loading && this.renderContent(userExercises)}
 
           <ManageExercise
             openModal={manageModal}
