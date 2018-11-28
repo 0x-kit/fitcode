@@ -77,3 +77,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .vscode
+
+config
+test
+seed.js
