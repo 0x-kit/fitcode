@@ -2,9 +2,9 @@
 
 The project I did in order to obtain my __BSc in Computer Science__.
 
-A **Single Page Application** that lets you track your diet in an easy and comfortable way and it's intended to be used in a mobile phone.
+ > A **Single Page Application** that lets you track your diet in an easy and comfortable way and it's intended to be used in a mobile phone.
 
-The main goal of it was improving my knowledge in **Javascript** using a **Full Stack Development** approach.
+ >The main goal of it was improving my knowledge in **Javascript** using a **Full Stack Development** approach.
 
 **Tech stack**:
 
@@ -16,7 +16,7 @@ The main goal of it was improving my knowledge in **Javascript** using a **Full 
 - [Express](https://expressjs.com/)
 - [Passport](http://www.passportjs.org/)
 - [MongoDB](https://www.mongodb.com/)
-
+- [Mongoose](https://mongoosejs.com/)
 ---
 
 <p align="center">
